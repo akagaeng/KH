@@ -511,4 +511,4 @@ refresh();
 endwin();
 
 return 0;
-}	 		
+}
