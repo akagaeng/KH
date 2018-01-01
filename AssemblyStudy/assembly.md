@@ -374,51 +374,57 @@ call     print_int
 end:
 ```
 
-### (문제) 키보드로부터 입력받은 3개의 정수 중에서 더 큰 수를 출력하는 프로그램을 작성하시오<a13.asm>
- segment .bss
- a    
-resd     1
- b    
-resd     1
- c    
-resd     1
- segment .text
- global main
- main
-​      ;input
-data
+### (문제) 키보드로부터 입력받은 3개의 정수 중에서 더 큰 수를 출력하는 프로그램을 작성하시오
+a13.asm
+
+```
+segment .bss
+a    resd     1
+b    resd     1
+c    resd     1
+
+segment .text
+global main
+
+main
+;input data
 call     read_int
 mov     [a],     eax
 call     read_int
 mov     [b],     eax
 call     read_int
 mov     [c],     eax
+
 ;compare
 mov     eax,     [a]
 cmp     eax,     [b]
 jg     a_b
 jmp     b_a
- a_b:    
-; i) a > b
+
+a_b:    ; i) a > b
 mov     eax,     [c]
 cmp     eax,     [a]
 jg     c_a
 jmp     a_c
+
 ;ii)
 c_a:     ; c > a > b  MAX: C
 mov     eax,     [c]
 call     print_int
 jmp     end
+
 a_c:     ; a > c,b    MAX: A
 mov     eax,     [a]
 call     print_int
 jmp     end
- b_a:    
+
+b_a:    
 ; i) b > a
 mov     eax,     [c]
 cmp     eax,     [b]
 jg     c_b
 jmp     b_c
+
 ;ii)
 c_b:     ; c > b > a   MAX: C
 mov     eax,     [c]
@@ -429,17 +435,309 @@ mov     eax,
 [b]    
 call     print_int
 jmp     end
- end:
+end:
+```
 
-(문제) 구구단 어셈블리어로 만들기 // agugu.asm
+### (문제) 구구단 어셈블리어로 만들기
+agugu.asm
 
-(문제)키보드에서파일명을 입력받아 파일의 내용을 화면에 출력하는 어셈블리 프로그램 작성
+```
+%include "asm_io.inc" 
+segment .data 
+dan     dd     2 
+soo     dd     1 
+gop     dd     "x",0 
+nun     dd     "=",0 
 
-시스템콜 사용(read,write)
- 리눅스 시스템의 cat명령어와
+segment .bss 
+segment .text 
+global main 
+main 
+
+dan_loop: ( dan*1, dan*2 ... dan*9까지 반복) mov     eax,     [dan]      
+call     print_int      
+mov     eax,     [gop]     
+;;print_char쓸때는 [gop] 이렇게 해야 하고      call     print_char     
+;;print_string쓸때는 gop 이렇게 써야함
+mov     eax,     [soo]     
+;;print_char는 한글자만 출력됨      
+call     print_int     
+;;print_string은 여러글자 출력됨
+;;끝에 ,0 까먹지 말기!      
+mov     eax,     [nun]      
+call     print_char
+;; o x o = 까지 출력      
+mov     eax,     dword[dan]      
+imul     eax,     dword[soo]      
+call     print_int      
+call     print_nl      
+inc     dword[soo]      
+cmp     dword[soo],     9      
+jng     dan_loop      
+jg     soo_loop 
+
+soo_loop: 
+;;soo =1로 초기화, dan ++
+mov     dword[soo],     1      
+inc     dword[dan]      
+mov     eax,     [dan]      
+imul     eax,     dword[soo]      
+call     print_nl      
+cmp     dword[dan],     9      
+jng     dan_loop      
+jg     end 
+end:
+```
+
+###(문제) 키보드에서 읽어들인 문자열을 역순으로 출력하는 어셈블리 프로그램을 작성하시오(read, write 시스템콜 사용)
+
+rev.asm
+
+```
+read(0, void *buf, size_t count);    
+;;read의 system call 번호는 3번임
+
+write(1, void *buf, size_t count);    
+;;write의 system call번호는 4번임
+
+input: korea
+output: aerok
+
+segment .data
+segment .bss
+
+input_msg     resd     30
+ptr          resd     30
+cnt          resd     1
+
+segment .text
+
+global main
+
+main
+
+mov     eax,     3
+mov     ebx,     0
+mov     ecx,     input_msg
+mov     edx,     30
+int     0x80
+
+mov     dword[ptr],     input_msg
+add     dword[ptr],     29
+mov     dword[cnt],     29
+
+for:
+mov     eax,     4
+mov     ebx,     1
+mov     ecx,     [ptr]
+mov     edx,     1
+int     0x80
+
+cmp     dword[cnt],     0
+jg     minus_cnt
+jng     end
+
+minus_cnt:
+dec     dword[ptr]
+dec     dword[cnt]
+jmp     for
+
+end:
+```
+
+뒤부터 주소값을 빼주면서 출력하는 방법, 다른 공간에 저장후 한번에 출력하는 방법 활용 가능
+1. 주소 지정 [주소+scale*4]
+2. Lea [주소+scale]
+
+rev2.asm
+
+```
+segment .data
+segment .bss
+
+data     resb     1024
+rdata     resb     1024
+size     resb     1
+
+segment .text
+
+global main
+
+main
+mov     eax,     3
+mov     ebx,     0
+mov     ecx,     data
+mov     edx,     1024
+int     0x80
+
+mov     eax,     0
+
+cond:
+mov     ebx,     [data+eax*1]
+cmp     ebx,     0x0a
+je     end
+
+body:
+inc     eax
+mov     dword[size],     eax
+jmp     cond
+
+end:
+sub     dword[size],     1
+
+mov     eax,     4
+mov     ebx,     1
+mov     ecx,     data          
+;;mov     ecx,     [size]
+add     ecx,     [size]          
+;;lea     ecx,     [data+ecx] 이렇게  표현할 수 있다
+mov     edx,     1
+int     0x80
+
+cmp     dword[size],     0
+jne     end
+je     exit
+
+exit:
+```
+
+###(문제) 키보드에서 소문자 하나를 읽어들여 대문자로 변환하는 프로그램을 작성하시오. 
+char1.asm
+```
+%include "asm_io.inc"
+
+segment .data
+segment .bss
+
+input     resb     1
+segment .text
+
+global main
+
+main
+
+mov     eax,     3
+mov     ebx,     0
+mov     ecx,     input
+mov     edx,     1
+int     0x80
+
+sub     dword[input],     0x20
+
+mov     eax,     4
+mov     ebx,     1
+mov     ecx,     input
+mov     edx,     1
+int     0x80
+```
+
+###(문제) 키보드에서 문자 하나를 읽어들여 소문자이면 대문자로, 대문자면 소문자로 변환하는 프로그램을 작성하시오
+
+ex) a->A, A->a
+
+char2.asm
+
+```
+input     resd     1
+
+global main
+main
+mov     eax,     3
+mov     ebx,     0
+mov     ecx,     input
+mov     edx,     1
+int     0x80
+
+cmp     dword[input],     0x60
+jg     smj
+jng     dmj
+
+smj:
+sub     dword[input],     0x20
+mp     prn
+
+dmj:
+add     dword[input],     0x20
+jmp     prn
+
+prn:    
+mov     eax,     4
+mov     ebx,     1
+mov     ecx,     input
+mov     edx,     1
+int     0x80
+```
+
+###(문제) 키보드에서 문자열을 읽어들여 소문자이면 대문자로, 대문자면 소문자로 변환하는 프로그램을 작성하시오
+
+char2.asm
+
+```
+input     resb     1024
+cnt     resb
+global main
+main
+mov     eax,     3
+mov     ebx,     0
+mov     ecx,     input
+mov     edx,     1         
+int     0x80                    
+;;키보드에서 입력받기
+mov     byte[cnt],     0         ;;cnt=0 으로 초기화
+
+output_loop
+mov     eax,     [cnt]           ;;eax에 cnt값 입력.
+
+cmp     byte[input+eax],     10  ;;입력값이 10(엔터값)일 경우
+je     exit                    
+;;이면 exit로 이동
+
+;;엔터값 아닌 경우
+cmp     byte[input],     0x60    ;;대문자와 소문자의 경계값이 0x60으로 비교
+jg     smj                    
+;;0x60보다 큰 경우(소문자)->smj로 이동
+jng     dmj                    
+;;0x60보다 작은 경우(대문자)->dmj로 이동
+
+smj:
+mov     eax,     [cnt]           ;;cnt값을 eax로 이동
+sub     byte[input+eax],    0x20
+;;input(시작주소값)에서 현재cnt만큼 증가해준 주소의 값에서 0x20 빼줌(대문자로 변환)
+
+jmp     prn                    
+;;출력단계로 이동
+
+dmj:
+mov     eax,     [cnt]
+add     byte[input+eax],    0x20
+;;input(시작주소값)에서 현재cnt만큼 증가해준 주소의 값에서 0x20 더해줌(소대문자로 변환)
+
+jmp     prn                    
+;;출력단계로 이동
+
+prn:    
+mov     eax,     4
+mov     ebx,     1
+mov     ecx,     input
+add     ecx,     [cnt]
+;;input(시작주소값)에서 현재cnt만큼 증가해준 주소의 값을 한글자씩 출력해줌
+mov     edx,     1
+int     0x80
+
+inc     byte[cnt]               
+;;cnt값을 1개 증가시켜준 후
+jmp     output_loop             
+;;output_loop로 이동시킴.
+
+exit:
+```
+
+###(문제)키보드에서파일명을 입력받아 파일의 내용을 화면에 출력하는 어셈블리 프로그램 작성
+
+***시스템콜 사용(read,write)***
+리눅스 시스템의 cat명령어와
 동일하게 작동하면 됨
-
-ex) mycat /etc/passwd
+`ex) mycat /etc/passwd`
 
 소스코드: bmycat.asm 
 
@@ -489,7 +787,7 @@ cf. exit(0) mov eax, 1
 | ---------------------------------------- | ---------------------------------------- |
 |                                          |                                          |
 
-(문제) mkdir() 시스템콜을사용하여 현재 디렉터리 아래에 "mydir"이라는 디렉터리를 생성하는 어셈블리 프로그램 작성
+###(문제) mkdir() 시스템콜을사용하여 현재 디렉터리 아래에 "mydir"이라는 디렉터리를 생성하는 어셈블리 프로그램 작성
 
 소스코드: <cmymkdir.asm>
  실행: ./cmymkdir mydir
