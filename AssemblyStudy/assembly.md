@@ -1,4 +1,5 @@
-# Assembly Language Problem Solving (*Netwide Assembler, NASM*)
+# Assembly Language Problem Solving
+***- Assembler: NASM(Netwide Assembler)***
 
 ### (문제) hello, world!를 출력하는 어셈블리 프로그램을 제작하시오(hello.asm)
 ```
