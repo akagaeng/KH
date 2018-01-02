@@ -91,9 +91,15 @@ mov     eax,     1
 mov     ebx,     0
 int     0x80
 ```
-$ nasm -f elf rabbit.asm ;어셈블리어->기계어로 컴파일
-$ ld -o rabbit rabbit.o ;링크단계
-$./rabbit ;실행
+
+**어셈블리어->기계어로 컴파일**
+`$ nasm -f elf rabbit.asm`
+
+**링크단계**
+`$ ld -o rabbit rabbit.o`
+
+**실행**
+`$ ./rabbit`
 
 
 ### (문제) 사칙연산 프로그램을 제작하시오.
@@ -275,6 +281,7 @@ call     print_nl
 
 ### (문제) 섭씨->화씨로 바꾸어 주는 프로그램 
 c.f. <섭씨= 9*섭씨/5+32>
+
 tem.asm
 
 ```
@@ -342,7 +349,9 @@ int     0x80
 ```
 
 ###(문제) 키보드로부터 입력받은 2개의 정수 중에서 더 큰 수를 출력하는 프로그램을 작성하시오
+
 a12.asm
+
 ```
 segment .data
 segment .bss
@@ -375,6 +384,7 @@ end:
 ```
 
 ### (문제) 키보드로부터 입력받은 3개의 정수 중에서 더 큰 수를 출력하는 프로그램을 작성하시오
+
 a13.asm
 
 ```
@@ -442,54 +452,57 @@ end:
 agugu.asm
 
 ```
-%include "asm_io.inc" 
-segment .data 
-dan     dd     2 
-soo     dd     1 
-gop     dd     "x",0 
-nun     dd     "=",0 
+%include "asm_io.inc"
+segment .data
+dan     dd     2
+soo     dd     1
+gop     dd     "x", 0
+nun     dd     "=", 0
 
-segment .bss 
-segment .text 
-global main 
-main 
+segment .bss
+segment .text
+global main
 
-dan_loop: ( dan*1, dan*2 ... dan*9까지 반복) mov     eax,     [dan]      
-call     print_int      
-mov     eax,     [gop]     
-;;print_char쓸때는 [gop] 이렇게 해야 하고      call     print_char     
-;;print_string쓸때는 gop 이렇게 써야함
-mov     eax,     [soo]     
-;;print_char는 한글자만 출력됨      
-call     print_int     
+main
+
+dan_loop: ( dan*1, dan*2 ... dan*9까지 반복)
+mov     eax,     [dan]
+call     print_int
+mov     eax,     [gop]
+;;print_char쓸때는 [gop] 이렇게 해야 하고
+call     print_char     
+;;print_string 쓸때는 gop 와 같이 써야함
+mov     eax,     [soo]
+;;print_char는 한글자만 출력됨
+call     print_int 
 ;;print_string은 여러글자 출력됨
-;;끝에 ,0 까먹지 말기!      
-mov     eax,     [nun]      
-call     print_char
-;; o x o = 까지 출력      
-mov     eax,     dword[dan]      
-imul     eax,     dword[soo]      
-call     print_int      
-call     print_nl      
-inc     dword[soo]      
-cmp     dword[soo],     9      
-jng     dan_loop      
-jg     soo_loop 
+;;끝에 ,0 까먹지 말기!
+mov     eax,     [nun]
+call     print_char
+;; o x o = 까지 출력
+mov     eax,     dword[dan]
+imul     eax,     dword[soo]
+call     print_int
+call     print_nl
+inc     dword[soo]
+cmp     dword[soo],     9
+jng     dan_loop
+jg     soo_loop
 
 soo_loop: 
 ;;soo =1로 초기화, dan ++
-mov     dword[soo],     1      
-inc     dword[dan]      
-mov     eax,     [dan]      
-imul     eax,     dword[soo]      
-call     print_nl      
-cmp     dword[dan],     9      
-jng     dan_loop      
-jg     end 
-end:
+mov     dword[soo],     1
+inc     dword[dan]
+mov     eax,     [dan]
+imul     eax,     dword[soo]
+call     print_nl
+cmp     dword[dan],     9
+jng     dan_loop
+jg     end
+end:
 ```
 
-###(문제) 키보드에서 읽어들인 문자열을 역순으로 출력하는 어셈블리 프로그램을 작성하시오(read, write 시스템콜 사용)
+### (문제) 키보드에서 읽어들인 문자열을 역순으로 출력하는 어셈블리 프로그램을 작성하시오(read, write 시스템콜 사용)
 
 rev.asm
 
@@ -499,7 +512,9 @@ read(0, void *buf, size_t count);
 
 write(1, void *buf, size_t count);    
 ;;write의 system call번호는 4번임
+```
 
+```
 input: korea
 output: aerok
 
@@ -601,8 +616,10 @@ je     exit
 exit:
 ```
 
-###(문제) 키보드에서 소문자 하나를 읽어들여 대문자로 변환하는 프로그램을 작성하시오. 
+### (문제) 키보드에서 소문자 하나를 읽어들여 대문자로 변환하는 프로그램을 작성하시오. 
+
 char1.asm
+
 ```
 %include "asm_io.inc"
 
@@ -631,7 +648,7 @@ mov     edx,     1
 int     0x80
 ```
 
-###(문제) 키보드에서 문자 하나를 읽어들여 소문자이면 대문자로, 대문자면 소문자로 변환하는 프로그램을 작성하시오
+### (문제) 키보드에서 문자 하나를 읽어들여 소문자이면 대문자로, 대문자면 소문자로 변환하는 프로그램을 작성하시오
 
 ex) a->A, A->a
 
@@ -668,7 +685,7 @@ mov     edx,     1
 int     0x80
 ```
 
-###(문제) 키보드에서 문자열을 읽어들여 소문자이면 대문자로, 대문자면 소문자로 변환하는 프로그램을 작성하시오
+### (문제) 키보드에서 문자열을 읽어들여 소문자이면 대문자로, 대문자면 소문자로 변환하는 프로그램을 작성하시오
 
 char2.asm
 
@@ -732,44 +749,42 @@ jmp     output_loop
 exit:
 ```
 
-###(문제)키보드에서파일명을 입력받아 파일의 내용을 화면에 출력하는 어셈블리 프로그램 작성
+### (문제)키보드에서파일명을 입력받아 파일의 내용을 화면에 출력하는 어셈블리 프로그램 작성
 
-***시스템콜 사용(read,write)***
-리눅스 시스템의 cat명령어와
-동일하게 작동하면 됨
+***시스템콜 사용(read,write), 리눅스 시스템의 cat명령어와 동일하게 작동하도록 구현할 것***
+
 `ex) mycat /etc/passwd`
 
-소스코드: bmycat.asm 
+bmycat.asm 
 
 실행: ./bmycat/etc/passwd
 
 <참고한 홈페이지>
 
-*argv[1]를 ebx에 저장하는 방법
+- [argv[1]를 ebx에 저장하는 방법](http://stackoverflow.com/questions/7854706/reading-filename-from-argv-via-x86-assembly)
 
-<http://stackoverflow.com/questions/7854706/reading-filename-from-argv-via-x86-assembly>
+- [시스템콜 레퍼런스](http://www.joinc.co.kr/modules/moniwiki/wiki.php/Site/Assembly/Documents/article_linux_systemcall_quick_reference)
 
-*시스템콜 레퍼런스 <http://www.joinc.co.kr/modules/moniwiki/wiki.php/Site/Assembly/Documents/article_linux_systemcall_quick_reference>
 
 flag: O_RDONLY 
-
 mode: 755
 
 c언어로 짠 것: mycat.c
  argv[1]을 이용해서 파일 입력은 가능
- read(0,buffer,100)을 이용해서 파일명 입력받은 후 출력은 안됨
- scanf()로 입력받은 후에는 출력 됨.
- ==>argv[1]을 이용하여 파일입력.
- 어셈블리로
-짠 것: bmycat.asm(파일명
-입력) ,
-./bmycat /etc/passwd(argv[1]을 이용해서도 해결)
+ 
+read(0,buffer,100)을 이용해서 파일명 입력받은 후 출력은 안됨
 
-**시스템콜 번호
- open: 5
- write: 4
- read: 3
- close: 6
+scanf()로 입력받은 후에는 출력 됨 ==>argv[1]을 이용하여 파일입력
+
+어셈블리로 짠 것
+1. `bmycat.asm <file name>`
+2. `./bmycat /etc/passwd(<argv[1]>)`
+
+**시스템콜 번호**
+  - open: 5
+  - write: 4
+  - read: 3
+  - close: 6
 
 |        | open                                     | read                                     | write                                    | close                          |
 | ------ | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- | ------------------------------ |
@@ -777,17 +792,19 @@ c언어로 짠 것: mycat.c
 | return | eax:  file descriptor                    | eax:  number of bytes read               | eax:  number of bytes written            | eax:--                         |
 | error  | eax:  error code                         | eax:  error code                         | eax:  error code                         | eax:  error code               |
 
-cf. exit(0) mov eax, 1
 
-​              mov ebx, 0
-
-​              int 0x80
+**cf. exit(0)**
+```
+mov eax, 1
+mov ebx, 0
+int 0x80
+```
 
 | %include  "asm_io.inc"   ;open->read->write->close     segment .data   file_name1       db      'hello.txt',0   file_name2       db      '/etc/passwd',0   fd_msg           db      'file descriptor: ',0   fd_err_msg    db       'file open error!',10,0     segment .bss   fd               resd    1   buffer           resb    65535   argv             resb    30     segment .text     global main     main     ;open     mov eax,5     pop      ebx                      ;&ret   pop      ebx                      ;&argc   pop      ebx                      ;&argv     mov      ebx,     [ebx+4]         ;argv[1]   ;push ebx     mov     ecx, 2   mov     edx,  0700   int      0x80     mov      [fd],   eax   mov      eax,    fd_msg   call     print_string   mov      eax,    [fd]   call     print_int   call     print_nl   call    print_nl   cmp   dword[fd],   1   jl         fd_err     ;read   mov      eax,    3   mov     ebx,     [fd]   mov      ecx,    buffer   mov      edx,    65535   int     0x80     ;write   mov      eax,    4   mov      ebx,    1   mov      ecx,    buffer   mov      edx,    65535   int      0x80     ;close   mov      eax,    6   mov      ebx,    [fd]   int      0x80     exit:   mov      eax,    1   mov      ebx,    0   int     0x80     fd_err:   mov    eax,      fd_err_msg   call       print_string   jmp     exit | 스택에  저장되어있는 인자값을 pop을통해 ebx에 저장.   첫번째  pop: ret가 저장되어 있는 곳의 주소   두번째  pop: argc가 저장되어 있는 곳의 주소   세번째  pop: argv가 저장되어 있는 곳의 주소     세번재  pop을 통해서 argv[0]의 주소를 구해서   ebx에  저장했으므로 ebx+4가 argv[1]의 주소.   따라서  argv[1]의 값은 [ebx+4]가 되므로 이를   open의  인자값으로 위치시켜줌.                       fd가  1보다 작으면 fd_err로 이동하여 에러메시지 출력하고   종료하도록함.   file descriptor가  1보다 작다는 것은 제대로 open되지   않았다는  의미임.   제대로  open되면 1이상값이 나옴.                                                 fd가  1보다 작다면 에러메시지 출력후 종료 |
 | ---------------------------------------- | ---------------------------------------- |
 |                                          |                                          |
 
-###(문제) mkdir() 시스템콜을사용하여 현재 디렉터리 아래에 "mydir"이라는 디렉터리를 생성하는 어셈블리 프로그램 작성
+### (문제) mkdir() 시스템콜을사용하여 현재 디렉터리 아래에 "mydir"이라는 디렉터리를 생성하는 어셈블리 프로그램 작성
 
 소스코드: <cmymkdir.asm>
  실행: ./cmymkdir mydir
