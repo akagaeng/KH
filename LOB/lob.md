@@ -1,20 +1,17 @@
  
 
-Lord Of the Buffer Overflow 문제풀이
+# Lord Of the Buffer Overflow 문제풀이
+***- akagaeng***
 
-양경석(gaeng4@gmail.com)
-
-Buffer Overflow기법에
-
-대해서 공부하는 용도로 hackerschool에서 제작한 워게임에 대한 풀이를 보고서 형식으로 작성하였습니다.
-
+Buffer Overflow기법에 대해서 공부하는 용도로 hackerschool에서 제작한 워게임에 대한 풀이를 보고서 형식으로 작성하였습니다.
 원래는 c로 작성된 소스코드를 볼 수 있도록 출제측에서 오픈해놓았으나, 학습이 목적이기도하며 실제 상황에서는 소스코드가 오픈되어 있지 않는 점 등을 감안하여 GDB디버거로 바이너리 코드를 열어 이를 통해 분석하는 리버스엔지니어링을 이용한 문제해결을 하였습니다.
 
-BOF 전용 게시판: http://www.hackerschool.org/HS_Boards/zboard.php?id=bof_fellowship
+### 자료 링크
+- [BOF 전용 게시판](http://www.hackerschool.org/HS_Boards/zboard.php?id=bof_fellowship)
+- [BOF 다운로드](http://www.hackerschool.org/HS_Boards/zboard.php?id=bof_fellowship_2round&page=1&sn1=&divpage=1&sn=off&ss=on&sc=on&select_arrange=headnum&desc=asc&no=4)
 
--다운로드 주소: http://www.hackerschool.org/HS_Boards/zboard.php?id=bof_fellowship_2round&page=1&sn1=&divpage=1&sn=off&ss=on&sc=on&select_arrange=headnum&desc=asc&no=4
-
-*패스워드 확인하는 명령어 ==> my-pass
+### 패스워드 확인하는 명령어
+`$ my-pass`
 
  TheLordOfTheBOF_redhat
 
