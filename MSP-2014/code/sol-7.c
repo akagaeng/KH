@@ -46,10 +46,12 @@ int main(int argc, char *argv[]) {
       }
     }
   }
+
   printf("[겹치는 공강 찾아주는 프로그램]\n");
   printf("c.f. 공강은 \"-\"로 수업은 \"o\"로 표시됩니다!\n\n");
   printf("<My TimeTable>\n");
   printf("\tMON\tTUE\tWED\tTHU\tFRI\n");
+
   for (j = 0; j < 6; j++) { // 내 시간표 출력
     printf("%d\t", j + 1);
     for (k = 0; k < 5; k++) {
@@ -61,6 +63,7 @@ int main(int argc, char *argv[]) {
 
   printf("<Friend's TimeTable>\n");
   printf("\tMON\tTUE\tWED\tTHU\tFRI\n");
+  
   for (j = 0; j < 6; j++) { //친구 시간표 출력
     printf("%d\t", j + 1);
     for (k = 0; k < 5; k++) {
