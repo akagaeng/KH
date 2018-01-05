@@ -33,6 +33,7 @@ int main(int argc, char *argv[]) {
     printf("\n\n(0번을 누르면 노래방 프로그램이 종료됩니다.)\n");
     printf("노래 번호를 입력해주세요 :");
     scanf("%d", &input);
+    
     if (input >= 1 && input <= cnt) { //번호에 있는 숫자 누른 경우
       for (i = input - 1, j = 0; str[i][j] != '\t'; j++) {
       } //탭있는곳까지 위치 구함
