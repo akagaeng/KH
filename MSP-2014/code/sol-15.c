@@ -7,21 +7,11 @@ int main() {
   int i = 0, j = 0, number = 0; // number: 입력받을 구슬의 갯수
   int input1 = 0, input2 = 0;
   char rand_num = 0;
-  char temp[100][2] = {
-      0,
-  };
-  char flag[100] = {
-      0,
-  };
-  char turn[100] = {
-      0,
-  }; // 1-2-5-4-3 or 1-5-4-2-3 or ....
-  char color_cnt[26] = {
-      0,
-  }; // color_cnt[0]= a, [1]=b [2]=c ... 각 숫자의 갯수 셈
-  char reverse[26] = {
-      0,
-  };
+  char temp[100][2] = {0,};
+  char flag[100] = {0,};
+  char turn[100] = {0,}; // 1-2-5-4-3 or 1-5-4-2-3 or ....
+  char color_cnt[26] = {0,}; // color_cnt[0]= a, [1]=b [2]=c ... 각 숫자의 갯수 셈
+  char reverse[26] = {0,};
   char swap_temp = 0;
   char cnt = 0;
 
