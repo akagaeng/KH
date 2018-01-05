@@ -12,7 +12,7 @@ int main(int argc, char *argv[]) {
   int sum = 0;
   int error_flag = 0; // 1인경우 에러임
   FILE *fp;
-  fp = fopen("볼링.txt", "rt");
+  fp = fopen("files/볼링.txt", "rt");
   printf("fp:%d\n", fp);
 
   for (i = 0; feof(fp) == 0; i++) { // while(fscanf(fp,"%d",&arr[i]) ==1 )
