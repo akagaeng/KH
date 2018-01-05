@@ -6,9 +6,7 @@ int main(int argc, char *argv[]) {
   int input = 0;
 
   FILE *fp;
-  char str[10][1024] = {
-      0,
-  };
+  char str[10][1024] = {0,};
 
   printf("MSP 노래방에 오신 것을 환영합니다!\n\n");
   printf("번호\t가수 - 노래 제목\n");
