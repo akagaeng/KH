@@ -64,6 +64,7 @@ int main(int argc, char *argv[]) {
 
       fprintf(fp1, "%d", jan_go);
       fprintf(fp2, "%d", juk_lip);
+      
       fclose(fp1);
       fclose(fp2);
     } // end if

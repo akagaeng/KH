@@ -1,4 +1,5 @@
 #include <stdio.h>
+
 int main(int argc, char *argv[]) {
   char arr[21] = {0,};
   char arr2[10][4] = {0,};

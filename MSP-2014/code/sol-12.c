@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+
 int main(int argc, char *argv[]) {
   char sen1[1024] = {0,};
   char sen2[1024] = {0,};
