@@ -12,8 +12,8 @@ int main(int argc, char *argv[]) {
   char weekday[10] = "월화수목금";
   int i = 0, j = 0, k = 0;
 
-  fp1 = fopen("mytime.txt", "r");
-  fp2 = fopen("friendtime.txt", "r");
+  fp1 = fopen("files/mytime.txt", "r");
+  fp2 = fopen("files/friendtime.txt", "r");
 
   while (feof(fp1) == 0) {
     fgets(buf1, sizeof(buf1), fp1);
