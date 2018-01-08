@@ -32,9 +32,24 @@
 - 진행시간 표시
 
 **구현시 문제가 되었던 점**
--getch() 함수
-getch() 함수는 blocking function이라서 키 입력이 없으면 키 입력을 대기함
-따라서 키입력이 없는 경우 아래로 움직이고 키 입력 대기 하지 않는 non-blocking이 되어야 함한다. http://hughm.cs.ukzn.ac.za/~murrellh/os/notes/ncurses.html 위 사이트에서 ncurses programming guide 발견. nodelay(stdscr,TRUE)해주면 blocking되지 않고, 키입력이 없다면 ERR을 반환한다. sleep(1)은 시스템 자체를 일정 시간동안 멈추는 함수임. 따라서 sleep함수를 만나면 키보드 입력은 가능하나 이를 저장했다가 sleep시간이 지난 후에 움직임 ->시간은 따로 흘러가고 그 사이에도 키보드가 움직일 수 있어야 함 ->how? http://programmersheaven.com/discussion/365393/delay-function-in-gcc ID: sarfrajkhan you can use just an empty for loop like below, for(i=0;i<10000;i++) {} it will create the delay in your program time.h 인클루드 하여 clock() 함수를 통해 시간1과 시간2의 차이를 구함. 이 시간 차이가 100이 되면 아래로 움직이게 함. 빠른 진행을 위해 라인 2줄 제거시마다 20%의 딜레이 감소를 통해 속도 증가시킴. time()함수는 1초 단위밖에 처리하지 못함. clock()함수는 0.01초 단위까지 컨트롤 가능하므로 clock함수를 활용함.
+
+- getch()
+> getch() 함수는 blocking function이라서 키 입력이 없으면 키 입력을 기다리고 있어 다른 로직이 진행되지 않는다. 따라서 키입력이 없는 경우에도 블록이 아래로 움직이는 로직이 진행되어야 하는데, 이를 위하여 키 입력 대기 하지 않는 non-blocking이 되어야 한다.
+
+해결책
+[ncurses programming guide](http://hughm.cs.ukzn.ac.za/~murrellh/os/notes/ncurses.html)를 찾아보던 중 nodelay(stdscr,TRUE)를 해주면 blocking되지 않으며, 키입력이 없다면 ERR을 반환하는 것을 알게 되었으며 이를 통해 getch()를 non-blocking으로 사용할 수 있었다.
+
+- sleep()
+sleep(1)은 시스템 자체를 일정 시간동안 멈추는 함수인데, sleep함수를 만나면 키보드 입력은 가능하나 이를 저장했다가 sleep시간이 지난 후에 움직이게 된다. 테트리스에서는 시간은 따로 흘러가고 그 사이에도 키보드가 움직일 수 있어야 한다.그렇다면 어떻게 해야할까?
+구글 검색을하던 중 다음과 같은 글을 발견하였다. 
+> ID: sarfrajkhan<br>
+> you can use just an empty for loop like below, for(i=0;i<10000;i++) {} it will create the delay in your program<br>
+> http://programmersheaven.com/discussion/365393/delay-function-in-gcc
+<br>
+이를 이용하여 이 함수
+time.h 인클루드 하여 clock() 함수를 통해 시간1과 시간2의 차이를 구함. 이 시간 차이가 100이 되면 아래로 움직이게 함. 빠른 진행을 위해 라인 2줄 제거시마다 20%의 딜레이 감소를 통해 속도 증가시킴. time()함수는 1초 단위밖에 처리하지 못함. clock()함수는 0.01초 단위까지 컨트롤 가능하므로 clock함수를 활용하여 해결하였다.
+
+<br>
 
 - 소스코드: [tetris.c](https://github.com/akagaeng/self-study/blob/master/Tetris/code/tetris.c)
 
