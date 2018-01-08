@@ -17,7 +17,7 @@ int main() {
   }
 
   for (i = 1; i <= 9; i++) {
-    // printf("%d x %d = %d\n",dan, i, dan * i);          
+    // printf("%d x %d = %d\n",dan, i, dan * i);
     for (j = 1; j <= (dan * i); j++) {
       printf("*");
     }
