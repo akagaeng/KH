@@ -58,6 +58,7 @@ sleep(1)은 시스템 자체를 일정 시간동안 멈추는 함수인데, slee
 
 이를 이용하여 함수 time.h 인클루드 하여 clock() 함수를 통해 시간1과 시간2의 차이를 구함. 이 시간 차이가 100이 되면 아래로 움직이게 한다. 빠른 진행을 위해 라인 2줄 제거시마다 20%의 딜레이 감소를 통해 속도 증가시켰다. time()함수는 1초 단위밖에 처리하지 못하는 반면, clock()함수는 0.01초 단위까지 컨트롤 가능하므로 clock함수를 활용하여 해결하였다.
 <br>
+<br>
 
 ### 소스코드: [tetris.c](https://github.com/akagaeng/self-study/blob/master/Tetris/code/tetris.c)
 
