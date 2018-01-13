@@ -36,6 +36,7 @@ epoch time형식인 것으로 판단하였습니다. 따라서 epoch를 human re
   + GMT: Mon, 12 Jul 2010 15:00:00 UTC
   + Your time zone: 2010년 7월 13일 화요일 오전 12:00:00 GMT+9:00
   <br>
+  
   + epoch: 1279292400
   + GMT: Fri, 16 Jul 2010 15:00:00 UTC
   + Your time zone: 2010년 7월 17일 토요일 오전 12:00:00 GMT+9:00
