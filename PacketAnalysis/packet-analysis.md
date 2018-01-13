@@ -27,9 +27,10 @@ cmd.htm.zip 파일을 위에 나온 이미지에 적힌 글자인 **Google**을
 - 파일 이름: cmd.php
 - 파일 내용: OK,1278946800,1279292400,192.168.0.2,80,0
 
-이 파일 내용에서 알아낸 점
+#### 이 파일 내용에서 알아낸 점
 1. 1278946800,1279292400
-  + epoch time형식인 것으로 판단하였습니다. 따라서 [epoch를 human readable time으로 변환해주는 사이트](http://www.epochconverter.com/)에서 위 숫자를 입력한 결과 다음의 사항을 알 수 있었습니다.
+
+epoch time형식인 것으로 판단하였습니다. 따라서 epoch를 human readable time으로 변환해주는 [epochconverter](http://www.epochconverter.com/)라는 사이트에서 위 숫자를 입력한 결과 다음의 사항을 알 수 있었습니다.
   + epoch: 1278946800
   + GMT: Mon, 12 Jul 2010 15:00:00 UTC
   + Your time zone: 2010년 7월 13일 화요일 오전 12:00:00 GMT+9:00
@@ -37,16 +38,22 @@ cmd.htm.zip 파일을 위에 나온 이미지에 적힌 글자인 **Google**을
   + epoch: 1279292400
   + GMT: Fri, 16 Jul 2010 15:00:00 UTC
   + Your time zone: 2010년 7월 17일 토요일 오전 12:00:00 GMT+9:00
+
 2. 192.168.0.2,80
   + ip address와 port number인 것으로 판단됩니다.
+
 3. 의문사항
   + OK, 0의 의미는 정확히 파악하지 못하였습니다. 다만, OK는 시작의 의미, 0은 종료의 의미를 내포하는 것이라고 가정을 해 보았습니다.
   
 ### II. 파일을 다운받은 이후의 현상.
 ![3_1-packet-captureed.png](images/3_1-packet-captured.png)
+
 ...
+
 중략
+
 ...
+
 ![3_2-packet-captureed.png](images/3_2-packet-captured.png)
 
 - cmd.htm 파일을 다운받은 103.540680초(캡쳐시작한 시간을 0초로 기준으로한 시간. 이하 같음) 이후 30.906368초 후인 134.447048초 부터 다량의 [SYN] 패킷이 192.168.0.2의 80번 포트로 유입되는 것을 확인할 수 있었습니다.
@@ -56,8 +63,7 @@ wireshark의 Summary 기능을 활용하여 자세히 분석해보겠습니다.
 
 ![4_wireshark-summary.png](images/4_wireshark-summary.png)
 
-<br>
-**의심되는 syn packet 분석**
+#### 의심되는 syn packet 분석
 - 총 패킷의 수: 52620개
 - 전송기간: 54.514초
 - 평균 패킷수: 965.250 (패킷/초)
@@ -72,10 +78,10 @@ wireshark의 Summary 기능을 활용하여 자세히 분석해보겠습니다.
 
 - ip spoofing을 통해 ip를 바꾸어가면서 192.168.0.2에 대하여 계속 syn을 보냄
 
-> 공격자    피해자
-> syn-------->syn_recv
->    <--------syn/ack
-> (ack ------>) 원래는 ack를 보내야 하는데 이 과정을 생략함
+공격자    피해자<br>
+syn-------->syn_recv<br>
+   <--------syn/ack<br>
+(ack ------>) 원래는 ack를 보내야 하는데 이 과정을 생략함<br>
 
 syn요청에 대해 ack응답이 없으면 ack응답이 있는 동안 일정 시간 대기를 하게 됩니다. 대기시간이 종료하기 전에 다시 syn요청이 있으면 무한대로 응답을 대기하게 되고, 다른 응답에 요청하지 못하는 상태가 됩니다. 
 SYN Flooding 공격은 TCP 의 취약점을 이용한 공격의 형태이므로 먼저 TCP 에 대해 알아야 하는데, TCP는 UDP와는 달리 신뢰성 있는 연결을 담당합니다. 따라서 서버와 클라이언트간에 본격적인 통신이 이루어지기 전에는 소위 "3 Way handshaking" 이라는 정해진 규칙이 사전에 선행되어야 합니다. 결과적으로 TCP의 장점인 신뢰성이 TCP의 약점이 되는 것이며 이를 이용하여 DOS공격이 이루어지는 것입니다.
