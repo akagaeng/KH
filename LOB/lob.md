@@ -23,14 +23,11 @@ Buffer Overflow기법에 대해서 공부하는 용도로 hackerschool에서 제
 ### (01) LEVEL1: gate/gate
 
 ```
-0x8048430 <main>:       push   %ebp 0x8048431 <main+1>:     mov    %ebp,%esp
-0x8048433 <main+3>:     sub    %esp,0x100
-0x8048439 <main+9>:     cmp    DWORD PTR [%ebp+8],1 0x804843d <main+13>:    jg     0x8048456 <main+38>
-0x804843f <main+15>:    push   0x80484e0 0x8048444 <main+20>:    call   0x8048350 <printf> 0x8048449 <main+25>:    add    %esp,4
-0x804844c <main+28>:    push   0 0x804844e <main+30>:    call   0x8048360 <exit> 0x8048453 <main+35>:    add    %esp,4
-0x8048456 <main+38>:    mov    %eax,DWORD PTR [%ebp+12] 0x8048459 <main+41>:    add    %eax,4 0x804845c <main+44>:    mov    %edx,DWORD PTR [%eax] 0x804845e <main+46>:    push   %edx 0x804845f <main+47>:    lea    %eax,[%ebp-256] 0x8048465 <main+53>:    push   %eax 0x8048466 <main+54>:    call   0x8048370 <strcpy> 0x804846b <main+59>:    add    %esp,8
-0x804846e <main+62>:    lea    %eax,[%ebp-256] 0x8048474 <main+68>:    push   %eax 0x8048475 <main+69>:    push   0x80484ec 0x804847a <main+74>:    call   0x8048350 <printf> 0x804847f <main+79>:    add    %esp,8
-0x8048482 <main+82>:    leave 0x8048483 <main+83>:    ret
+  0x8048430  <main>:       push   %ebp   0x8048431  <main+1>:     mov    %ebp,%esp    0x8048433 <main+3>:     sub     %esp,0x100    0x8048439 <main+9>:     cmp     DWORD PTR [%ebp+8],1   0x804843d  <main+13>:    jg     0x8048456  <main+38>       0x804843f  <main+15>:    push   0x80484e0   0x8048444  <main+20>:    call   0x8048350  <printf>   0x8048449  <main+25>:    add    %esp,4       0x804844c  <main+28>:    push   0   0x804844e  <main+30>:    call   0x8048360  <exit>   0x8048453 <main+35>:     add    %esp,4    0x8048456 <main+38>:    mov     %eax,DWORD PTR [%ebp+12]   0x8048459  <main+41>:    add    %eax,4   0x804845c <main+44>:     mov    %edx,DWORD PTR [%eax]   0x804845e  <main+46>:    push   %edx   0x804845f <main+47>:     lea    %eax,[%ebp-256]   0x8048465  <main+53>:    push   %eax   0x8048466 <main+54>:     call   0x8048370 <strcpy>   0x804846b  <main+59>:    add    %esp,8    0x804846e <main+62>:    lea     %eax,[%ebp-256]   0x8048474  <main+68>:    push   %eax   0x8048475  <main+69>:    push   0x80484ec   0x804847a  <main+74>:    call   0x8048350  <printf>   0x804847f  <main+79>:    add    %esp,8    0x8048482 <main+82>:    leave   0x8048483  <main+83>:    ret	프롤로그                                                          스택영역  100바이트 할당     [ebp+8]은  첫번째 argument이므로 argc   if(argc <=1)        printf( "argv  error\n");   함수리턴     아래  함수의 argument   exit(0);   함수리턴     [ebp+12]는  두번째 argument이므로 *argv[0]   argv[1]     strcpy의  두번째 argument argv[1]     strcpy의  첫번재 argument &buffer[0]   strcpy(buffer,argv[1]);   함수리턴     &buffer[0]     "%s\n"   printf(""%s\n",buffer);   함수리턴     에필로그
+                                          	                                        
+
+
+
 ```
 
 \1. 제약조건은 arg가 2개 이상이기만 하면 되므로 사용할 수 있는 공간이 많음.
