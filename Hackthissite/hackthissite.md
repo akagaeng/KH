@@ -29,18 +29,18 @@ I know you're good with computers and stuff, so I was wondering, is there any wa
 
 #### 소스코드보기로 확인해보니 점수를 부과하는 소스코드는 다음과 같다.
 ```html
-		<form action="v.php" method="get">
-			<input type="hidden" name="PHPSESSID" value="abcaeadfc31a5c43b2534bf995c0553f" />
-			<input type="hidden" name="id" value="3" />
-			<select name="vote">
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
-			</select>
-			<input type="submit" value="vote!" />
-		</form>
+<form action="v.php" method="get">
+	<input type="hidden" name="PHPSESSID" value="abcaeadfc31a5c43b2534bf995c0553f" />
+	<input type="hidden" name="id" value="3" />
+	<select name="vote">
+		<option value="1">1</option>
+		<option value="2">2</option>
+		<option value="3">3</option>
+		<option value="4">4</option>
+		<option value="5">5</option>
+	</select>
+	<input type="submit" value="vote!" />
+</form>
 ```
 #### "GET" 방식으로 form을 전송하므로 이를 변조하여 점수를 전송해본다.
 ```
@@ -67,33 +67,48 @@ Message: I have been informed that you have quite admirable hacking skills. Well
 - [Racist hate group's website](https://www.hackthissite.org/missions/realistic/2/)의 admin 페이지 접속 권한을 얻어서 메인 페이지에 메시지를 올려다오.
 
 ### 문제 해결
-아랫쪽에 있는 update.php
-로그인창-sql injection
-id나 pw에 아래와같이 입력.
-admin' or 1=1;
+- 아랫쪽 그림 아래쪽 클릭해보면 update.php로 이동한다.
+- 이동한 화면에 로그인창이 나타나는데 여기에 sql injection
+- username은 아무거나 입력(admin), password는 `' or 1=1;` 입력
 
-## level3. Peace Poetry: HACKED
-
-소스코드 맨 아래에 아래와 같은 주석 있음.
-```
+## level3. Peace Poetry: HACKED
+### 문제 해결
+- 소스코드 맨 아래에 아래와 같은 주석 있음
+```html
 <!--Note to the webmasterThis website has been hacked, but not totally destroyed. The old website is still up. I simply copied the old index.html file to oldindex.html and remade this one. Sorry about the inconvenience.-->
 ```
-
-oldindex.html 살펴보기.
-submitpoems.php 를 보면 시를 쓸 수 있고 아래와 같은 메시지 있음.
-
-Note: Poems will be stored online immediately but will not be listed on the main poetry page until it has a chance to be looked at. 일단 시가 저장이 된다는 것을 알았으니 어디에 저장되는지 생각해보면 아까 /readpoem.php?name=Hacker 처럼 get방식으로 시를 받아오므로 이와 같은 방법으로 불러올 수 있다는 것을 알 수 있음. 그러나 시 제목을 ?name=poet_name 등으로 해보아도 반응 없음. 다른 방법으로 생각해서 시 제목은 index.html로 바꾸는 것을 생각. 별 방법이 없어서 디렉토리 개념으로 상위 디렉토리에 올려보니 ../index.html 방법은 맞는데 사이트 내용을 oldindex.html로 변경하라고 나옴. 변경해서 올렸음 go on. level4. Fischer's Animal Products 소스를 보니 이메일주소를 post방식으로 전송함. 이메일 입력창에 이메일 형식이 맞지 않는 문자를 입력했더니 아래와같이 메시지가 나옴. Error inserting into table "email"! Email not valid! 테이블 명이 email인 것을 알 수 있음. 블라인드 인젝션인듯? http://www.hackthissite.org/missions/realistic/4/products.php?category=1 UNION ALL SELECT null,*,null,null FROM email 결과-이메일 출력됨.  alph-alpha-brown@hotmail.com sam.goodwin@yahoo.com UltraDeathLaser@aol.com SwingLow@hotmail.com TeaBody@aol.com jsmith@uic.edu 3ambeer@graffiti.net shootfirst@yahoo.com Bobby@friends.com 출력된 이메일을 HTS 메시지로 SaveTheWhales에게 보내면 클리어했다고 메시지 옴.
 
-level5: Damn Telemarketers! form등에서 인젝션 취약점 없는듯. database에서 소스보기 하면 <form action="secret/admin.php"> 와 같은 경로 보임.http://www.hackthissite.org/missions/realistic/5/secret/admin.php 접속해봄. 그냥 로그인 실패라고 나옴.http://www.hackthissite.org/missions/realistic/5/secret/ 에 들어가보면 백업된 페이지가 나오고, 그 주소를 클릭해보면 아래와 같은 메시지 나온다. error matching hash 7c5cbbedf29ebc07566cf09dadddb8d2  이걸 어떻게 사용? cain & abel프로그램 사용. 어떻게 사용? ㅠㅠ cracker-MD4 Hashes에 add to list에 넣고 bruteforce하면 해독된 값이 나온다. [05e04]
+- oldindex.html 살펴보기
+- submitpoems.php 를 보면 시를 쓸 수 있고 아래와 같은 메시지 있다.
+```text
+Note: Poems will be stored online immediately but will not be listed on the main poetry page until it has a chance to be looked at.
+```
 
-database에 넣으면 풀림.
+일단 시가 저장이 된다는 것을 알았으니 어디에 저장되는지 생각해보면 아까 `/readpoem.php?name=Hacker` 처럼 get방식으로 시를 받아오므로 이와 같은 방법으로 불러올 수 있다는 것을 알 수 있다. 
+- 그러나 시 제목을 ?name=poet_name 등으로 해보아도 반응 없음
 
-level6: ToxiCo Industrial Chemicals 문제는 패스 level7: What's Right For Americahttp://www.hackthissite.org/missions/realistic/7/images/  에서 보면 파일 목록 볼 수 있고, admin계정이 하위디렉토리로 있음.
+다른 방법으로 생각해서 시 제목은 index.html로 바꾸는 것을 생각하였다. 별 방법이 없어서 디렉토리 개념으로 상위 디렉토리에 올려보니 `../index.html` 방법은 맞는데 사이트 내용을 `oldindex.html`로 변경하라고 메시지가 나왔다.
+
+변경해서 올려서 해결!
+
+## level4. Fischer's Animal Products
+
+소스를 보니 이메일주소를 post방식으로 전송함. 이메일 입력창에 이메일 형식이 맞지 않는 문자를 입력했더니 아래와같이 메시지가 나옴. Error inserting into table "email"! Email not valid! 테이블 명이 email인 것을 알 수 있음. 블라인드 인젝션인듯? http://www.hackthissite.org/missions/realistic/4/products.php?category=1 UNION ALL SELECT null,*,null,null FROM email 결과-이메일 출력됨.  alph-alpha-brown@hotmail.com sam.goodwin@yahoo.com UltraDeathLaser@aol.com SwingLow@hotmail.com TeaBody@aol.com jsmith@uic.edu 3ambeer@graffiti.net shootfirst@yahoo.com Bobby@friends.com 출력된 이메일을 HTS 메시지로 SaveTheWhales에게 보내면 클리어했다고 메시지 옴.
+
+level5: Damn Telemarketers! form등에서 인젝션 취약점 없는듯. database에서 소스보기 하면 <form action="secret/admin.php"> 와 같은 경로 보임.http://www.hackthissite.org/missions/realistic/5/secret/admin.php 접속해봄. 그냥 로그인 실패라고 나옴.http://www.hackthissite.org/missions/realistic/5/secret/ 에 들어가보면 백업된 페이지가 나오고, 그 주소를 클릭해보면 아래와 같은 메시지 나온다. error matching hash 7c5cbbedf29ebc07566cf09dadddb8d2  이걸 어떻게 사용? cain & abel프로그램 사용. 어떻게 사용? ㅠㅠ cracker-MD4 Hashes에 add to list에 넣고 bruteforce하면 해독된 값이 나온다. [05e04]
+
+database에 넣으면 풀림.
+
+## level6: ToxiCo Industrial Chemicals 문제는 패스 level7: What's Right For Americahttp://www.hackthissite.org/missions/realistic/7/images/  에서 보면 파일 목록 볼 수 있고, admin계정이 하위디렉토리로 있음.
 
 http://www.hackthissite.org/missions/realistic/7/images/admin 여기에 접속하는 것이 관건인 듯... 이미지 파일 불러올 때 아래와 같이 불러옴.. 여기서 취약점 존재하는듯..http://www.hackthissite.org/missions/realistic/7/showimages.php?file=patriot.txt http://www.hackthissite.org/missions/realistic/7/images/admin/ 이 뒤에 .htpasswd, .htaccess하면 사이트가 없다고 나오나, htpasswd, htaccess하면 인증하라고 함. 이미지 불러올 때 했던 것 처럼 php파일뒤에 get방식으로 불러와보자.http://www.hackthissite.org/missions/realistic/7/showimages.php?file=images/admin/.htpasswd
 http://www.hackthissite.org/missions/realistic/7/showimages.php?file=images/admin/.htaccess
 .pass보면 아래와 같은 코드 나옴.
-administrator:$1$AAODv...$gXPqGkIO3Cu6dnclE/sok1 카인&아벨로는 안깨짐. 칼리리눅스에 있는 john the ripper로 크랙. level7.pass파일에 위 코드를 넣고 john level7.pass 하면 아래와 같이 메시지 나오면서 크랙됨. Loaded 1 password hash (FreeBSD MD5 [128/128 SSE2 intrinsics 12x]) shadow           (administrator) guesses: 1  time: 0:00:00:00 DONE (Wed Nov  5 16:09:07 2014)  c/s: 2500  trying: 123456 - diamond Use the "--show" option to display all of the cracked passwords reliably /images/admin에 아래 코드를 넣으면 풀림. administrator/shadow  level8. United Banks Of America 목표 1. Find the account of Gary Hunter (I don't know his account name). --> GaryWilliamHunter 2. Move the $10,000,000 into the account dropCash. 3. Clear The Logs, They're held in the folder 'logFiles'. © All Rights Reserved (Linkback is required) linkback 필요하다는 것 생각해두기. form-post방식, 클릭하면 login2.php로 이동.  / input name: username, Password register.php -> register2.php 등록한 후 로그인하면 들어가짐. 로그인된 경우에 돈 이동시킬 수 있음. user info 18글자만 입력 가능. search.php -> search2.php POST방식 '를 넣으면 인젝션 취약점 있는듯. 아이디를 넣으면 memo에 있는 내용이 출력됨. ' or 1=1 입력했더니 아이디랑 메모 나옴. 의심가는 사람 GaryWilliamHunter : -- $$$$$ -- 다 포스트방식이므로 javascript넣어야 할듯.
+administrator:$1$AAODv...$gXPqGkIO3Cu6dnclE/sok1 카인&아벨로는 안깨짐. 칼리리눅스에 있는 john the ripper로 크랙. level7.pass파일에 위 코드를 넣고 john level7.pass 하면 아래와 같이 메시지 나오면서 크랙됨. Loaded 1 password hash (FreeBSD MD5 [128/128 SSE2 intrinsics 12x]) shadow           (administrator) guesses: 1  time: 0:00:00:00 DONE (Wed Nov  5 16:09:07 2014)  c/s: 2500  trying: 123456 - diamond Use the "--show" option to display all of the cracked passwords reliably /images/admin에 아래 코드를 넣으면 풀림. administrator/shadow  
+
+## level8. United Banks Of America
+
+목표 1. Find the account of Gary Hunter (I don't know his account name). --> GaryWilliamHunter 2. Move the $10,000,000 into the account dropCash. 3. Clear The Logs, They're held in the folder 'logFiles'. © All Rights Reserved (Linkback is required) linkback 필요하다는 것 생각해두기. form-post방식, 클릭하면 login2.php로 이동.  / input name: username, Password register.php -> register2.php 등록한 후 로그인하면 들어가짐. 로그인된 경우에 돈 이동시킬 수 있음. user info 18글자만 입력 가능. search.php -> search2.php POST방식 '를 넣으면 인젝션 취약점 있는듯. 아이디를 넣으면 memo에 있는 내용이 출력됨. ' or 1=1 입력했더니 아이디랑 메모 나옴. 의심가는 사람 GaryWilliamHunter : -- $$$$$ -- 다 포스트방식이므로 javascript넣어야 할듯.
 javascript:alert(document.cookie)
 ihateboa/123으로 로그인 후 쿠키 보면 아래와 같음.
 
