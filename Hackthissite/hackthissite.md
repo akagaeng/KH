@@ -1,7 +1,7 @@
 # Hackthissite.org Challenges: Realistic missions
 웹해킹 관련 문제를 풀 수 있는 사이트인데 basic missions는 좀 간단한 것 같아서 실제 있을법한 문제들이 있는 [Realistic missions](https://www.hackthissite.org/missions/realistic/) 중에서 재미있어보이는 문제들을 풀어보았다. 풀이 과정을 간단하게 남겨본다. 문제 설명 과정에 힌트가 있기 때문에 메시지를 잘 읽어보는 것이 꽤 중요하다.
 
-## Level1. Uncle Arnold's Local Band Review
+## Level 1. Uncle Arnold's Local Band Review
 ```text
 Your friend is being cheated out of hundreds of dollars. Help him make things even again!
 ```
@@ -52,7 +52,7 @@ http://www.hackthissite.org/missions/realistic/1/v.php
 - 위 주소를 브라우저 주소창에 입력하여 점수를 한번에 10000점을 전송하여 해결!
 
 
-## Level2. Chicago American Nazi Party
+## Level 2. Chicago American Nazi Party
 ```text
 Racist pigs are organizing an 'anti-immigrant' rally in Chicago. Help anti-racist activists take over their website!
 ```
@@ -71,7 +71,7 @@ Message: I have been informed that you have quite admirable hacking skills. Well
 - 이동한 화면에 로그인창이 나타나는데 여기에 `sql injection`
 - username은 아무거나 입력(admin), password는 `' or 1=1;` 입력
 
-## level3. Peace Poetry: HACKED
+## Level 3. Peace Poetry: HACKED
 ### 문제 해결
 - 소스코드 맨 아래에 아래와 같은 주석 있음
 ```html
@@ -91,16 +91,16 @@ Note: Poems will be stored online immediately but will not be listed on the main
 
 변경해서 올려서 해결!
 
-## level4. Fischer's Animal Products
+## Level 4. Fischer's Animal Products
 ### 문제 해결
 - 소스를 보니 이메일주소를 post방식으로 전송하고 있다.
 
 이메일 입력창에 이메일 형식이 맞지 않는 문자를 입력했더니 아래와같이 메시지가 나왔다.
 ```text
-Error inserting into table "email"! Email not valid!
+Error inserting into table "email"! Email not valid!
 ```
 - 테이블 명이 email인 것을 알 수 있음! (블라인드 인젝션인듯?)
-- 쿼리문을 추가하여 출력해보기로 하였다.
+- 쿼리문을 추가하여 출력해보기로 하였다. 다음 주소를 브라우저창에 입력하였다.
 ```text
 http://www.hackthissite.org/missions/realistic/4/products.php?category=1 UNION ALL SELECT null,*,null,null FROM email
 ```
@@ -119,22 +119,42 @@ Bobby@friends.com
 
 - 출력된 이메일을 HTS 메시지로 SaveTheWhales에게 전송하면 클리어했다고 메시지 온다.
 
-## level5: Damn Telemarketers!
-form등에서 인젝션 취약점 없는듯. database에서 소스보기 하면 <form action="secret/admin.php"> 와 같은 경로 보임.http://www.hackthissite.org/missions/realistic/5/secret/admin.php 접속해봄. 그냥 로그인 실패라고 나옴.http://www.hackthissite.org/missions/realistic/5/secret/ 에 들어가보면 백업된 페이지가 나오고, 그 주소를 클릭해보면 아래와 같은 메시지 나온다. error matching hash 7c5cbbedf29ebc07566cf09dadddb8d2  이걸 어떻게 사용? cain & abel프로그램 사용. 어떻게 사용? ㅠㅠ cracker-MD4 Hashes에 add to list에 넣고 bruteforce하면 해독된 값이 나온다. [05e04]
+## Level 5. Damn Telemarketers!
+### 문제해결
 
-database에 넣으면 풀림.
+- form등에서 인젝션 취약점 없는듯
+- database 탭 확인
 
-## level6: ToxiCo Industrial Chemicals
+소스보기 하면 `<form action="secret/admin.php">` 와 같은 경로가 보여 브라우저에서 접속해보았다.  `http://www.hackthissite.org/missions/realistic/5/secret/admin.php` 
+`Invalid Password`라고 메시지나 나왔다. 다시 브라우저에 `http://www.hackthissite.org/missions/realistic/5/secret/`을 입력해보니 다음과 같이 파일 디렉토리 리스트가 보이는 페이지가 나왔다.
+```
+Index of /missions/realistic/5/secret
+- Parent Directory
+- admin.bak.php
+- admin.php
+```
+admin.bak.php 파일을 클릭해보니 `error matching hash 7c5cbbedf29ebc07566cf09dadddb8d2`라는 메시지가 출력되었다.
+
+hash로 암호화되어있는 파일을 해독하기 위해 [***cain & abel***](https://en.wikipedia.org/wiki/Cain_and_Abel_(software))이라는프로그램 사용하였다. 
+
+소프트웨어를 설치하고 cracker-MD4 Hashes에 add to list에 hash string을 넣고 bruteforce하면 해독된 값이 나온다.
+
+- 결과값으로 나온 `05e04` 를 [database](https://www.hackthissite.org/missions/realistic/5/submit.html)의 패스워드 입력창에 넣으면 클리어!
+
+## Level 6. ToxiCo Industrial Chemicals
 - 이 문제는 패스
 
-## level7: What's Right For America
+## Level 7. What's Right For America
+### 문제해결
 - `http://www.hackthissite.org/missions/realistic/7/images/` 에서 보면 파일 목록 볼 수 있고, admin계정이 하위디렉토리로 있음
+
 http://www.hackthissite.org/missions/realistic/7/images/admin 여기에 접속하는 것이 관건인 듯... 이미지 파일 불러올 때 아래와 같이 불러옴.. 여기서 취약점 존재하는듯..http://www.hackthissite.org/missions/realistic/7/showimages.php?file=patriot.txt http://www.hackthissite.org/missions/realistic/7/images/admin/ 이 뒤에 .htpasswd, .htaccess하면 사이트가 없다고 나오나, htpasswd, htaccess하면 인증하라고 함. 이미지 불러올 때 했던 것 처럼 php파일뒤에 get방식으로 불러와보자.http://www.hackthissite.org/missions/realistic/7/showimages.php?file=images/admin/.htpasswd
 http://www.hackthissite.org/missions/realistic/7/showimages.php?file=images/admin/.htaccess
 .pass보면 아래와 같은 코드 나옴.
 administrator:$1$AAODv...$gXPqGkIO3Cu6dnclE/sok1 카인&아벨로는 안깨짐. 칼리리눅스에 있는 john the ripper로 크랙. level7.pass파일에 위 코드를 넣고 john level7.pass 하면 아래와 같이 메시지 나오면서 크랙됨. Loaded 1 password hash (FreeBSD MD5 [128/128 SSE2 intrinsics 12x]) shadow           (administrator) guesses: 1  time: 0:00:00:00 DONE (Wed Nov  5 16:09:07 2014)  c/s: 2500  trying: 123456 - diamond Use the "--show" option to display all of the cracked passwords reliably /images/admin에 아래 코드를 넣으면 풀림. administrator/shadow  
 
-## level8. United Banks Of America
+## Level 8. United Banks Of America
+### 문제해결
 목표 1. Find the account of Gary Hunter (I don't know his account name). --> GaryWilliamHunter 2. Move the $10,000,000 into the account dropCash. 3. Clear The Logs, They're held in the folder 'logFiles'. © All Rights Reserved (Linkback is required) linkback 필요하다는 것 생각해두기. form-post방식, 클릭하면 login2.php로 이동.  / input name: username, Password register.php -> register2.php 등록한 후 로그인하면 들어가짐. 로그인된 경우에 돈 이동시킬 수 있음. user info 18글자만 입력 가능. search.php -> search2.php POST방식 '를 넣으면 인젝션 취약점 있는듯. 아이디를 넣으면 memo에 있는 내용이 출력됨. ' or 1=1 입력했더니 아이디랑 메모 나옴. 의심가는 사람 GaryWilliamHunter : -- $$$$$ -- 다 포스트방식이므로 javascript넣어야 할듯.
 javascript:alert(document.cookie)
 ihateboa/123으로 로그인 후 쿠키 보면 아래와 같음.
@@ -151,7 +171,8 @@ javascript:document.write("
 <form action='cleardir.php' method='POST'> <input type='hidden' name='dir' value='logFiles'> <input type='submit' value='Clear Files In Personal Folder'></form>
 </form> ")
 
-## level9. CrappySoft Software
+## Level 9. CrappySoft Software
+### 문제해결
 상사의 계정으로 들어가서 online payment system에 접속하기. 일단은 본인 아이디 사용하기 Username: r-conner@crappysoft.com Password: ilovemywork Demo에 보면 프로그램 다운받을 수 있고, 실행시켜보면 아래와 같이 오류메시지가 뜨고 관리자 아이디가 나옴.
 
 상사 이메일은 메시지 보내기에서 확인 가능하므로, 특별히 얻을 정보 없음.
