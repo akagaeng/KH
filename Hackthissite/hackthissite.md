@@ -216,7 +216,8 @@ ID: administrator, password: shadow
 -. Find the account of Gary Hunter (I don't know his account name
   - --> GaryWilliamHunter
 2. Move the $10,000,000 into the account dropCash.
-3. Clear The Logs, They're held in the folder 'logFiles'. © All Rights Reserved(Linkback is required) linkback 필요하다는 것 생각해두기
+3. Clear The Logs, They're held in the folder 'logFiles'. © All Rights Reserved(Linkback is required)
+  - linkback 필요하다는 것 생각해두기
 
 ### 문제해결
 - form-post방식, 클릭하면 login2.php로 이동
