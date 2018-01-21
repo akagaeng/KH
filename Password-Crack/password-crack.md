@@ -1,45 +1,45 @@
 # Password crack practice (Windows system hacking)
 
 ### 들어가며
-인터넷에서 공개되어있는 [패스워드 크랙 연습용 파일](https://github.com/akagaeng/self-study/blob/master/Password-Crack/files/windows_system_sample.zip)들을 풀어보았습니다. 
-바이너리 파일 분석을 위해 OLLYDBG(올리디버거)를 사용하였습니다.
-
-기본적으로 필요한 단축키는 다음과 같습니다.
--continue: F9
--ni: f8
--si: f7 (함수 내부까지 들어감)
--소프트웨어 브레이크포인트: F2
+인터넷에서 패스워드 크랙 연습을 위해 공개되어 있는 [패스워드 크랙 연습용 파일](https://github.com/akagaeng/self-study/blob/master/Password-Crack/files/windows_system_sample.zip)들을 이용하여 비밀번호를 풀어보았습니다. 바이너리 파일 분석을 위해 OLLYDBG(올리디버거)를 사용하였습니다. 올리디버거 사용시 기본적으로 필요한 단축키는 다음과 같습니다.
+- continue: F9
+- ni: f8
+- si: f7 (함수 내부까지 들어감)
+- 소프트웨어 브레이크포인트: F2
 
 ### 문제 해결
 1. reverseMe.exe
-  1) 코드 패칭으로 해결
-    - jnz short 004010D0 을 congratulations가 나오는 곳 위치로 변경(jnz 00401205)
-    - jnz --> jmp로 변경
-      + short jmp를 long jmp로 바꾸는 등 여러가지 방법 사용 가능하다.
-    - 마우스 오른쪽 클릭-> copy to excutable -> 마우스 오른쪽 클릭 -> save file
-    - readfile(hfile, buffer, bytestoread, pbytesread, poverlapped);
-  2) 조건을 만족시킴으로써 크랙
-    - hFile : 읽고자 하는 파일의 핸들. 이 파일은 GENERIC_READ 액세스 권한으로 열어야 한다.
-    - lpBuffer : 읽는 데이터를 저장할 버퍼의 포인터, 충분한 길이를 가지고 있어야 한다.
-    - nNumberOfBytesToRead : 읽고자 하는 바이트 수
-    - lpNumberOfBytesRead : 실제로 읽은 바이트 수를 리턴받기 위한 출력용 인수. ReadFile은 호출 즉시 이 값을 0으로 만든다. 비동기 입출력을 하지 않을 경우 이 인수는 NULL로 줄 수 없으며 반드시 DWORD형 변수에 대한 포인터를 제공해야 한다.
-    - lpOverlapped : 비동기 입출력을 위한 OVERLAPPED 구조체의 포인터. 파일을 FILE_FLAG_OVERLAPPED 플래그로 열었으면 이 구조체를 반드시 제공해야 한다. 비동기 입출력을 사용하지 않을 경우 NULL을 주면 된다.
-    
-    성공하면 0이 아닌 값을 리턴한다. 만약 리턴값이 0이 아닌데 실제 읽은 바이트가 0이라면 파일 포인터가 끝부분(EOF)인 것이다. 실패하면 0을 리턴한다.
+
+#### 코드 패칭으로 해결
+- jnz short 004010D0 을 congratulations가 나오는 곳 위치로 변경(jnz 00401205)
+- jnz --> jmp로 변경
+  + short jmp를 long jmp로 바꾸는 등 여러가지 방법 사용 가능하다.
+- 마우스 오른쪽 클릭-> copy to excutable -> 마우스 오른쪽 클릭 -> save file
+- readfile(hfile, buffer, bytestoread, pbytesread, poverlapped);
+
+#### 조건을 만족시킴으로써 크랙
+- hFile : 읽고자 하는 파일의 핸들. 이 파일은 GENERIC_READ 액세스 권한으로 열어야 함
+- lpBuffer : 읽는 데이터를 저장할 버퍼의 포인터, 충분한 길이를 가지고 있어야 함
+- nNumberOfBytesToRead : 읽고자 하는 바이트 수
+- lpNumberOfBytesRead : 실제로 읽은 바이트 수를 리턴받기 위한 출력용 인수. ReadFile은 호출 즉시 이 값을 0으로 만든다. 비동기 입출력을 하지 않을 경우 이 인수는 NULL로 줄 수 없으며 반드시 DWORD형 변수에 대한 포인터를 제공해야 한다.
+- lpOverlapped : 비동기 입출력을 위한 OVERLAPPED 구조체의 포인터. 파일을 FILE_FLAG_OVERLAPPED 플래그로 열었으면 이 구조체를 반드시 제공해야 한다. 비동기 입출력을 사용하지 않을 경우 NULL을 주면 된다.
+
+성공하면 0이 아닌 값을 리턴한다. 만약 리턴값이 0이 아닌데 실제 읽은 바이트가 0이라면 파일 포인터가 끝부분(EOF)인 것이다. 실패하면 0을 리턴한다.
 
 ```text    
 문제에서
-- hfile: eax
+- hfile: eax
 - buffer: reverseM.0040211A
 - BytestoRead(70bytes)
 - pBytesRead: reverseM.00402173
 - pOverlapped: NULL
-
-*00402173에 파일의 바이트수가 입력됨.
+
+*00402173에 파일의 바이트수가 입력됨
 cmp al,47 ==> 47=>'G' 
 글자가 하나 있을때마다 EBX 증가시키며
-G가 있을때마다 esi를 증가시키며, esi와 8을 비교함.
-G의 갯수가 8개이면 조건 만족시켜 루프를 벗어나게 됨.
+G가 있을때마다 esi를 증가시키며, esi와 8을 비교함
+G의 갯수가 8개이면 조건 만족시켜 루프를 벗어나게 된다.
+
 createfile // readfile
 ```
 2. register me
@@ -106,14 +106,14 @@ createfile // readfile
 
 ```
 004020D3  7B 61 65 78 64 6D 26 6B 7A 69 6B 63 65 6D 26 3C  {aexdm&kzikcem&<
-004020E3  26 66 6D 7F 6A 61 6D 7B 26 6A 71 26 6C 7D 6D 64  &fmjam{&jq&l}md
+004020E3  26 66 6D 7F 6A 61 6D 7B 26 6A 71 26 6C 7D 6D 64  &fmjam{&jq&l}md
 004020F3  61 7B 7C 00                                                          a{|.
 ```
 
-- 3번 xor연산 후에 `{aexdm&kzikcem&<&fmjam{&jq&l}mda{|.`와 같은 아스키 문자가 나오도록 해야하므로 프로그래밍을 통해 그 값을 구해보도록 하였다.
+- 3번 xor연산 후에 `{aexdm&kzikcem&<&fmjam{&jq&l}mda{|.`와 같은 아스키 문자가 나오도록 해야하므로 프로그래밍을 통해 그 값을 구해보도록 하였다.
 
 * 시행착오
-`char ch[]="{aexdm&kzikcem&<&fmjam{&jq&l}mda{|."`
+`char ch[]="{aexdm&kzikcem&<&fmjam{&jq&l}mda{|."`
 와 같이 문자를 통해 xor연산을 거쳤더니 `simple.crackme.4.nbies.by.duelist`와 같이 나오고 
 ew가 누락되었다
 - 알아보니 0x7F가 아스키 코드로 DEL이므로 문자로 표현이 불가하였다.
@@ -144,12 +144,12 @@ int main(){
         break;
       }
     }
-  } 
+  }
   printf("\n");
   printf("===================================\n");
   printf("                            -HACKED\n");
   return 0;
-}
+}
 ```
 
 (참고) `a xor 43 = 7B` 인 경우 `a= 43 xor 7B` 이렇게 해도 됨 (교환법칙 성립)
@@ -253,7 +253,8 @@ int main()
       0x0C, 0x61, 0x52, 0x4D};
 
   //CHECK BOX -이 배열은 계산시에는 필요없음
-  /* int arr2[]={
+  /*
+      int arr2[]={
       0x61,0x49,0x5E,
       0x16,0x25,0x26,
       0x21,0x59,0x53,
@@ -335,7 +336,9 @@ int main()
 
 `#> gcc -lm -o due3_findhex due3_findhex.c`
 
-중간에 생각대로 출력이 되지 않아 버그를 발견하는 데 꽤 많은 시간을 할애하였다. 프로그래밍 작성 후 정답이 나왔으나, 실제로 크랙이 되지 않아 확인해보니 i)처음 사용하였던 리소스해커라는 프로그램이 id값을 잘못 알려주었으며 ii) 바이너리 분석이 조금 잘못되었음을 인지하여 다시 분석함. 많은 고생끝에 성공!
+중간에 생각대로 출력이 되지 않아 버그를 발견하는 데 꽤 많은 시간을 할애하였다. 프로그래밍 작성 후 정답이 나왔으나, 실제로 크랙이 되지 않아 확인해보니
+- i)처음 사용하였던 리소스해커라는 프로그램이 id값을 잘못 알려주었으며
+- ii) 바이너리 분석이 조금 잘못되었음을 인지하여 다시 분석하였다. 많은 고생끝에 성공!
 
 ![due-cm3_3.png](images/due-cm3_3.png)
 
