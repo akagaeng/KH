@@ -1,7 +1,7 @@
 # Password crack practice (Windows system hacking)
 
 ### 들어가며
-인터넷에서 패스워드 크랙 연습을 위해 공개되어 있는 [패스워드 크랙 연습용 파일](https://github.com/akagaeng/self-study/blob/master/Password-Crack/files/windows_system_sample.zip)들을 이용하여 비밀번호를 풀어보았습니다. 바이너리 파일 분석을 위해 OLLYDBG(올리디버거)를 사용하였습니다. 올리디버거 사용시 기본적으로 필요한 단축키는 다음과 같습니다.
+인터넷에서 패스워드 크랙 연습을 위해 공개되어 있는 [패스워드 크랙 연습용 파일](https://github.com/akagaeng/self-study/raw/master/Password-Crack/files/windows_system_sample.zip)들을 이용하여 비밀번호를 풀어보았습니다. 바이너리 파일 분석을 위해 OLLYDBG(올리디버거)를 사용하였습니다. 올리디버거 사용시 기본적으로 필요한 단축키는 다음과 같습니다.
 - continue: F9
 - ni: f8
 - si: f7 (함수 내부까지 들어감)
