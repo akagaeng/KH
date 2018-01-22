@@ -1,0 +1,54 @@
+<!<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>v-model-directive</title>
+    <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+</head>
+
+<body>
+    <div id="simple1">
+        <!-- 
+            v-model 디렉티브는 텍스트박스뿐만 아니라 입력폼 필드에서도 사용 가능
+            input type=checkbox, select multiple와 같이 여러 아이템을 선택할 수 있는 경우
+                : 모델 객체의 배열과 연결
+            input type=radio, select와 같이 단일 아이템만 선택 가능한 경우
+                : 모델 객체의 단일 값과 연결됨
+        -->
+        <!-- 
+            #simple1의 체크박스에서 v-model에 의해 simple1뷰모델(Vue객체)과 (양방향)바인딩
+            사용자의 입력(select) -> simple1뷰모델 -> model.fruits
+         -->
+        <div>좋아하는 과일을 모두 골라주세요!</div>
+        <input type="checkbox" value="1" v-model="fruits">사과,
+        <input type="checkbox" value="2" v-model="fruits">키위,
+        <input type="checkbox" value="3" v-model="fruits">포도,
+        <input type="checkbox" value="4" v-model="fruits">수박,
+        <input type="checkbox" value="5" v-model="fruits">사과
+    </div>
+    <hr>
+    <div id="simple2">
+        선택한 과일들: <span v-html="fruits"></span>
+        <!-- 
+            model.fruits -> simple2뷰모델 -> #simple2(v-html에 출력)
+         -->
+    </div>
+    <script type="text/javascript">
+        var model = {
+            fruits: []
+        };
+
+        var simple1 = new Vue({
+            el: "#simple1",
+            data: model
+        });
+
+        var simple2 = new Vue({
+            el: "#simple2",
+            data: model
+        });
+    </script>
+</body>
+
+</html>

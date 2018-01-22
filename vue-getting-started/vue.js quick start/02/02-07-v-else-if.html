@@ -1,0 +1,30 @@
+<!<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>v-if, v-else-if, v-else</title>
+    <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+</head>
+
+<body>
+    <div id="account">
+        잔고: <input type="text" v-model="balance" /><br /> 회원님의 등급:
+        <span v-if="balance>10000">Gold</span>
+        <span v-else-if="balance>5000">Silver</span>
+        <span v-else-if="balance>3000">Bronze</span>
+        <span v-else>Basic</span>
+
+    </div>
+    <script type="text/javascript">
+        var model = {
+            balance: 0
+        }
+        var simple1 = new Vue({
+            el: "#account",
+            data: model
+        });;
+    </script>
+</body>
+
+</html>

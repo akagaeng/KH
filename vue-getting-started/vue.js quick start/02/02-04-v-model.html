@@ -1,0 +1,35 @@
+<!<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>v-model</title>
+    <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+</head>
+
+<body>
+    <div id="simple">
+        <!-- v-model 디렉티브: 양방향 디렉티브! 양방향 데이터 바인딩이 필요할 때 사용 -->
+        <input id="name" type="text" v-model="name" placeholder="이름을 입력하세요"><br> 입력된 이름:
+        <h2 v-html="name"></h2>
+        <!-- 
+            input에 aaa라고 입력하면 input의 element가 변경됨: 
+                document.querySelector('#name').value 의 결과:  "aaa"
+            v-model에 의해 model에도 변경됨
+                model.name의 결과: "aaa"
+            이미 model.name이 "aaa"로 변경되었으므로 h2 태그의 v-html에서 모델의 변경된 name을 출력
+            따라서 입력하는 결과가 즉시 v-html에 적용됨
+        -->
+    </div>
+    <script type="text/javascript">
+        var model = {
+            name: ''
+        }
+        var twoway = new Vue({
+            el: '#simple',
+            data: model
+        });
+    </script>
+</body>
+
+</html>
