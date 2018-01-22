@@ -5,16 +5,16 @@
 - 현재 진행중
 
 - problem-solving
-  + [MSP 2014 문제풀이](https://github.com/akagaeng/self-study/blob/master/MSP-2014/msp2014.md)
+  + [MSP 2014 문제풀이](https://github.com/akagaeng/self-study/blob/master/problem-solving/MSP-2014/msp2014.md)
 
 - infosec
-  + [Packet Analysis](https://github.com/akagaeng/self-study/blob/master/PacketAnalysis/packet-analysis.md)
-  + [LOB (Lord of the Buffer Overflow) 문제풀이](https://github.com/akagaeng/self-study/blob/master/LOB/lob.md)
-  + [Hackthissite 문제풀이](https://github.com/akagaeng/self-study/blob/master/Hackthissite/hackthissite.md)
-  + [Password Crack](https://github.com/akagaeng/self-study/blob/master/Password-Crack/password-crack.md)
-  + [Assembly Study](https://github.com/akagaeng/self-study/blob/master/AssemblyStudy/assembly.md)
+  + [Packet Analysis](https://github.com/akagaeng/self-study/blob/master/infosec/PacketAnalysis/packet-analysis.md)
+  + [LOB (Lord of the Buffer Overflow) 문제풀이](https://github.com/akagaeng/self-study/blob/master/infosec/LOB/lob.md)
+  + [Hackthissite 문제풀이](https://github.com/akagaeng/self-study/blob/master/infosec/Hackthissite/hackthissite.md)
+  + [Password Crack](https://github.com/akagaeng/self-study/blob/master/infosec/Password-Crack/password-crack.md)
+  + [Assembly Study](https://github.com/akagaeng/self-study/blob/master/infosec/AssemblyStudy/assembly.md)
 
 - application
-  + [TETRIS 게임 제작](https://github.com/akagaeng/self-study/blob/master/Tetris/tetris.md)
+  + [TETRIS 게임 제작](https://github.com/akagaeng/self-study/blob/master/application/Tetris/tetris.md)
 
 
