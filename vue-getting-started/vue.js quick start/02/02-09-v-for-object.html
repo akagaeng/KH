@@ -29,9 +29,7 @@
     <div id="example">
         <select id="regions">
             <option disabled="disabled" selected>지역을 선택하세요</option>
-            <!-- <option v-for="(val, key) in regions" v-bind:value="key">{{val}}</option> -->
-            <option v-for="(val, key, index) in regions" v-biind:value="key">{{index +1}}: { {{key}} } {{val}}</option>
-            <!-- v-for=(value, key[, index]) -->
+            <option v-for="(val, key, index) in regions" v-biind:value="key">{{index +1}}: [{{key}}] {{val}}</option>
         </select>
     </div>
     <script type="text/javascript">
