@@ -20,7 +20,4 @@
   + [Password Crack](https://github.com/akagaeng/self-study/blob/master/infosec/Password-Crack/password-crack.md)
   + [Assembly Study](https://github.com/akagaeng/self-study/blob/master/infosec/AssemblyStudy/assembly.md)
 
-- application
-  + [TETRIS 게임 제작](https://github.com/akagaeng/tetris.git)
-
 
