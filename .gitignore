@@ -1,5 +1,8 @@
 .DS_Store
+.ipynb_checkpoints
+.vscode
 tensorflow/sungkim/git.ipynb
 tensorflow/MNIST*
-
+tensorflow/sungkim/.ipynb_checkpoints
+tensorflow/sungkim/.idea
 tensorflow/gcp-ml-handson/lecture-note
