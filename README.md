@@ -7,12 +7,6 @@
 - problem-solving
   + [MSP 2014 문제풀이](https://github.com/akagaeng/self-study/blob/master/problem-solving/MSP-2014/msp2014.md)
 
-- frontend framework
-  + [vue.js](https://github.com/akagaeng/self-study/tree/master/vue-getting-started)
-
-- backend
-  + node.js
-
 - infosec
   + [Packet Analysis](https://github.com/akagaeng/self-study/blob/master/infosec/PacketAnalysis/packet-analysis.md)
   + [LOB (Lord of the Buffer Overflow) 문제풀이](https://github.com/akagaeng/self-study/blob/master/infosec/LOB/lob.md)
